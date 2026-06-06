@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://api.anthropic.com/v1/design/h/3wSBEc9nfzUsEOeqrnLK1g?open_file=index.html\" --compressed -H \"Accept-Encoding: gzip\")",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s \"https://api.anthropic.com/v1/design/h/3wSBEc9nfzUsEOeqrnLK1g?open_file=index.html\" -o /tmp/design_bundle.bin)",
+      "Read(//tmp/**)",
+      "Bash(curl -v \"https://api.anthropic.com/v1/design/h/3wSBEc9nfzUsEOeqrnLK1g?open_file=index.html\" -o /tmp/design_bundle2.bin)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}

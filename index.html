@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mike Green — AI Product Builder</title>
+<meta name="description" content="Mike Green — building AI-powered products that bridge complex systems with simple, intuitive experiences." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="no-scroll">
+
+  <!-- ===================== LOADER ===================== -->
+  <div id="loader">
+    <div class="l-name">Mike Green<br />AI Product Builder — Auckland</div>
+    <div class="l-count">000</div>
+    <div class="l-bar"></div>
+  </div>
+
+  <!-- ===================== CUSTOM CURSOR ===================== -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <!-- ===================== NAV ===================== -->
+  <nav class="nav">
+    <a href="#top" class="brand"><b>MIKE</b> GREEN<span class="u-accent">.</span></a>
+    <div class="links">
+      <a href="#work"><span>Work</span></a>
+      <a href="#about"><span>About</span></a>
+      <a href="#contact"><span>Contact</span></a>
+    </div>
+    <div class="meta">
+      <span class="clock" id="clock">--:--:-- AKL</span>
+      <button class="shift-hint" id="shiftBtn" aria-label="Toggle lights">
+        <span class="key">SHIFT</span><span class="lbl">Lights out</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero" id="top" data-screen-label="Hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-inner">
+      <div></div>
+      <div class="hero-title-wrap">
+        <div class="hero-eyebrow"><span class="dot"></span> Personal AI Projects — Portfolio '26</div>
+        <h1 aria-label="Mike Green">
+          <span class="line"><span>Mike</span></span>
+          <span class="line"><span>Green<em>.</em></span></span>
+        </h1>
+        <div class="hero-foot">
+          <p class="hero-sub">I work where psychology, business and computer science meet — turning systems too complex to reason about into decisions people can actually trust. <span class="u-accent">Explore the work.</span></p>
+          <span class="scroll-cue">Scroll to explore <span class="ln"></span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== WORK ===================== -->
+  <section class="work" id="work" data-screen-label="Work">
+    <div class="section-head reveal">
+      <span class="idx">01</span><span class="ttl">Featured Work</span>
+      <span class="rt">Selected AI projects — 2024–26</span>
+    </div>
+
+    <div class="proj-list" id="projList">
+      <!-- projects injected by JS -->
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="about" id="about" data-screen-label="About">
+    <div class="section-head reveal">
+      <span class="idx">02</span><span class="ttl">About</span>
+      <span class="rt">Auckland, NZ</span>
+    </div>
+    <div class="about-grid">
+      <p class="about-statement reveal">I turn systems too complex to reason about into <em>decisions people trust</em>.</p>
+      <div class="about-cols">
+        <div class="col reveal">
+          <h4>Approach</h4>
+          <p>Every project begins with a human decision buried under too much complexity. I borrow from behavioural psychology to see how that decision is really made, from business to know which outcome actually matters, and from computer science to build the engine that gets there. The hard maths is the easy part — earning trust in the answer is the real work.</p>
+        </div>
+        <div class="col reveal">
+          <h4>Focus</h4>
+          <ul>
+            <li>→ Applied AI &amp; autonomous agents</li>
+            <li>→ Decision intelligence &amp; optimisation</li>
+            <li>→ Supply chain &amp; financial systems</li>
+            <li>→ Human trust in automated decisions</li>
+          </ul>
+        </div>
+        <div class="col reveal">
+          <h4>Stack</h4>
+          <ul>
+            <li>Next.js / React / TypeScript</li>
+            <li>Python / OR-Tools (CP-SAT)</li>
+            <li>LLM agents / RAG</li>
+            <li>Realtime &amp; geospatial data</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="contact" id="contact" data-screen-label="Contact">
+    <div class="section-head reveal">
+      <span class="idx">03</span><span class="ttl">Contact</span>
+      <span class="rt">Open to building</span>
+    </div>
+    <div style="padding-top: clamp(40px,7vw,90px);">
+      <div class="big reveal">
+        <a href="mailto:mike.green4@fonterra.com" class="mag" data-cursor="email">Let's<br />build<em class="u-accent">.</em></a>
+      </div>
+      <div class="contact-row reveal">
+        <div>
+          <div class="email-line">mike.green4@fonterra.com</div>
+        </div>
+        <div class="socials">
+          <a href="https://www.linkedin.com/in/michaeljosephgreen/" target="_blank" rel="noopener" data-cursor="↗">LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer">
+        <span>© 2026 Mike Green — Crafted with precision.</span>
+        <span id="clock2">--:--:-- AKL</span>
+        <button class="top" id="toTop">Back to top ↑</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FLOATING PREVIEW ===================== -->
+  <div class="preview" id="preview"><div class="ph" data-ph="project preview"></div></div>
+
+  <!-- ===================== MODAL / PROJECT SUB-PAGE ===================== -->
+  <div class="modal" id="modal" data-screen-label="Project detail">
+    <div class="scrim" data-close></div>
+    <div class="sheet">
+      <div class="sheet-inner">
+        <div class="sheet-top">
+          <span class="sheet-meta" id="m-meta">Project</span>
+          <button class="sheet-close" data-close>Back to work <span>✕</span></button>
+        </div>
+        <h2 id="m-title">Title</h2>
+        <p class="sheet-tagline" id="m-tagline">Tagline</p>
+        <div class="sheet-tags" id="m-tags">tags</div>
+        <div class="sheet-img"><div class="ph" data-ph="product screenshot" id="m-img"><span class="corner tl"></span><span class="corner"></span></div></div>
+
+        <div class="sheet-body">
+          <section class="sb-block" id="m-problem-block">
+            <h3 class="sb-label"><span class="u-accent">01</span> The Problem</h3>
+            <p class="sb-text" id="m-problem">Problem</p>
+          </section>
+          <section class="sb-block">
+            <h3 class="sb-label"><span class="u-accent">02</span> The Solution</h3>
+            <p class="sb-text" id="m-solution">Solution</p>
+          </section>
+          <section class="sb-block" id="m-how-block">
+            <h3 class="sb-label"><span class="u-accent">03</span> How it works</h3>
+            <ol class="sb-steps" id="m-how"></ol>
+          </section>
+        </div>
+
+        <div class="sheet-foot">
+          <div class="sheet-facts" id="m-facts"></div>
+          <a class="visit" id="m-visit" href="#" target="_blank" rel="noopener" data-cursor="↗">Open live project <span>↗</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+
+  <!-- ===================== TWEAKS ===================== -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <div id="tweaks-root"></div>
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "accent": "#3B6BFF",
+      "theme": "light",
+      "flowGrid": true
+    }/*EDITMODE-END*/;
+
+    function TweaksApp() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      React.useEffect(() => { if (window.MG) window.MG.setAccent(t.accent); }, [t.accent]);
+      React.useEffect(() => { if (window.MG) window.MG.setTheme(t.theme); }, [t.theme]);
+      React.useEffect(() => { if (window.MG) window.MG.setGrid(t.flowGrid); }, [t.flowGrid]);
+      // keep panel's theme in sync if user hits SHIFT
+      React.useEffect(() => {
+        const obs = new MutationObserver(() => {
+          const cur = document.documentElement.getAttribute("data-theme");
+          if (cur !== t.theme) setTweak("theme", cur);
+        });
+        obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+        return () => obs.disconnect();
+      }, [t.theme]);
+
+      return (
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Accent" />
+          <TweakColor label="Electric accent" value={t.accent}
+            options={["#C6F833", "#3B6BFF", "#FF5A2C", "#C08BFF", "#19E0B4"]}
+            onChange={(v) => setTweak("accent", v)} />
+          <TweakSection label="Mode" />
+          <TweakRadio label="Lights" value={t.theme} options={["light", "dark"]}
+            onChange={(v) => setTweak("theme", v)} />
+          <TweakToggle label="Hero flow grid" value={t.flowGrid}
+            onChange={(v) => setTweak("flowGrid", v)} />
+        </TweaksPanel>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("tweaks-root")).render(<TweaksApp />);
+  </script>
+</body>
+</html>
