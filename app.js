@@ -27,7 +27,7 @@
       link: "https://workforce-readiness-simulator.vercel.app/app"
     },
     {
-      title: "AI Sharesies Stock Picker",
+      title: "Agentic Stock Analyst",
       tags: "agentic AI · equities · NZX / ASX",
       status: "live",
       ph: "AI committee — analysis view",
@@ -44,7 +44,7 @@
       link: "https://v0-ai-stock-picker-companion.vercel.app/analysis"
     },
     {
-      title: "Maritime Intelligence OS",
+      title: "Supply Chain Maritime Intelligence O/S",
       tags: "geospatial · forecasting · supply chain",
       status: "live",
       ph: "maritime map — signal layer",
@@ -61,7 +61,7 @@
       link: "https://maritime-intel-os.vercel.app/"
     },
     {
-      title: "Project Nexus",
+      title: "Biotech Success Predictor",
       tags: "concept · AI · vision",
       status: "soon",
       ph: "stealth — coming soon",
@@ -129,18 +129,22 @@
     setTimeout(finishLoader, dur + 400);
   }
 
-  /* ---------- CLOCK (Auckland) ---------- */
+  /* ---------- CLOCKS (multi-zone) ---------- */
   const clock = document.getElementById("clock");
   const clock2 = document.getElementById("clock2");
+  const ckEls = clock ? clock.querySelectorAll(".ck") : [];
+  function fmtTime(tz) {
+    return new Intl.DateTimeFormat("en-GB", {
+      timeZone: tz, hour: "2-digit", minute: "2-digit",
+      second: "2-digit", hour12: false
+    }).format(new Date());
+  }
   function updateClock() {
     try {
-      const s = new Intl.DateTimeFormat("en-GB", {
-        timeZone: "Pacific/Auckland", hour: "2-digit", minute: "2-digit",
-        second: "2-digit", hour12: false
-      }).format(new Date());
-      const txt = s + " AKL";
-      clock.textContent = txt;
-      clock2.textContent = txt;
+      ckEls.forEach((el) => {
+        el.textContent = fmtTime(el.dataset.tz) + " " + el.dataset.lbl;
+      });
+      if (clock2) clock2.textContent = fmtTime("Pacific/Auckland") + " AKL";
     } catch (e) { /* noop */ }
   }
   updateClock();
@@ -192,8 +196,13 @@
   (function heroCanvas() {
     const cv = document.getElementById("hero-canvas");
     const ctx = cv.getContext("2d");
-    let w, h, dpr, cells = [], spacing = 46;
-    let pointer = { x: -9999, y: -9999, active: false };
+    // Pixelated water-ripple field: a damped wave-equation height-map on a
+    // coarse grid. The cursor drops square impulses that propagate outward and
+    // reverberate off the edges of the canvas.
+    const CELL = 15;              // pixel size of each square "pixel"
+    const DAMP = 0.962;           // wave energy retention (higher = longer ripples)
+    let w, h, dpr, gw, gh, n, buf1, buf2;
+    let pointer = { gx: -1, gy: -1, px: -1, py: -1, active: false };
 
     function ink() {
       return getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || "#111";
@@ -201,54 +210,64 @@
     function accent() {
       return getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#C6F833";
     }
+    // parse "#rrggbb" -> [r,g,b]
+    function rgb(hex) {
+      hex = hex.replace("#", "");
+      if (hex.length === 3) hex = hex.split("").map((c) => c + c).join("");
+      const v = parseInt(hex, 16);
+      return [(v >> 16) & 255, (v >> 8) & 255, v & 255];
+    }
 
     function build() {
       dpr = Math.min(2, window.devicePixelRatio || 1);
       w = cv.clientWidth; h = cv.clientHeight;
       cv.width = w * dpr; cv.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      cells = [];
-      const cols = Math.ceil(w / spacing) + 1;
-      const rows = Math.ceil(h / spacing) + 1;
-      for (let y = 0; y < rows; y++)
-        for (let x = 0; x < cols; x++)
-          cells.push({ x: x * spacing + spacing / 2, y: y * spacing + spacing / 2, a: 0, ta: 0 });
+      gw = Math.ceil(w / CELL) + 1;
+      gh = Math.ceil(h / CELL) + 1;
+      n = gw * gh;
+      buf1 = new Float32Array(n);
+      buf2 = new Float32Array(n);
     }
 
-    let t = 0;
-    function draw() {
-      t += 0.006;
-      ctx.clearRect(0, 0, w, h);
-      const col = ink(), acc = accent();
-      const len = 13, R = 220;
-      for (const c of cells) {
-        const dx = pointer.x - c.x, dy = pointer.y - c.y;
-        const dist = Math.hypot(dx, dy);
-        // base angle: slow flowing noise; near pointer: orient toward pointer
-        let ang = Math.sin((c.x * 0.01) + t) * 0.6 + Math.cos((c.y * 0.012) - t) * 0.6;
-        let near = 0;
-        if (pointer.active && dist < R) {
-          near = 1 - dist / R;
-          const toPointer = Math.atan2(dy, dx);
-          ang = ang * (1 - near) + toPointer * near;
+    // drop a square stamp of energy into the grid (square objects -> square ripples)
+    function disturb(gx, gy, amp, half) {
+      for (let y = gy - half; y <= gy + half; y++) {
+        if (y < 1 || y >= gh - 1) continue;
+        for (let x = gx - half; x <= gx + half; x++) {
+          if (x < 1 || x >= gw - 1) continue;
+          buf1[y * gw + x] += amp;
         }
-        c.ta = pointer.active ? Math.max(0.12, near) : 0.12;
-        c.a += (c.ta - c.a) * 0.08;
-        const l = len * (0.6 + near * 1.1);
-        const ex = c.x + Math.cos(ang) * l, ey = c.y + Math.sin(ang) * l;
-        ctx.beginPath();
-        ctx.moveTo(c.x, c.y);
-        ctx.lineTo(ex, ey);
-        ctx.strokeStyle = near > 0.55 ? acc : col;
-        ctx.globalAlpha = (near > 0.55 ? 0.9 : 0.22) * (0.4 + c.a);
-        ctx.lineWidth = near > 0.55 ? 1.6 : 1;
-        ctx.stroke();
-        // node dot near pointer
-        if (near > 0.3) {
-          ctx.beginPath();
-          ctx.arc(c.x, c.y, 1.4 + near * 1.6, 0, Math.PI * 2);
-          ctx.fillStyle = acc; ctx.globalAlpha = near;
-          ctx.fill();
+      }
+    }
+
+    function step() {
+      // wave propagation (Hugo-Elias style): buf2 = avg(neighbours of buf1) - buf2
+      for (let y = 1; y < gh - 1; y++) {
+        let i = y * gw + 1;
+        for (let x = 1; x < gw - 1; x++, i++) {
+          const v = (buf1[i - 1] + buf1[i + 1] + buf1[i - gw] + buf1[i + gw]) * 0.5 - buf2[i];
+          buf2[i] = v * DAMP;
+        }
+      }
+      const tmp = buf1; buf1 = buf2; buf2 = tmp;
+    }
+
+    function draw() {
+      step();
+      ctx.clearRect(0, 0, w, h);
+      const col = rgb(ink()), acc = rgb(accent());
+      for (let y = 1; y < gh - 1; y++) {
+        for (let x = 1; x < gw - 1; x++) {
+          const v = buf1[y * gw + x];
+          const m = Math.abs(v);
+          if (m < 2) continue;                 // skip flat water -> stays pixel-sparse
+          const a = Math.min(0.85, m / 90);     // height -> opacity
+          const crest = v > 26;                 // bright crests pick up the accent
+          const c = crest ? acc : col;
+          ctx.globalAlpha = a;
+          ctx.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`;
+          ctx.fillRect(x * CELL, y * CELL, CELL - 1, CELL - 1);
         }
       }
       ctx.globalAlpha = 1;
@@ -258,59 +277,50 @@
     const rect = () => cv.getBoundingClientRect();
     window.addEventListener("mousemove", (e) => {
       const r = rect();
-      if (e.clientY <= r.bottom) { pointer.x = e.clientX - r.left; pointer.y = e.clientY - r.top; pointer.active = true; }
-      else pointer.active = false;
+      if (e.clientY > r.bottom || e.clientY < r.top) { pointer.active = false; return; }
+      const lx = e.clientX - r.left, ly = e.clientY - r.top;
+      const gx = Math.round(lx / CELL), gy = Math.round(ly / CELL);
+      if (pointer.active) {
+        // impulse scales with cursor speed -> faster swipes splash harder
+        const speed = Math.hypot(lx - pointer.px, ly - pointer.py);
+        const amp = Math.min(170, 36 + speed * 2.4);
+        disturb(gx, gy, amp, 1);
+      }
+      pointer.px = lx; pointer.py = ly; pointer.gx = gx; pointer.gy = gy; pointer.active = true;
     });
     window.addEventListener("mouseleave", () => pointer.active = false);
+    window.addEventListener("mousedown", (e) => {
+      const r = rect();
+      if (e.clientY > r.bottom) return;
+      disturb(Math.round((e.clientX - r.left) / CELL), Math.round((e.clientY - r.top) / CELL), 260, 2);
+    });
     cv.addEventListener("touchmove", (e) => {
       const r = rect(), tch = e.touches[0];
-      pointer.x = tch.clientX - r.left; pointer.y = tch.clientY - r.top; pointer.active = true;
+      disturb(Math.round((tch.clientX - r.left) / CELL), Math.round((tch.clientY - r.top) / CELL), 130, 1);
     }, { passive: true });
 
     let rt;
     window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(build, 150); });
     build();
-    if (!reduceMotion) draw(); else { /* static single frame */ pointer.active = false; draw(); }
+    if (!reduceMotion) {
+      // a couple of gentle opening ripples so the field isn't dead on load
+      disturb(Math.round(gw * 0.5), Math.round(gh * 0.55), 200, 2);
+      draw();
+    }
   })();
 
   /* ---------- PROJECT HOVER PREVIEW ---------- */
   if (finePointer) {
-    const preview = document.getElementById("preview");
-    const pph = preview.querySelector(".ph");
-    let px = 0, py = 0, tx = 0, ty = 0, raf = null;
-    function loop() {
-      px += (tx - px) * 0.16; py += (ty - py) * 0.16;
-      preview.style.left = px + "px"; preview.style.top = py + "px";
-      raf = requestAnimationFrame(loop);
-    }
-    window.addEventListener("mousemove", (e) => { tx = e.clientX; ty = e.clientY; });
-
+    // Hover preview thumbnail removed — keep only the active-title highlight.
     projEls.forEach((el) => {
-      const i = +el.dataset.i;
       el.addEventListener("mouseenter", () => {
         list.classList.add("hovering");
         projEls.forEach((p) => p.classList.toggle("active", p === el));
-        const pj = PROJECTS[i];
-        if (pj.img) {
-          pph.setAttribute("data-has-img", "1");
-          pph.style.backgroundImage = `url("${pj.img}")`;
-        } else {
-          pph.removeAttribute("data-has-img");
-          pph.style.backgroundImage = "";
-          pph.setAttribute("data-ph", pj.ph);
-        }
-        preview.classList.add("show");
-        if (!raf) loop();
-      });
-      el.addEventListener("mouseleave", () => {
-        if (!el.matches(":hover")) { preview.classList.remove("show"); }
       });
     });
     list.addEventListener("mouseleave", () => {
       list.classList.remove("hovering");
       projEls.forEach((p) => p.classList.remove("active"));
-      preview.classList.remove("show");
-      cancelAnimationFrame(raf); raf = null;
     });
   }
 
@@ -328,6 +338,7 @@
   const mImg = document.getElementById("m-img");
   const mFacts = document.getElementById("m-facts");
   const mVisit = document.getElementById("m-visit");
+  mVisit.addEventListener("click", (e) => { if (mVisit.classList.contains("locked")) e.preventDefault(); });
 
   function openModal(i) {
     const p = PROJECTS[i];
@@ -357,8 +368,24 @@
     }
 
     mFacts.innerHTML = p.facts.map(([k, v]) => `<div class="row"><span>${k}</span><b>${v}</b></div>`).join("");
-    mVisit.style.display = (p.status === "soon" || p.link === "#") ? "none" : "inline-flex";
-    mVisit.href = p.link;
+    if (i === 0 && p.link && p.link !== "#") {
+      mVisit.classList.remove("locked");
+      mVisit.removeAttribute("aria-disabled");
+      mVisit.href = p.link;
+      mVisit.target = "_blank";
+      mVisit.rel = "noopener";
+      mVisit.dataset.cursor = "↗";
+      mVisit.innerHTML = 'Open live project <span>↗</span>';
+    } else {
+      mVisit.classList.add("locked");
+      mVisit.setAttribute("aria-disabled", "true");
+      mVisit.href = "#";
+      mVisit.removeAttribute("target");
+      mVisit.removeAttribute("rel");
+      mVisit.dataset.cursor = "locked";
+      mVisit.innerHTML = '<span class="lock-ico">🔒</span> Locked';
+    }
+    mVisit.style.display = "inline-flex";
 
     modal.querySelector(".sheet").scrollTop = 0;
     modal.classList.add("open");

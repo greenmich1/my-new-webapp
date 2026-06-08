@@ -32,7 +32,12 @@
       <a href="#contact"><span>Contact</span></a>
     </div>
     <div class="meta">
-      <span class="clock" id="clock">--:--:-- AKL</span>
+      <div class="clock" id="clock">
+        <span class="ck ck-main" data-tz="Pacific/Auckland" data-lbl="AKL">--:--:-- AKL</span>
+        <span class="ck" data-tz="Europe/Berlin" data-lbl="BER">--:--:-- BER</span>
+        <span class="ck" data-tz="Asia/Kolkata" data-lbl="DEL">--:--:-- DEL</span>
+        <span class="ck" data-tz="Australia/Sydney" data-lbl="SYD">--:--:-- SYD</span>
+      </div>
       <button class="shift-hint" id="shiftBtn" aria-label="Toggle lights">
         <span class="key">SHIFT</span><span class="lbl">Lights out</span>
       </button>
@@ -113,7 +118,7 @@
     </div>
     <div style="padding-top: clamp(40px,7vw,90px);">
       <div class="big reveal">
-        <a href="mailto:mike.green4@fonterra.com" class="mag" data-cursor="email">Let's<br />build<em class="u-accent">.</em></a>
+        <a href="mailto:mike.green4@fonterra.com" class="mag" data-cursor="email">LET'S CONNECT.</a>
       </div>
       <div class="contact-row reveal">
         <div>
@@ -130,9 +135,6 @@
       </div>
     </div>
   </section>
-
-  <!-- ===================== FLOATING PREVIEW ===================== -->
-  <div class="preview" id="preview"><div class="ph" data-ph="project preview"></div></div>
 
   <!-- ===================== MODAL / PROJECT SUB-PAGE ===================== -->
   <div class="modal" id="modal" data-screen-label="Project detail">
@@ -165,7 +167,7 @@
 
         <div class="sheet-foot">
           <div class="sheet-facts" id="m-facts"></div>
-          <a class="visit" id="m-visit" href="#" target="_blank" rel="noopener" data-cursor="↗">Open live project <span>↗</span></a>
+          <a class="visit locked" id="m-visit" href="#" data-cursor="locked" aria-disabled="true"><span class="lock-ico">🔒</span> Locked</a>
         </div>
       </div>
     </div>
@@ -181,7 +183,7 @@
   <div id="tweaks-root"></div>
   <script type="text/babel">
     const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-      "accent": "#3B6BFF",
+      "accent": "#19E0B4",
       "theme": "light",
       "flowGrid": true
     }/*EDITMODE-END*/;
