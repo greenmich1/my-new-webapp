@@ -16,8 +16,8 @@
       ph: "training scheduler — simulator UI",
       img: "images/enterprise-training-scheduler.png",
       tagline: "Weeks of manual workforce-training planning, solved in seconds.",
-      problem: "Planning training across a large enterprise workforce is a brutal combinatorial puzzle — competing shift patterns, availability windows, role coverage and learning requirements all collide. Done by hand it eats weeks of a planner's time, and the schedule it produces is still educated guesswork that leaves readiness on the table.",
-      solution: "The Scheduler reframes the whole mess as a set of hard and soft constraints and hands it to Google's CP-SAT constraint solver. You generate a synthetic workforce, watch the chaotic unoptimised baseline, then run the solver — it returns a mathematically optimal schedule in seconds, with a measurable jump in readiness score and a clear optimisation delta against the manual starting point.",
+      problem: "Planning training across a large enterprise workforce is a brutal combinatorial puzzle — competing shift patterns, availability windows, role coverage and learning requirements all collide. Done by hand it eats weeks of a planner’s time, and the schedule it produces is still educated guesswork that leaves readiness on the table.",
+      solution: "The Scheduler reframes the whole mess as a set of hard and soft constraints and hands it to Google’s CP-SAT constraint solver. You generate a synthetic workforce, watch the chaotic unoptimised baseline, then run the solver — it returns a mathematically optimal schedule in seconds, with a measurable jump in readiness score and a clear optimisation delta against the manual starting point.",
       how: [
         ["Create", "Configure synthetic workforce size, shift patterns, time windows and learning needs."],
         ["Simulate", "Generate the messy, unoptimised schedule a manual planner would actually start from."],
@@ -32,7 +32,7 @@
       status: "live",
       ph: "AI committee — analysis view",
       img: "images/ai-stock-picker.png",
-      tagline: "An AI investment committee doing the research retail investors can't.",
+      tagline: "An AI investment committee doing the research retail investors can’t.",
       problem: "Retail investors are up against institutions with entire research teams. Screening thousands of NZX and ASX listings across quality, momentum and value — and then assembling a coherent portfolio from the survivors — is far beyond the time or tooling most people have.",
       solution: "A committee of eight specialised AI agents works the problem in parallel. They sweep the full investment universe, audit the portfolio for sector gaps, score candidates on quality, momentum and value, then debate the shortlist down to a set of high-conviction ideas — assembling a portfolio with the reasoning shown at every step.",
       how: [
@@ -50,7 +50,7 @@
       ph: "maritime map — signal layer",
       img: "images/maritime-intel-os.png",
       tagline: "Turning the noise of global shipping into early economic signal.",
-      problem: "The world's oceans throw off a relentless stream of vessel telemetry, but raw AIS tracks and port movements are nearly impossible to read as a coherent picture. The geopolitical and macroeconomic signals hidden in that noise tend to reach decision-makers far too late to be useful.",
+      problem: "The world’s oceans throw off a relentless stream of vessel telemetry, but raw AIS tracks and port movements are nearly impossible to read as a coherent picture. The geopolitical and macroeconomic signals hidden in that noise tend to reach decision-makers far too late to be useful.",
       solution: "Maritime Intelligence OS ingests chaotic maritime telemetry and turns it into structured, predictive signals — tracking choke points, port congestion and trade-flow shifts, then translating them into forward-looking geopolitical and supply-chain indicators you can actually act on.",
       how: [
         ["Ingest", "Stream global vessel telemetry, port activity and route data into a single model."],
@@ -61,11 +61,40 @@
       link: "https://maritime-intel-os.vercel.app/"
     },
     {
-      title: "Biotech Success Predictor",
-      tags: "concept · AI · vision",
+      title: "BioSignal Intelligence",
+      tags: "Bayesian conviction · biotech · NZX / ASX",
+      status: "live",
+      ph: "biosignal — conviction map",
+      img: "images/biosignal-intelligence.png",
+      tagline: "Turning binary biotech catalysts into a live Bayesian conviction signal.",
+      problem: "Biotech is ruled by binary regulatory events — trial readouts, approvals, terminations — that can move a stock 50% overnight. For NZX and ASX biotech names that signal is buried in dense clinical and regulatory filings, and almost no investor can track every catalyst across the sector or judge how much each one actually shifts a company's odds of success.",
+      solution: "BioSignal Intelligence models each monitored company as a Bayesian conviction score that updates as new regulatory and clinical evidence lands. It sorts the universe into event-gated and trial-gated buckets, maps the companies as a live network of catalysts, and turns every readout into a quantified shift in conviction — surfacing the position action (add, initiate, hold, trim, exit) the moment the evidence changes.",
+      how: [
+        ["Monitor", "Continuously ingest clinical readouts, regulatory decisions and trial milestones across NZX / ASX biotech names."],
+        ["Score", "Update a Bayesian conviction score per company as evidence arrives, bucketed by event-gated vs trial-gated catalysts."],
+        ["Act", "Translate each conviction shift into a clear position action — add, initiate, hold, trim or exit — with the reasoning shown."]
+      ],
+      facts: [["Role", "Founder"], ["Year", "June 2026"], ["Stack", "Bayesian · ML · Realtime"], ["Status", "Live"]],
+      link: "#"
+    },
+    {
+      title: "Project Anti-Matrix",
+      tags: "vision AI · multi-device · psychometrics",
       status: "soon",
       ph: "stealth — coming soon",
-      tagline: "Next-generation AI product in stealth.",
+      tagline: "Proving multimodal AI quietly breaks the abstract reasoning test.",
+      problem: "",
+      solution: "Details are under wraps for now — a new zero-to-one AI product in active stealth development. Check back soon.",
+      how: [],
+      facts: [["Role", "Founder"], ["Year", "—"], ["Stack", "—"], ["Status", "Soon"]],
+      link: "#"
+    },
+    {
+      title: "Agentic Newsroom",
+      tags: "agentic newsroom · 3D · print-on-demand",
+      status: "soon",
+      ph: "stealth — coming soon",
+      tagline: "A bespoke magazine, written by an AI newsroom and shelved in a 3D bookstore.",
       problem: "",
       solution: "Details are under wraps for now — a new zero-to-one AI product in active stealth development. Check back soon.",
       how: [],
@@ -368,6 +397,8 @@
     }
 
     mFacts.innerHTML = p.facts.map(([k, v]) => `<div class="row"><span>${k}</span><b>${v}</b></div>`).join("");
+    // Project 01 (Enterprise Training Scheduler) links to the live project;
+    // every other project shows a Locked button.
     if (i === 0 && p.link && p.link !== "#") {
       mVisit.classList.remove("locked");
       mVisit.removeAttribute("aria-disabled");
