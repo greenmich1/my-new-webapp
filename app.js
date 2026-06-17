@@ -11,94 +11,139 @@
   const PROJECTS = [
     {
       title: "Enterprise Training Scheduler",
+      eyebrow: "Workforce Optimisation",
       tags: "simulation · optimisation · CP-SAT",
       status: "live",
       ph: "training scheduler — simulator UI",
       img: "images/enterprise-training-scheduler.png",
-      tagline: "Weeks of manual workforce-training planning, solved in seconds.",
-      problem: "Planning training across a large enterprise workforce is a brutal combinatorial puzzle — competing shift patterns, availability windows, role coverage and learning requirements all collide. Done by hand it eats weeks of a planner’s time, and the schedule it produces is still educated guesswork that leaves readiness on the table.",
-      solution: "The Scheduler reframes the whole mess as a set of hard and soft constraints and hands it to Google’s CP-SAT constraint solver. You generate a synthetic workforce, watch the chaotic unoptimised baseline, then run the solver — it returns a mathematically optimal schedule in seconds, with a measurable jump in readiness score and a clear optimisation delta against the manual starting point.",
-      how: [
-        ["Create", "Configure synthetic workforce size, shift patterns, time windows and learning needs."],
-        ["Simulate", "Generate the messy, unoptimised schedule a manual planner would actually start from."],
-        ["Optimise", "CP-SAT searches the constraint space and returns the best feasible schedule — reporting solve time, readiness score and the delta vs. baseline."]
-      ],
+      summary: "A scheduling tool for enterprise workforce training. It builds a synthetic workforce, shows the schedule a human planner would produce by hand, then solves the same problem with a constraint solver and returns an optimal plan in seconds.",
       facts: [["Role", "Design + Build"], ["Year", "2025"], ["Stack", "Next.js · CP-SAT"], ["Status", "Live"]],
+      sections: [
+        ["Context", "Planning training by hand does not scale", "A large workforce carries competing shift patterns, availability windows, role-coverage rules and individual learning requirements, all at once. Scheduled by hand, the work takes a planner weeks, and the result is still a reasonable guess rather than the best available plan. There is no way to know how much readiness was left unclaimed, because the alternatives were never searched."],
+        ["Approach", "The schedule as a constraint problem", "The tool reframes scheduling as a set of hard constraints that must hold and soft constraints the solver tries to satisfy, then hands the model to Google's CP-SAT constraint solver. A problem a planner can only approximate by intuition becomes one a solver can search in full. It returns a feasible, provably optimal schedule together with the numbers that matter: solve time, a readiness score, and the measured gain over the manual baseline."]
+      ],
+      blocks: [
+        ["Create", "Configure the workforce", "Set the workforce size, shift patterns, availability windows and learning requirements. The tool assembles a synthetic organisation to those parameters, so the solver can be tested against realistic structures before it is pointed at real data."],
+        ["Simulate", "See the manual baseline", "Before optimising, the tool generates the unoptimised schedule a human planner would start from. This is the honest point of comparison: a workable but suboptimal plan that the solver then has to beat, rather than a strawman."],
+        ["Optimise", "Solve, then measure", "CP-SAT searches the constraint space and returns the best feasible schedule it can prove. The result is reported against the baseline — how long it took to solve, the readiness score it reached, and the size of the improvement."]
+      ],
+      build: ["Enterprise-grade by construction", "The brief is unforgiving: complex constraints, secure multi-tenant access, and integration with systems that already exist. The solver sits at the centre; everything around it is chosen for reliability over novelty.", [
+        ["Interface", "React / Angular dashboards and calendar views · Tailwind CSS"],
+        ["Backend", "Java (Spring Boot) or C# (.NET Core) — type safety and legacy integration"],
+        ["Optimisation", "Google OR-Tools (CP-SAT), with OptaPlanner / Timefold for constraint logic"],
+        ["Conversational layer", "LangChain / LangGraph over an enterprise LLM (Azure OpenAI GPT-4o, Claude via Bedrock)"],
+        ["Data", "PostgreSQL with TimescaleDB for scheduling history · Redis for sessions and caching"],
+        ["Auth", "OAuth2 / OIDC and SAML for Okta and Active Directory"],
+        ["Deployment", "Docker and Kubernetes on AWS or Azure"]
+      ]],
       link: "https://workforce-readiness-simulator.vercel.app/app"
     },
     {
       title: "Agentic Stock Analyst",
+      eyebrow: "Equity Research",
       tags: "agentic AI · equities · NZX / ASX",
       status: "live",
       ph: "AI committee — analysis view",
       img: "images/ai-stock-picker.png",
-      tagline: "An AI investment committee doing the research retail investors can’t.",
-      problem: "Retail investors are up against institutions with entire research teams. Screening thousands of NZX and ASX listings across quality, momentum and value — and then assembling a coherent portfolio from the survivors — is far beyond the time or tooling most people have.",
-      solution: "A committee of eight specialised AI agents works the problem in parallel. They sweep the full investment universe, audit the portfolio for sector gaps, score candidates on quality, momentum and value, then debate the shortlist down to a set of high-conviction ideas — assembling a portfolio with the reasoning shown at every step.",
-      how: [
-        ["Scan", "Agents sweep 7,000+ NZX / ASX stocks and flag a working universe."],
-        ["Audit & score", "Specialised agents surface sector-exposure gaps and rank candidates on quality, momentum and value."],
-        ["Assemble", "The committee converges on a shortlist and builds a portfolio, surfacing the conviction behind every pick."]
-      ],
+      summary: "A committee of specialised AI agents that researches NZX and ASX equities. They screen the full market, score what survives, debate a shortlist, and assemble a portfolio — showing the reasoning at each step.",
       facts: [["Role", "Product + AI"], ["Year", "2025"], ["Stack", "Multi-agent · RAG"], ["Status", "Live"]],
+      sections: [
+        ["Context", "Retail investors are outgunned on research", "Institutions run whole teams to screen the market, weigh quality against momentum and value, and build a coherent portfolio. A retail investor has none of that capacity. Reading thousands of listings across the NZX and ASX, then turning the survivors into a balanced set of positions, is well beyond the time and tooling most people have."],
+        ["Approach", "Research divided across a committee", "Rather than one model answering everything, the work is split among eight specialised agents that run in parallel. Each owns part of the process — universe screening, sector-exposure audit, factor scoring, portfolio construction — and the agents pass findings between them. The shortlist is argued down to a set of high-conviction ideas, and the reasoning behind each decision stays visible instead of disappearing into a single black-box answer."]
+      ],
+      blocks: [
+        ["Scan", "Sweep the full universe", "Agents work through more than 7,000 NZX and ASX listings and reduce them to a working universe worth deeper analysis, filtering out names that fail basic quality and liquidity checks before any scoring begins."],
+        ["Audit & score", "Rank on quality, momentum and value", "Specialised agents score each candidate across quality, momentum and value, while a separate audit agent checks the emerging portfolio for sector concentration and exposure gaps — so the shortlist is balanced rather than a pile of correlated bets."],
+        ["Assemble", "Build the portfolio, show the conviction", "The committee debates the shortlist down to a final set of positions and assembles a portfolio, surfacing the case for every holding: why it made the cut and how strongly each agent backed it."]
+      ],
+      build: ["Deterministic maths, agentic reasoning", "Two things have to hold at once: real-time market data feeding hard quantitative models, and language models reasoning over the results without ever overriding the risk rules. The architecture keeps the maths and the judgement separate, and lets the guardrails win.", [
+        ["Interface", "Next.js (React); Flutter for a mobile-first, Sharesies-like feel"],
+        ["Backend", "Python (FastAPI) — native to the data-science and AI stack"],
+        ["Agents", "CrewAI / AutoGen / LangGraph orchestrating Fundamental, Technical and Risk-Manager agents"],
+        ["Reasoning", "GPT-4o and Claude, chosen for tool-calling and structured reasoning"],
+        ["Quant", "Pandas, NumPy, scikit-learn and TA-Lib for technical analysis"],
+        ["Data feeds", "Yahoo Finance, Alpha Vantage and Bloomberg for prices and financials"],
+        ["Storage", "PostgreSQL with pgvector, plus Pinecone / Milvus for report embeddings"],
+        ["Guardrails", "Celery task queues and rule-based backtesting that overrides the AI on risk breaches"]
+      ]],
       link: "https://v0-ai-stock-picker-companion.vercel.app/analysis"
     },
     {
       title: "Supply Chain Maritime Intelligence O/S",
+      eyebrow: "Maritime Intelligence",
       tags: "geospatial · forecasting · supply chain",
       status: "live",
       ph: "maritime map — signal layer",
       img: "images/maritime-intel-os.png",
-      tagline: "Turning the noise of global shipping into early economic signal.",
-      problem: "The world’s oceans throw off a relentless stream of vessel telemetry, but raw AIS tracks and port movements are nearly impossible to read as a coherent picture. The geopolitical and macroeconomic signals hidden in that noise tend to reach decision-makers far too late to be useful.",
-      solution: "Maritime Intelligence OS ingests chaotic maritime telemetry and turns it into structured, predictive signals — tracking choke points, port congestion and trade-flow shifts, then translating them into forward-looking geopolitical and supply-chain indicators you can actually act on.",
-      how: [
-        ["Ingest", "Stream global vessel telemetry, port activity and route data into a single model."],
-        ["Detect", "Surface anomalies, congestion and choke-point pressure as they build, not after the fact."],
-        ["Forecast", "Translate movement patterns into predictive geopolitical and macroeconomic signals for supply-chain visibility."]
-      ],
+      summary: "A system that reads global shipping telemetry as economic signal. It ingests vessel and port data, detects congestion and choke-point pressure as it builds, and translates movement into forward-looking supply-chain and macro indicators.",
       facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Realtime · ML · Geospatial"], ["Status", "Live"]],
+      sections: [
+        ["Context", "The signal in shipping arrives too late", "The world's oceans produce a constant stream of vessel telemetry, but raw AIS tracks and port movements are almost impossible to read as a coherent picture. The geopolitical and macroeconomic signals buried in that noise — a tightening choke point, a port backing up, a trade flow rerouting — usually reach decision-makers long after they would have been useful."],
+        ["Approach", "Telemetry turned into structured signal", "Maritime Intelligence OS pulls chaotic maritime data into a single model and turns it into structured, predictive indicators. Instead of plotting where ships are, it tracks how movement patterns change: choke-point pressure, port congestion, and shifts in trade flow. Those patterns are translated into forward-looking signals a supply-chain or macro analyst can act on while there is still time to respond."]
+      ],
+      blocks: [
+        ["Ingest", "One model for the whole ocean", "Global vessel telemetry, port activity and route data stream into a single live model, replacing scattered feeds with one coherent picture of what is moving and where."],
+        ["Detect", "Catch pressure as it builds", "The system surfaces anomalies, congestion and choke-point strain as they develop rather than after the fact, flagging the early movement that tends to precede a visible disruption."],
+        ["Forecast", "Movement into macro signal", "Detected patterns are translated into predictive geopolitical and macroeconomic indicators, giving supply-chain visibility that looks forward instead of reporting what has already happened."]
+      ],
+      build: ["High-throughput, geospatial, real-time", "The system swallows a continuous flood of vessel telemetry, reads it spatially, and watches it with computer vision — all while it is still streaming. Ingestion runs in fast compiled languages; the AI work runs in Python; the two meet over a message broker.", [
+        ["Interface", "React with Mapbox GL and CesiumJS for 2D / 3D vessel tracking"],
+        ["Backend", "Python (FastAPI) for AI workflows · Go and Rust for ingestion pipelines"],
+        ["Streaming", "Apache Kafka / AWS Kinesis for live AIS signal streams"],
+        ["Geospatial", "PostGIS, GeoPandas and Fiona"],
+        ["Computer vision", "PyTorch and YOLOv10 / v11 for vessel, port and dark-vessel detection"],
+        ["Anomaly detection", "scikit-learn / TensorFlow for trajectory and route-deviation models"],
+        ["Storage", "PostgreSQL + PostGIS · InfluxDB / TimescaleDB for historical tracks"],
+        ["Deployment", "AWS Greengrass at the edge on vessels · Kubernetes shore-side"]
+      ]],
       link: "https://maritime-intel-os.vercel.app/"
     },
     {
       title: "BioSignal Intelligence",
+      eyebrow: "Biotech Signal",
       tags: "Bayesian conviction · biotech · NZX / ASX",
       status: "live",
       ph: "biosignal — conviction map",
       img: "images/biosignal-intelligence.png",
-      tagline: "Turning binary biotech catalysts into a live Bayesian conviction signal.",
-      problem: "Biotech is ruled by binary regulatory events — trial readouts, approvals, terminations — that can move a stock 50% overnight. For NZX and ASX biotech names that signal is buried in dense clinical and regulatory filings, and almost no investor can track every catalyst across the sector or judge how much each one actually shifts a company's odds of success.",
-      solution: "BioSignal Intelligence models each monitored company as a Bayesian conviction score that updates as new regulatory and clinical evidence lands. It sorts the universe into event-gated and trial-gated buckets, maps the companies as a live network of catalysts, and turns every readout into a quantified shift in conviction — surfacing the position action (add, initiate, hold, trim, exit) the moment the evidence changes.",
-      how: [
-        ["Monitor", "Continuously ingest clinical readouts, regulatory decisions and trial milestones across NZX / ASX biotech names."],
-        ["Score", "Update a Bayesian conviction score per company as evidence arrives, bucketed by event-gated vs trial-gated catalysts."],
-        ["Act", "Translate each conviction shift into a clear position action — add, initiate, hold, trim or exit — with the reasoning shown."]
-      ],
+      summary: "A Bayesian conviction engine for biotech equities. It models each company's odds of success as a score that updates with every clinical and regulatory event, and turns each update into a clear position action.",
       facts: [["Role", "Founder"], ["Year", "June 2026"], ["Stack", "Bayesian · ML · Realtime"], ["Status", "Live"]],
+      sections: [
+        ["Context", "Biotech moves on binary events", "Biotech is governed by binary regulatory and clinical events — trial readouts, approvals, terminations — any of which can move a stock fifty percent overnight. For NZX and ASX biotech names, those events are buried in dense clinical and regulatory filings. Almost no investor can track every catalyst across the sector, let alone judge how much each one actually shifts a company's probability of success."],
+        ["Approach", "Conviction as a Bayesian score", "BioSignal Intelligence models each monitored company as a Bayesian conviction score — a running probability of success that updates as new evidence lands. It sorts the universe into event-gated and trial-gated buckets, maps the companies as a live network of upcoming catalysts, and treats every readout as evidence that revises the prior rather than a headline to react to."]
+      ],
+      blocks: [
+        ["Monitor", "Track every catalyst", "The system continuously ingests clinical readouts, regulatory decisions and trial milestones across NZX and ASX biotech names, holding a live map of which companies are gated on an event and which are gated on a trial."],
+        ["Score", "Update the odds with the evidence", "As each piece of evidence arrives, the company's Bayesian conviction score is revised and bucketed by catalyst type, so the number reflects what is actually known rather than sentiment or momentum."],
+        ["Act", "Turn conviction into a position", "Every shift in conviction is translated into a clear position action — add, initiate, hold, trim or exit — with the reasoning shown, so the move follows from the evidence rather than a hunch."]
+      ],
       link: "#"
     },
     {
       title: "Project Anti-Matrix",
+      eyebrow: "Vision AI",
       tags: "vision AI · multi-device · psychometrics",
       status: "soon",
       ph: "stealth — coming soon",
-      tagline: "Proving multimodal AI quietly breaks the abstract reasoning test.",
-      problem: "",
-      solution: "Details are under wraps for now — a new zero-to-one AI product in active stealth development. Check back soon.",
-      how: [],
-      facts: [["Role", "Founder"], ["Year", "—"], ["Stack", "—"], ["Status", "Soon"]],
+      summary: "A study in whether multimodal AI can quietly pass the abstract reasoning tests used to screen and select people — and what that means for psychometrics.",
+      facts: [["Role", "Founder"], ["Year", "—"], ["Stack", "—"], ["Status", "In development"]],
+      sections: [
+        ["Status", "In stealth", "A zero-to-one project in active development, working at the edge of vision models, multi-device capture and psychometric testing. The full write-up is held back for now. Check back soon."]
+      ],
+      blocks: [],
       link: "#"
     },
     {
       title: "Agentic Newsroom",
+      eyebrow: "Agentic Publishing",
       tags: "agentic newsroom · 3D · print-on-demand",
       status: "soon",
       ph: "stealth — coming soon",
-      tagline: "A bespoke magazine, written by an AI newsroom and shelved in a 3D bookstore.",
-      problem: "",
-      solution: "Details are under wraps for now — a new zero-to-one AI product in active stealth development. Check back soon.",
-      how: [],
-      facts: [["Role", "Founder"], ["Year", "—"], ["Stack", "—"], ["Status", "Soon"]],
+      summary: "A bespoke magazine produced by an autonomous AI newsroom and browsed in a 3D bookstore, with a path to print-on-demand.",
+      facts: [["Role", "Founder"], ["Year", "—"], ["Stack", "—"], ["Status", "In development"]],
+      sections: [
+        ["Status", "In stealth", "A zero-to-one project pairing an agentic editorial pipeline with an immersive 3D reading space and physical print. The full write-up is held back for now. Check back soon."]
+      ],
+      blocks: [],
       link: "#"
     }
   ];
@@ -356,25 +401,23 @@
   /* ---------- MODAL ---------- */
   const modal = document.getElementById("modal");
   const mTitle = document.getElementById("m-title");
-  const mTagline = document.getElementById("m-tagline");
-  const mTags = document.getElementById("m-tags");
-  const mProblem = document.getElementById("m-problem");
-  const mProblemBlock = document.getElementById("m-problem-block");
-  const mSolution = document.getElementById("m-solution");
-  const mHow = document.getElementById("m-how");
-  const mHowBlock = document.getElementById("m-how-block");
+  const mEyebrow = document.getElementById("m-eyebrow");
+  const mSummary = document.getElementById("m-summary");
+  const mSpec = document.getElementById("m-spec");
+  const mBody = document.getElementById("m-body");
+  const mFootmark = document.getElementById("m-footmark");
   const mMeta = document.getElementById("m-meta");
   const mImg = document.getElementById("m-img");
-  const mFacts = document.getElementById("m-facts");
   const mVisit = document.getElementById("m-visit");
   mVisit.addEventListener("click", (e) => { if (mVisit.classList.contains("locked")) e.preventDefault(); });
 
   function openModal(i) {
     const p = PROJECTS[i];
+    mEyebrow.textContent = p.eyebrow || "Project";
     mTitle.textContent = p.title;
-    mTagline.textContent = p.tagline || "";
-    mTags.textContent = p.tags;
-    mMeta.textContent = `Project / 0${i + 1}${p.status === "soon" ? " — Coming soon" : ""}`;
+    mSummary.textContent = p.summary || "";
+    mMeta.textContent = `Project / 0${i + 1}${p.status === "soon" ? " — In development" : ""}`;
+    mFootmark.textContent = `${p.title} — ${p.status === "soon" ? "In development" : "Live"}`;
     if (p.img) {
       mImg.setAttribute("data-has-img", "1");
       mImg.style.backgroundImage = `url("${p.img}")`;
@@ -384,19 +427,24 @@
       mImg.setAttribute("data-ph", p.ph);
     }
 
-    mProblem.textContent = p.problem || "";
-    mProblemBlock.style.display = p.problem ? "" : "none";
-    mSolution.textContent = p.solution || "";
+    mSpec.innerHTML = (p.facts || []).map(([k, v]) =>
+      `<div class="sp"><span class="sp-k">${k}</span><span class="sp-v">${v}</span></div>`).join("");
 
-    if (p.how && p.how.length) {
-      mHowBlock.style.display = "";
-      mHow.innerHTML = p.how.map(([k, v], n) =>
-        `<li class="sb-step"><span class="sb-step-n">0${n + 1}</span><div><b>${k}</b><span>${v}</span></div></li>`).join("");
-    } else {
-      mHowBlock.style.display = "none";
+    let body = "";
+    (p.sections || []).forEach(([label, head, text]) => {
+      body += `<section class="ds-block"><span class="ds-label">${label}</span><div class="ds-content"><h3 class="ds-head">${head}</h3><p class="ds-body">${text}</p></div></section>`;
+    });
+    (p.blocks || []).forEach(([label, head, text], n) => {
+      body += `<section class="ds-block"><span class="ds-label"><span class="ds-num">0${n + 1}</span> ${label}</span><div class="ds-content"><h3 class="ds-head">${head}</h3><p class="ds-body">${text}</p></div></section>`;
+    });
+    if (p.build) {
+      const [bHead, bLead, rows] = p.build;
+      const ledger = rows.map(([k, v]) =>
+        `<div class="st-row"><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+      body += `<section class="ds-block"><span class="ds-label">Build</span><div class="ds-content"><h3 class="ds-head">${bHead}</h3><p class="ds-body">${bLead}</p><dl class="ds-stack">${ledger}</dl></div></section>`;
     }
+    mBody.innerHTML = body;
 
-    mFacts.innerHTML = p.facts.map(([k, v]) => `<div class="row"><span>${k}</span><b>${v}</b></div>`).join("");
     // Project 01 (Enterprise Training Scheduler) links to the live project;
     // every other project shows a Locked button.
     if (i === 0 && p.link && p.link !== "#") {
