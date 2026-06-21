@@ -66,6 +66,7 @@
       status: "live",
       ph: "AI committee — analysis view",
       img: "images/ai-stock-picker.png",
+      img2: "images/agenticstock2.PNG",
       summary: "A committee of specialised AI agents that researches NZX and ASX equities. They screen the full market, score what survives, debate a shortlist, and assemble a portfolio — showing the reasoning at each step.",
       facts: [["Role", "Product + AI"], ["Year", "2025"], ["Stack", "Multi-agent · RAG"], ["Status", "Live"]],
       sections: [
@@ -423,7 +424,7 @@
   const mBody = document.getElementById("m-body");
   const mFootmark = document.getElementById("m-footmark");
   const mMeta = document.getElementById("m-meta");
-  const mImg = document.getElementById("m-img");
+  const mImgWrap = document.getElementById("m-img-wrap");
   const mGazette = document.getElementById("m-gazette");
   const mVisit = document.getElementById("m-visit");
   mVisit.addEventListener("click", (e) => { if (mVisit.classList.contains("locked")) e.preventDefault(); });
@@ -436,23 +437,25 @@
     mMeta.textContent = `Project / 0${i + 1}${p.status === "soon" ? " — In development" : ""}`;
     mFootmark.textContent = `${p.title} — ${p.status === "soon" ? "In development" : "Live"}`;
     if (p.gazette) {
-      mImg.parentElement.style.display = "none";
+      mImgWrap.style.display = "none";
       mGazette.hidden = false;
       mGazette.innerHTML = `
         <div class="sg-cap"><span class="sg-lbl">The Frontiers Gazette</span><span class="sg-sub">Inaugural edition · written, edited &amp; illustrated by an agentic newsroom</span></div>
         <div class="sg-grid">${p.gazette.map((g) => `<figure class="sg-page"><img src="${g.src}" alt="${g.alt}" /><figcaption>${g.cap}</figcaption></figure>`).join("")}</div>`;
     } else {
-      mImg.parentElement.style.display = "";
+      mImgWrap.style.display = "";
       mGazette.hidden = true;
       mGazette.innerHTML = "";
-      if (p.img) {
-      mImg.setAttribute("data-has-img", "1");
-      mImg.style.backgroundImage = `url("${p.img}")`;
-    } else {
-      mImg.removeAttribute("data-has-img");
-      mImg.style.backgroundImage = "";
-      mImg.setAttribute("data-ph", p.ph);
-    }
+      if (p.img2) {
+        mImgWrap.className = "sheet-img-pair";
+        mImgWrap.innerHTML = `<img src="${p.img}" alt="${p.title} — screenshot 1" /><img src="${p.img2}" alt="${p.title} — screenshot 2" />`;
+      } else if (p.img) {
+        mImgWrap.className = "sheet-img";
+        mImgWrap.innerHTML = `<div class="ph" data-has-img="1" style="background-image: url('${p.img}')"><span class="corner tl"></span><span class="corner"></span></div>`;
+      } else {
+        mImgWrap.className = "sheet-img";
+        mImgWrap.innerHTML = `<div class="ph" data-ph="${p.ph}"><span class="corner tl"></span><span class="corner"></span></div>`;
+      }
     }
 
     mSpec.innerHTML = (p.facts || []).map(([k, v]) =>
