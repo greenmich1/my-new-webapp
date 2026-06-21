@@ -10,6 +10,26 @@
   /* ---------- PROJECT DATA ---------- */
   const PROJECTS = [
     {
+      title: "Agentic Newsroom",
+      eyebrow: "Agentic Publishing",
+      tags: "agentic newsroom · 3D · print-on-demand",
+      status: "soon",
+      featured: true,
+      ph: "the frontiers gazette — inaugural edition",
+      gazette: [
+        { src: "uploads/Gazette1.PNG", cap: "Cover", alt: "The Frontiers Gazette — cover" },
+        { src: "uploads/Gazette2.PNG", cap: "Contents", alt: "The Frontiers Gazette — contents" },
+        { src: "uploads/Gazette3.PNG", cap: "Feature", alt: "The Frontiers Gazette — feature article" }
+      ],
+      summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by an autonomous AI newsroom, browsed in a 3D bookstore, with a path to print-on-demand. Shown below: the inaugural edition.",
+      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Inaugural edition"]],
+      sections: [
+        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. The three covers below are the inaugural edition of The Frontiers Gazette. In future, this featured slot will refresh automatically to show the latest run — for now these are a static snapshot of where it began."]
+      ],
+      blocks: [],
+      link: "#"
+    },
+    {
       title: "Enterprise Training Scheduler",
       eyebrow: "Workforce Optimisation",
       tags: "simulation · optimisation · CP-SAT",
@@ -36,6 +56,7 @@
         ["Auth", "OAuth2 / OIDC and SAML for Okta and Active Directory"],
         ["Deployment", "Docker and Kubernetes on AWS or Azure"]
       ]],
+      live: true,
       link: "https://workforce-readiness-simulator.vercel.app/app"
     },
     {
@@ -131,20 +152,6 @@
       ],
       blocks: [],
       link: "#"
-    },
-    {
-      title: "Agentic Newsroom",
-      eyebrow: "Agentic Publishing",
-      tags: "agentic newsroom · 3D · print-on-demand",
-      status: "soon",
-      ph: "stealth — coming soon",
-      summary: "A bespoke magazine produced by an autonomous AI newsroom and browsed in a 3D bookstore, with a path to print-on-demand.",
-      facts: [["Role", "Founder"], ["Year", "—"], ["Stack", "—"], ["Status", "In development"]],
-      sections: [
-        ["Status", "In stealth", "A zero-to-one project pairing an agentic editorial pipeline with an immersive 3D reading space and physical print. The full write-up is held back for now. Check back soon."]
-      ],
-      blocks: [],
-      link: "#"
     }
   ];
 
@@ -155,11 +162,20 @@
     el.className = "proj reveal";
     el.dataset.i = i;
     el.dataset.cursor = p.status === "soon" ? "soon" : "view";
+    const gazStrip = p.gazette ? `
+      <div class="gazette-strip">
+        <div class="gaz-cap">
+          <span class="gaz-lbl">The Frontiers Gazette — Inaugural Edition</span>
+          <span class="gaz-sub">Static preview · auto-updates each newsroom run</span>
+        </div>
+        <div class="gaz-thumbs">${p.gazette.map((g) => `<figure class="gaz-thumb"><img src="${g.src}" alt="${g.alt}" loading="lazy" /><figcaption>${g.cap}</figcaption></figure>`).join("")}</div>
+      </div>` : "";
     el.innerHTML = `
       <span class="p-idx">(0${i + 1})</span>
       <h3 class="p-title">${p.title}</h3>
       <span class="p-tags">${p.tags}</span>
-      <span class="p-status ${p.status}"><span class="blip"></span>${p.status === "soon" ? "Soon" : "Live"}</span>`;
+      <span class="p-status ${p.status}"><span class="blip"></span>${p.status === "soon" ? "Soon" : "Live"}</span>${gazStrip}`;
+    if (p.featured) el.classList.add("is-featured");
     list.appendChild(el);
   });
   const projEls = [...list.querySelectorAll(".proj")];
@@ -408,6 +424,7 @@
   const mFootmark = document.getElementById("m-footmark");
   const mMeta = document.getElementById("m-meta");
   const mImg = document.getElementById("m-img");
+  const mGazette = document.getElementById("m-gazette");
   const mVisit = document.getElementById("m-visit");
   mVisit.addEventListener("click", (e) => { if (mVisit.classList.contains("locked")) e.preventDefault(); });
 
@@ -418,13 +435,24 @@
     mSummary.textContent = p.summary || "";
     mMeta.textContent = `Project / 0${i + 1}${p.status === "soon" ? " — In development" : ""}`;
     mFootmark.textContent = `${p.title} — ${p.status === "soon" ? "In development" : "Live"}`;
-    if (p.img) {
+    if (p.gazette) {
+      mImg.parentElement.style.display = "none";
+      mGazette.hidden = false;
+      mGazette.innerHTML = `
+        <div class="sg-cap"><span class="sg-lbl">The Frontiers Gazette</span><span class="sg-sub">Inaugural edition · written, edited &amp; illustrated by an agentic newsroom</span></div>
+        <div class="sg-grid">${p.gazette.map((g) => `<figure class="sg-page"><img src="${g.src}" alt="${g.alt}" /><figcaption>${g.cap}</figcaption></figure>`).join("")}</div>`;
+    } else {
+      mImg.parentElement.style.display = "";
+      mGazette.hidden = true;
+      mGazette.innerHTML = "";
+      if (p.img) {
       mImg.setAttribute("data-has-img", "1");
       mImg.style.backgroundImage = `url("${p.img}")`;
     } else {
       mImg.removeAttribute("data-has-img");
       mImg.style.backgroundImage = "";
       mImg.setAttribute("data-ph", p.ph);
+    }
     }
 
     mSpec.innerHTML = (p.facts || []).map(([k, v]) =>
@@ -445,9 +473,8 @@
     }
     mBody.innerHTML = body;
 
-    // Project 01 (Enterprise Training Scheduler) links to the live project;
-    // every other project shows a Locked button.
-    if (i === 0 && p.link && p.link !== "#") {
+    // The featured/live project links out to its live build; all others lock.
+    if (p.live && p.link && p.link !== "#") {
       mVisit.classList.remove("locked");
       mVisit.removeAttribute("aria-disabled");
       mVisit.href = p.link;
