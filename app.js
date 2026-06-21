@@ -429,7 +429,11 @@
   const mVisit = document.getElementById("m-visit");
   mVisit.addEventListener("click", (e) => { if (mVisit.classList.contains("locked")) e.preventDefault(); });
 
+  let carouselInterval = null;
+  function clearCarousel() { if (carouselInterval) { clearInterval(carouselInterval); carouselInterval = null; } }
+
   function openModal(i) {
+    clearCarousel();
     const p = PROJECTS[i];
     mEyebrow.textContent = p.eyebrow || "Project";
     mTitle.textContent = p.title;
@@ -447,8 +451,25 @@
       mGazette.hidden = true;
       mGazette.innerHTML = "";
       if (p.img2) {
-        mImgWrap.className = "sheet-img-pair";
-        mImgWrap.innerHTML = `<img src="${p.img}" alt="${p.title} — screenshot 1" /><img src="${p.img2}" alt="${p.title} — screenshot 2" />`;
+        const imgs = [p.img, p.img2];
+        mImgWrap.className = "sheet-img-carousel";
+        mImgWrap.innerHTML = `
+          <div class="sic-track">
+            ${imgs.map((src, n) => `<img src="${src}" alt="${p.title} — screenshot ${n + 1}" />`).join("")}
+          </div>
+          <div class="sic-dots">
+            ${imgs.map((_, n) => `<span class="sic-dot${n === 0 ? " active" : ""}"></span>`).join("")}
+          </div>`;
+        const track = mImgWrap.querySelector(".sic-track");
+        const dots = [...mImgWrap.querySelectorAll(".sic-dot")];
+        let cur = 0;
+        const goTo = (idx) => {
+          cur = idx;
+          track.style.transform = `translateX(-${cur * 100}%)`;
+          dots.forEach((d, n) => d.classList.toggle("active", n === cur));
+        };
+        dots.forEach((d, n) => d.addEventListener("click", () => { clearCarousel(); goTo(n); }));
+        carouselInterval = setInterval(() => goTo((cur + 1) % imgs.length), 4000);
       } else if (p.img) {
         mImgWrap.className = "sheet-img";
         mImgWrap.innerHTML = `<div class="ph" data-has-img="1" style="background-image: url('${p.img}')"><span class="corner tl"></span><span class="corner"></span></div>`;
@@ -501,6 +522,7 @@
     document.body.classList.add("no-scroll");
   }
   function closeModal() {
+    clearCarousel();
     modal.classList.remove("open");
     document.body.classList.remove("no-scroll");
   }

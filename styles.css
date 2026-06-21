@@ -315,12 +315,23 @@ section { position: relative; padding: 0 var(--gutter); }
 .sheet .sheet-spec .sp-k { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-2); }
 .sheet .sheet-spec .sp-v { font-family: var(--mono); font-size: 0.86rem; letter-spacing: 0.02em; color: var(--ink); }
 .sheet .sheet-img { width: 100%; aspect-ratio: 16/9; margin: clamp(28px,5vw,56px) 0; }
-.sheet-img-pair {
-  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px,1.6vw,20px);
-  width: 100%; margin: clamp(28px,5vw,56px) 0;
+/* image carousel — used when a project has img + img2 */
+.sheet-img-carousel { width: 100%; margin: clamp(28px,5vw,56px) 0; }
+.sic-track {
+  display: flex; overflow: hidden; width: 100%;
+  transition: transform 0.75s cubic-bezier(0.16,1,0.3,1);
+  will-change: transform;
 }
-.sheet-img-pair img { width: 100%; height: auto; display: block; object-fit: cover; border-radius: 2px; }
-@media (max-width: 640px) { .sheet-img-pair { grid-template-columns: 1fr; } }
+.sic-track img { width: 100%; flex-shrink: 0; height: auto; display: block; }
+.sic-dots {
+  display: flex; justify-content: center; gap: 10px; margin-top: 18px;
+}
+.sic-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--line); border: 1px solid var(--line);
+  transition: background 0.35s, border-color 0.35s; cursor: pointer;
+}
+.sic-dot.active { background: var(--accent); border-color: var(--accent); }
 
 /* featured gazette strip — main projects list */
 .proj.is-featured { align-items: start; }
