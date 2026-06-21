@@ -127,6 +127,7 @@
       status: "live",
       ph: "biosignal — conviction map",
       img: "images/biosignal-intelligence.png",
+      img2: "images/biosignall2.PNG",
       summary: "A Bayesian conviction engine for biotech equities. It models each company's odds of success as a score that updates with every clinical and regulatory event, and turns each update into a clear position action.",
       facts: [["Role", "Founder"], ["Year", "June 2026"], ["Stack", "Bayesian · ML · Realtime"], ["Status", "Live"]],
       sections: [
