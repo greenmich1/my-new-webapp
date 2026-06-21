@@ -319,11 +319,11 @@ section { position: relative; padding: 0 var(--gutter); }
 /* featured gazette strip — main projects list */
 .proj.is-featured { align-items: start; }
 .gazette-strip { grid-column: 1 / -1; margin-top: clamp(22px,3vw,34px); padding-top: clamp(20px,2.6vw,28px); border-top: 1px solid var(--line); }
-.gaz-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(14px,2vw,20px); }
+.gaz-cap { display: flex; justify-content: center; align-items: baseline; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(14px,2vw,20px); }
 .gaz-lbl { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
 .gaz-sub { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
-.gaz-thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px,1.6vw,22px); max-width: 620px; }
-.gaz-thumb { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.gaz-thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px,1.6vw,22px); width: 100%; margin: 0 auto; }
+.gaz-thumb { margin: 0; display: flex; flex-direction: column; gap: 10px; align-items: center; }
 .gaz-thumb img {
   width: 100%; aspect-ratio: 758 / 1072; object-fit: cover; object-position: top center;
   background: var(--paper-2); border: 1px solid var(--line);
