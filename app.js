@@ -21,10 +21,11 @@
         { src: "uploads/Gazette2.PNG", cap: "Contents", alt: "The Frontiers Gazette — contents" },
         { src: "uploads/Gazette3.PNG", cap: "Feature", alt: "The Frontiers Gazette — feature article" }
       ],
-      summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by an autonomous AI newsroom, browsed in a 3D bookstore, with a path to print-on-demand. Shown below: the inaugural edition.",
-      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Inaugural edition"]],
+      gazetteLive: false,
+      summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by an autonomous AI newsroom, browsed in a 3D bookstore, with a path to print-on-demand. Shown below: every edition published so far.",
+      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Publishing weekly"]],
       sections: [
-        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. The three covers below are the inaugural edition of The Frontiers Gazette. In future, this featured slot will refresh automatically to show the latest run — for now these are a static snapshot of where it began."]
+        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. The covers below are pulled live from the newsroom itself — every new edition appears here automatically, in the order it was published."]
       ],
       blocks: [],
       link: "#"
@@ -158,6 +159,15 @@
   ];
 
   /* ---------- RENDER PROJECTS ---------- */
+  function gazSubText(p) {
+    const n = p.gazette.length;
+    return p.gazetteLive
+      ? `${n} edition${n === 1 ? "" : "s"} · live from the newsroom`
+      : "Static preview · auto-updates each newsroom run";
+  }
+  function gazThumbsHTML(p) {
+    return p.gazette.map((g) => `<figure class="gaz-thumb"><img src="${g.src}" alt="${g.alt}" loading="lazy" /><figcaption>${g.cap}</figcaption></figure>`).join("");
+  }
   const list = document.getElementById("projList");
   PROJECTS.forEach((p, i) => {
     const el = document.createElement("article");
@@ -167,10 +177,10 @@
     const gazStrip = p.gazette ? `
       <div class="gazette-strip">
         <div class="gaz-cap">
-          <span class="gaz-lbl">The Frontiers Gazette — Inaugural Edition</span>
-          <span class="gaz-sub">Static preview · auto-updates each newsroom run</span>
+          <span class="gaz-lbl">The Frontiers Gazette</span>
+          <span class="gaz-sub">${gazSubText(p)}</span>
         </div>
-        <div class="gaz-thumbs">${p.gazette.map((g) => `<figure class="gaz-thumb"><img src="${g.src}" alt="${g.alt}" loading="lazy" /><figcaption>${g.cap}</figcaption></figure>`).join("")}</div>
+        <div class="gaz-thumbs">${gazThumbsHTML(p)}</div>
       </div>` : "";
     el.innerHTML = `
       <span class="p-idx">(0${i + 1})</span>
@@ -181,6 +191,38 @@
     list.appendChild(el);
   });
   const projEls = [...list.querySelectorAll(".proj")];
+
+  /* ---------- LIVE GAZETTE EDITIONS ---------- */
+  // Pulls the published-edition list from the ai-gazette Next.js app at runtime,
+  // so a new edition published there shows up here with no redeploy of this site.
+  (function loadGazetteEditions() {
+    const GAZETTE_API = "https://frontiers-gazette.vercel.app/api/editions";
+    const newsroomIdx = PROJECTS.findIndex((p) => p.gazette);
+    if (newsroomIdx === -1) return;
+    const newsroom = PROJECTS[newsroomIdx];
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    fetch(GAZETTE_API, { signal: controller.signal })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`bad status ${r.status}`))))
+      .then((data) => {
+        if (!Array.isArray(data.editions) || !data.editions.length) return;
+        newsroom.gazette = data.editions.map((e) => ({
+          src: e.coverUrl,
+          cap: e.pubMonthYear || e.id,
+          alt: `The Frontiers Gazette — ${e.theme || e.id}`
+        }));
+        newsroom.gazetteLive = true;
+        const card = projEls[newsroomIdx];
+        if (card) {
+          const sub = card.querySelector(".gaz-sub");
+          const thumbs = card.querySelector(".gaz-thumbs");
+          if (sub) sub.textContent = gazSubText(newsroom);
+          if (thumbs) thumbs.innerHTML = gazThumbsHTML(newsroom);
+        }
+      })
+      .catch(() => { /* offline or blocked — static fallback already rendered */ })
+      .finally(() => clearTimeout(timer));
+  })();
 
   /* ---------- LOADER ---------- */
   const loader = document.getElementById("loader");
@@ -444,8 +486,12 @@
     if (p.gazette) {
       mImgWrap.style.display = "none";
       mGazette.hidden = false;
+      const gazCount = p.gazette.length;
+      const sgSub = p.gazetteLive
+        ? `${gazCount} edition${gazCount === 1 ? "" : "s"} published · written, edited &amp; illustrated by an agentic newsroom`
+        : "Written, edited &amp; illustrated by an agentic newsroom";
       mGazette.innerHTML = `
-        <div class="sg-cap"><span class="sg-lbl">The Frontiers Gazette</span><span class="sg-sub">Inaugural edition · written, edited &amp; illustrated by an agentic newsroom</span></div>
+        <div class="sg-cap"><span class="sg-lbl">The Frontiers Gazette</span><span class="sg-sub">${sgSub}</span></div>
         <div class="sg-grid">${p.gazette.map((g) => `<figure class="sg-page"><img src="${g.src}" alt="${g.alt}" /><figcaption>${g.cap}</figcaption></figure>`).join("")}</div>`;
     } else {
       mImgWrap.style.display = "";
