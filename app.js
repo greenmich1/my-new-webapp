@@ -16,16 +16,19 @@
       status: "soon",
       featured: true,
       ph: "the frontiers gazette — inaugural edition",
-      gazette: [
-        { src: "uploads/Gazette1.PNG", cap: "Cover", alt: "The Frontiers Gazette — cover" },
-        { src: "uploads/Gazette2.PNG", cap: "Contents", alt: "The Frontiers Gazette — contents" },
-        { src: "uploads/Gazette3.PNG", cap: "Feature", alt: "The Frontiers Gazette — feature article" }
+      // Fallback only — used until the live fetch to ai-gazette's /api/editions resolves,
+      // or if it fails. The live response is the source of truth once it lands.
+      gazetteEditions: [
+        { edition: "001d", cap: "The Engine Room: How SpaceX Turned Raptor Into a Manufacturing Problem", src: "uploads/Gazette1.PNG", alt: "The Frontiers Gazette — Edition 001d cover", link: "https://frontiers-gazette.vercel.app/edition/001d", pubMonthYear: "June 2026" },
+        { edition: "001e", cap: "The Church That Cannot Enforce Its Conscience", src: "uploads/Gazette-001e.PNG", alt: "The Frontiers Gazette — Edition 001e cover", link: "https://frontiers-gazette.vercel.app/edition/001e", pubMonthYear: "June 2026" },
+        { edition: "001g", cap: "The Cardiologist in the Loop", src: "uploads/Gazette-001g.PNG", alt: "The Frontiers Gazette — Edition 001g cover", link: "https://frontiers-gazette.vercel.app/edition/001g", pubMonthYear: "June 2026" },
+        { edition: "002b", cap: "The Enterprise Agent Stack: Key Architectural Decisions", src: "uploads/Gazette-002b.PNG", alt: "The Frontiers Gazette — Edition 002b cover", link: "https://frontiers-gazette.vercel.app/edition/002b", pubMonthYear: "June 2026" },
+        { edition: "003", cap: "The Engineer in the Room: Palantir's Bet That AI Needs a Human in the Building", src: "uploads/Gazette-003.PNG", alt: "The Frontiers Gazette — Edition 003 cover", link: "https://frontiers-gazette.vercel.app/edition/003", pubMonthYear: "July 2026" }
       ],
-      gazetteLive: false,
-      summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by an autonomous AI newsroom, browsed in a 3D bookstore, with a path to print-on-demand. Shown below: every edition published so far.",
-      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Publishing weekly"]],
+      summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by an autonomous AI newsroom, browsed in a 3D bookstore, with a path to print-on-demand. Shown below: the inaugural edition.",
+      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Inaugural edition"]],
       sections: [
-        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. The covers below are pulled live from the newsroom itself — every new edition appears here automatically, in the order it was published."]
+        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. Five editions have published so far — scroll through the covers below and click one to read the full issue on The Frontiers Gazette. This slot keeps growing as new editions run."]
       ],
       blocks: [],
       link: "#"
@@ -155,33 +158,82 @@
       ],
       blocks: [],
       link: "#"
+    },
+    {
+      title: "Sax & Zoe's Lawn Mowing Service",
+      eyebrow: "Neighbourhood Commerce",
+      tags: "paper-cut illustration · live weather · kids' business",
+      status: "live",
+      ph: "lawn mowing service — Church Street",
+      img: "images/lawn-mow-service.png",
+      img2: "images/lawn-mow-service2.png",
+      summary: "A storybook website for my kids' real lawn-mowing round on our Auckland street, built so the white picket fence out front doubles as the booking calendar and live weather quietly gates out rainy days.",
+      facts: [["Role", "Design + Build"], ["Year", "2026"], ["Stack", "Next.js · Postgres"], ["Status", "Live"]],
+      sections: [
+        ["Context", "A real business needs a real trust signal", "Sax and Zoe genuinely mow lawns on our street — I help with edging and logistics, and residents pay electronically afterwards. A generic tradesperson site would have undersold that, and a Yellow Pages layout says nothing about who is actually turning up at the gate. The brief called for something closer to Airbnb or Pixar than a trade listing: friendly, alive, and built to make supporting two neighbourhood kids feel effortless."],
+        ["Approach", "The fence becomes the booking bar", "The centrepiece is a paper-cut, soft-3D illustration of the house on Church Street, and rather than bolt a calendar widget on top of it, the white picket fence itself became the date selector — each picket a bookable day, a gold picket meaning every shift that day is already taken. Live weather from Open-Meteo greys out days forecast to rain, and the hero quietly shifts between sunny, dawn and night states as the story around it unfolds."]
+      ],
+      blocks: [
+        ["Meet", "Meet the crew", "Friendly portraits and short, honest bios for Sax and Zoe sit right under the hero, so the first thing a neighbour sees is who is actually going to be mowing their lawn."],
+        ["Book", "Pick a day at the fence", "Residents scroll the picket fence, pick an open day and shift, add their name and house number, and choose a regular or large lawn — booked in under a minute, with no account required."],
+        ["Pay", "Pay after, however suits", "There is no checkout. Once the mow is done, payment is requested simply — cash, bank transfer or a QR code — keeping the transaction as low-friction as the booking."]
+      ],
+      build: ["A real stack behind a storybook front door", "Underneath the paper-cut illustration sits an ordinary, dependable web stack: serverless functions for availability and bookings, a Postgres database for state, and a Google-gated admin view so shifts can be managed without touching code.", [
+        ["Interface", "Hand-built paper-cut / soft-3D illustration layers, animated independently — house, sun, clouds, butterflies"],
+        ["Booking mechanic", "The picket fence rendered as a horizontal date selector; gold pickets mark fully-booked days"],
+        ["Weather", "Open-Meteo live forecast for Church St, Northcote Point, gating out rainy days automatically"],
+        ["Backend", "Vercel serverless functions (Node) for availability and booking endpoints"],
+        ["Data", "Neon serverless Postgres for bookings and shift state"],
+        ["Admin auth", "Google Sign-In via google-auth-library and jose, gating a parent-only admin dashboard"],
+        ["Payment", "Cash, bank transfer or QR code — requested after the mow, no online checkout"]
+      ]],
+      live: true,
+      link: "https://sax-and-zoes-lawn-service.vercel.app/"
     }
   ];
 
+  /* ---------- GAZETTE LIVE DATA ---------- */
+  // Fetched at runtime from ai-gazette's own deployment — new editions published there
+  // appear here automatically with no redeploy of this site required. Falls back to the
+  // hardcoded gazetteEditions above if the fetch fails or hasn't resolved yet.
+  const GAZETTE_API = "https://frontiers-gazette.vercel.app/api/editions";
+  let gazetteState = {
+    editions: PROJECTS[0].gazetteEditions,
+    latest: PROJECTS[0].gazetteEditions.at(-1)
+  };
+
+  function gazetteHeroInnerHTML() {
+    const g = gazetteState.latest;
+    if (!g) return "";
+    return `
+      <div class="gaz-cap">
+        <span class="gaz-lbl">The Frontiers Gazette</span>
+        <span class="gaz-sub">Latest edition · updates automatically</span>
+      </div>
+      <div class="gaz-hero">
+        <figure class="gaz-hero-fig">
+          <img src="${g.src}" alt="${g.alt}" loading="lazy" />
+          <figcaption>
+            <span class="gaz-hero-cap">${g.cap}</span>
+            ${g.pubMonthYear ? `<span class="gaz-hero-date">${g.pubMonthYear}</span>` : ""}
+          </figcaption>
+        </figure>
+      </div>`;
+  }
+
+  function updateGazetteUI() {
+    const stripEl = list.querySelector(".proj.is-featured .gazette-strip");
+    if (stripEl) stripEl.innerHTML = gazetteHeroInnerHTML();
+  }
+
   /* ---------- RENDER PROJECTS ---------- */
-  function gazSubText(p) {
-    const n = p.gazette.length;
-    return p.gazetteLive
-      ? `${n} edition${n === 1 ? "" : "s"} · live from the newsroom`
-      : "Static preview · auto-updates each newsroom run";
-  }
-  function gazThumbsHTML(p) {
-    return p.gazette.map((g) => `<figure class="gaz-thumb"><img src="${g.src}" alt="${g.alt}" loading="lazy" /><figcaption>${g.cap}</figcaption></figure>`).join("");
-  }
   const list = document.getElementById("projList");
   PROJECTS.forEach((p, i) => {
     const el = document.createElement("article");
     el.className = "proj reveal";
     el.dataset.i = i;
     el.dataset.cursor = p.status === "soon" ? "soon" : "view";
-    const gazStrip = p.gazette ? `
-      <div class="gazette-strip">
-        <div class="gaz-cap">
-          <span class="gaz-lbl">The Frontiers Gazette</span>
-          <span class="gaz-sub">${gazSubText(p)}</span>
-        </div>
-        <div class="gaz-thumbs">${gazThumbsHTML(p)}</div>
-      </div>` : "";
+    const gazStrip = p.featured ? `<div class="gazette-strip">${gazetteHeroInnerHTML()}</div>` : "";
     el.innerHTML = `
       <span class="p-idx">(0${i + 1})</span>
       <h3 class="p-title">${p.title}</h3>
@@ -192,37 +244,23 @@
   });
   const projEls = [...list.querySelectorAll(".proj")];
 
-  /* ---------- LIVE GAZETTE EDITIONS ---------- */
-  // Pulls the published-edition list from the ai-gazette Next.js app at runtime,
-  // so a new edition published there shows up here with no redeploy of this site.
-  (function loadGazetteEditions() {
-    const GAZETTE_API = "https://frontiers-gazette.vercel.app/api/editions";
-    const newsroomIdx = PROJECTS.findIndex((p) => p.gazette);
-    if (newsroomIdx === -1) return;
-    const newsroom = PROJECTS[newsroomIdx];
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
-    fetch(GAZETTE_API, { signal: controller.signal })
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`bad status ${r.status}`))))
-      .then((data) => {
-        if (!Array.isArray(data.editions) || !data.editions.length) return;
-        newsroom.gazette = data.editions.map((e) => ({
-          src: e.coverUrl,
-          cap: e.pubMonthYear || e.id,
-          alt: `The Frontiers Gazette — ${e.theme || e.id}`
-        }));
-        newsroom.gazetteLive = true;
-        const card = projEls[newsroomIdx];
-        if (card) {
-          const sub = card.querySelector(".gaz-sub");
-          const thumbs = card.querySelector(".gaz-thumbs");
-          if (sub) sub.textContent = gazSubText(newsroom);
-          if (thumbs) thumbs.innerHTML = gazThumbsHTML(newsroom);
-        }
-      })
-      .catch(() => { /* offline or blocked — static fallback already rendered */ })
-      .finally(() => clearTimeout(timer));
-  })();
+  fetch(GAZETTE_API)
+    .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+    .then((data) => {
+      const editions = (data.editions || []).map((e) => ({
+        edition: e.id,
+        cap: e.caption,
+        src: e.coverUrl,
+        alt: `The Frontiers Gazette — Edition ${e.id} cover`,
+        link: e.readerUrl,
+        pubMonthYear: e.pubMonthYear
+      }));
+      if (!editions.length) return;
+      const latest = editions.find((e) => e.edition === data.latestId) || editions.at(-1);
+      gazetteState = { editions, latest };
+      updateGazetteUI();
+    })
+    .catch(() => { /* offline or CORS failure — keep the fallback data already rendered */ });
 
   /* ---------- LOADER ---------- */
   const loader = document.getElementById("loader");
@@ -299,6 +337,9 @@
   });
 
   /* ---------- CUSTOM CURSOR ---------- */
+  // no-op until finePointer setup below reassigns it; lets code injected after
+  // load (e.g. the modal's gazette carousel) opt back into hover/label behaviour
+  let bindCursorHover = () => {};
   if (finePointer) {
     document.body.classList.add("cursor-on");
     const dot = document.querySelector(".cursor-dot");
@@ -314,16 +355,21 @@
       requestAnimationFrame(ring_loop);
     })();
     const labels = { view: "view", soon: "soon", email: "email", "↗": "open" };
-    document.querySelectorAll("a, button, .proj, [data-cursor]").forEach((el) => {
-      el.addEventListener("mouseenter", () => {
-        ring.classList.add("is-hover");
-        const c = el.getAttribute("data-cursor");
-        if (c && labels[c]) { ring.classList.add("is-label"); ring.setAttribute("data-label", labels[c]); }
+    bindCursorHover = (root) => {
+      (root || document).querySelectorAll("a, button, .proj, [data-cursor]").forEach((el) => {
+        if (el.dataset.cursorBound) return;
+        el.dataset.cursorBound = "1";
+        el.addEventListener("mouseenter", () => {
+          ring.classList.add("is-hover");
+          const c = el.getAttribute("data-cursor");
+          if (c && labels[c]) { ring.classList.add("is-label"); ring.setAttribute("data-label", labels[c]); }
+        });
+        el.addEventListener("mouseleave", () => {
+          ring.classList.remove("is-hover", "is-label");
+        });
       });
-      el.addEventListener("mouseleave", () => {
-        ring.classList.remove("is-hover", "is-label");
-      });
-    });
+    };
+    bindCursorHover(document);
   }
 
   /* ---------- HERO CANVAS — cursor-reactive flow grid ---------- */
@@ -483,16 +529,20 @@
     mSummary.textContent = p.summary || "";
     mMeta.textContent = `Project / 0${i + 1}${p.status === "soon" ? " — In development" : ""}`;
     mFootmark.textContent = `${p.title} — ${p.status === "soon" ? "In development" : "Live"}`;
-    if (p.gazette) {
+    if (p.featured) {
       mImgWrap.style.display = "none";
       mGazette.hidden = false;
-      const gazCount = p.gazette.length;
-      const sgSub = p.gazetteLive
-        ? `${gazCount} edition${gazCount === 1 ? "" : "s"} published · written, edited &amp; illustrated by an agentic newsroom`
-        : "Written, edited &amp; illustrated by an agentic newsroom";
       mGazette.innerHTML = `
-        <div class="sg-cap"><span class="sg-lbl">The Frontiers Gazette</span><span class="sg-sub">${sgSub}</span></div>
-        <div class="sg-grid">${p.gazette.map((g) => `<figure class="sg-page"><img src="${g.src}" alt="${g.alt}" /><figcaption>${g.cap}</figcaption></figure>`).join("")}</div>`;
+        <div class="sg-cap"><span class="sg-lbl">The Frontiers Gazette</span><span class="sg-sub">${gazetteState.editions.length} editions and counting · click a cover to read</span></div>
+        <div class="sg-grid">${gazetteState.editions.map((g) => `
+          <figure class="sg-page">
+            <a href="${g.link}" target="_blank" rel="noopener" data-cursor="↗" aria-label="Read edition ${g.edition} — ${g.cap}">
+              <span class="sg-ed">Edition <b>${g.edition}</b></span>
+              <img src="${g.src}" alt="${g.alt}" loading="lazy" />
+              <figcaption>${g.cap}${g.pubMonthYear ? ` <span class="sg-date">— ${g.pubMonthYear}</span>` : ""}</figcaption>
+            </a>
+          </figure>`).join("")}</div>`;
+      bindCursorHover(mGazette);
     } else {
       mImgWrap.style.display = "";
       mGazette.hidden = true;

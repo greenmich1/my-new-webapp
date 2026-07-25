@@ -333,37 +333,45 @@ section { position: relative; padding: 0 var(--gutter); }
 }
 .sic-dot.active { background: var(--accent); border-color: var(--accent); }
 
-/* featured gazette strip — main projects list */
+/* featured gazette hero — main projects list (single latest-edition cover) */
 .proj.is-featured { align-items: start; }
 .gazette-strip { grid-column: 1 / -1; margin-top: clamp(22px,3vw,34px); padding-top: clamp(20px,2.6vw,28px); border-top: 1px solid var(--line); }
 .gaz-cap { display: flex; justify-content: center; align-items: baseline; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(14px,2vw,20px); }
 .gaz-lbl { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
 .gaz-sub { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
-.gaz-thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: clamp(14px,1.6vw,22px); width: 100%; margin: 0 auto; }
-.gaz-thumb { margin: 0; display: flex; flex-direction: column; gap: 10px; align-items: center; }
-.gaz-thumb img {
+.gaz-hero { display: flex; justify-content: center; }
+.gaz-hero-fig { margin: 0; display: flex; flex-direction: column; gap: 12px; align-items: center; width: min(340px, 70%); }
+.gaz-hero-fig img {
   width: 100%; aspect-ratio: 758 / 1072; object-fit: cover; object-position: top center;
   background: var(--paper-2); border: 1px solid var(--line);
   transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
 }
-.proj.is-featured:hover .gaz-thumb img { box-shadow: 0 14px 36px rgba(0,0,0,0.16); }
-.gaz-thumb:hover img { transform: translateY(-4px); }
-.gaz-thumb figcaption { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
-@media (max-width: 720px) { .gaz-thumbs { max-width: none; } }
+.proj.is-featured:hover .gaz-hero-fig img { box-shadow: 0 14px 36px rgba(0,0,0,0.16); }
+.gaz-hero-fig:hover img { transform: translateY(-4px); }
+.gaz-hero-fig figcaption { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.gaz-hero-cap { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+.gaz-hero-date { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 720px) { .gaz-hero-fig { width: min(280px, 80%); } }
 
-/* gazette gallery — modal / project detail */
+/* gazette gallery — modal / project detail (all published editions, 3-col grid) */
 .sheet-gazette { margin: clamp(28px,5vw,56px) 0; }
 .sheet-gazette[hidden] { display: none; }
 .sg-cap { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; padding-bottom: clamp(18px,2.4vw,26px); border-bottom: 1px solid var(--line); margin-bottom: clamp(22px,3vw,36px); }
 .sg-lbl { font-family: var(--display); font-weight: 700; font-size: clamp(1.2rem,2vw,1.7rem); letter-spacing: -0.02em; }
 .sg-sub { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
-.sg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: clamp(16px,2.4vw,32px); }
-.sg-page { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.sg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px,2.4vw,32px); }
+.sg-page { margin: 0; }
+.sg-page a { display: flex; flex-direction: column; gap: 10px; }
 .sg-page img {
   width: 100%; aspect-ratio: 758 / 1072; object-fit: cover; object-position: top center;
   background: var(--paper-2); border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
 }
-.sg-page figcaption { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.sg-page a:hover img { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.18); }
+.sg-page figcaption { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); line-height: 1.5; }
+.sg-date { opacity: 0.7; }
+.sg-ed { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+.sg-ed b { color: var(--accent); font-weight: 700; }
 @media (max-width: 640px) { .sg-grid { grid-template-columns: 1fr; gap: 22px; } }
 
 .sheet-body { display: grid; gap: 0; border-top: 1px solid var(--line); }
