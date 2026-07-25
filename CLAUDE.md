@@ -14,11 +14,24 @@ styles.css          # All styles — single flat file, no build step
 app.js              # All JS — IIFE, project data array, all interactions
 tweaks-panel.jsx    # React tweaks panel (loaded via unpkg Babel, in-browser)
 images/             # Project screenshot images (4 PNGs)
-uploads/            # Gazette magazine covers (Gazette1–3.PNG)
+uploads/            # Gazette edition covers (gazette-cover-<edition-id>.png), static fallback only
 vercel.json         # Vercel config
 ```
 
 No build step. Static HTML/CSS/JS deployed directly to Vercel.
+
+## Agentic Newsroom gazette strip
+
+The Agentic Newsroom project card/modal fetch the published-edition list live from
+`frontiers-gazette.vercel.app/api/editions` (the ai-gazette Next.js app) at page load,
+so a new edition published there shows up here automatically — no redeploy needed on
+this side. If that fetch fails or times out, it falls back to the static `gazette`
+array on the project object in `app.js`, whose images live in `uploads/`. That fallback
+is a manually-frozen snapshot (one `gazette-cover-<id>.png` per published edition,
+copied from `ai-gazette/frontend/editions/edition-<id>/cover-render.png`) — it will go
+stale as new editions publish until GitHub auto-deploy is connected on the ai-gazette
+Vercel project (see that repo's CLAUDE.md), after which the live fetch keeps both sides
+in sync without manual intervention.
 
 ## Deploying
 

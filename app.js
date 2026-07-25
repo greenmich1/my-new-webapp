@@ -17,9 +17,12 @@
       featured: true,
       ph: "the frontiers gazette — inaugural edition",
       gazette: [
-        { src: "uploads/Gazette1.PNG", cap: "Cover", alt: "The Frontiers Gazette — cover" },
-        { src: "uploads/Gazette2.PNG", cap: "Contents", alt: "The Frontiers Gazette — contents" },
-        { src: "uploads/Gazette3.PNG", cap: "Feature", alt: "The Frontiers Gazette — feature article" }
+        { src: "uploads/gazette-cover-001d.png", cap: "June 2026", alt: "The Frontiers Gazette — Starship is, before it is anything else, a manufacturing problem" },
+        { src: "uploads/gazette-cover-001e.png", cap: "June 2026", alt: "The Frontiers Gazette — Two of humanity's most durable institutions collide as a 2,000-year-old moral authority attempts to regulate a technology that has never answered to anyone." },
+        { src: "uploads/gazette-cover-001g.png", cap: "June 2026", alt: "The Frontiers Gazette — Cardiac AI and the digital reading of the heart — how machines learning to interpret the body's most legible organ are quietly redrawing the boundary between expert intuition and statistical inference." },
+        { src: "uploads/gazette-cover-002b.png", cap: "June 2026", alt: "The Frontiers Gazette — The enterprise agent stack is consolidating into layers — Joule, Copilot, custom agents — and the architectural decisions made now will decide who owns the next decade of corporate intelligence." },
+        { src: "uploads/gazette-cover-003.png", cap: "July 2026", alt: "The Frontiers Gazette — Palantir's Forward Deployed Engineer model and its Dynamic Ontology reveal a different theory of enterprise AI." },
+        { src: "uploads/gazette-cover-004b.png", cap: "July 2026", alt: "The Frontiers Gazette — The hero's descent and return — trial, failure, and recovery — as the specific narrative machinery by which frontier AI labs, organisations, and individuals convert public disaster into durable strength." }
       ],
       gazetteLive: false,
       summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by an autonomous AI newsroom, browsed in a 3D bookstore, with a path to print-on-demand. Shown below: every edition published so far.",
