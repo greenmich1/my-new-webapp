@@ -3,7 +3,8 @@
 Personal AI project portfolio site for Mike Green, Auckland NZ.
 
 **Live URL:** https://my-new-webapp-kappa.vercel.app/
-**Vercel project:** `my-new-webapp` (org: `greenmich1-2666s-projects`)
+**Vercel project:** `my-ai-projects` (org: `greenmich1-2666s-projects`)
+**Project ID:** `prj_e6RjKbjoHn8Hbqb2nRbIYMhuTr6C` — the local `.vercel/project.json` still caches the old name `my-new-webapp`; the project was renamed on Vercel. Match on project ID, not name.
 **GitHub repo:** https://github.com/greenmich1/my-new-webapp
 
 ## Project structure
@@ -13,7 +14,7 @@ index.html          # Main page (all sections: hero, work, about, contact, modal
 styles.css          # All styles — single flat file, no build step
 app.js              # All JS — IIFE, project data array, all interactions
 tweaks-panel.jsx    # React tweaks panel (loaded via unpkg Babel, in-browser)
-images/             # Project screenshot images (4 PNGs)
+images/             # Project screenshot images (8 PNGs)
 uploads/            # Gazette magazine covers (Gazette1–3.PNG)
 vercel.json         # Vercel config
 ```
