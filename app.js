@@ -28,7 +28,7 @@
       summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by an autonomous AI newsroom, browsed in a 3D bookstore, with a path to print-on-demand. Shown below: the inaugural edition.",
       facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Inaugural edition"]],
       sections: [
-        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. Five editions have published so far — scroll through the covers below and click one to read the full issue on The Frontiers Gazette. This slot keeps growing as new editions run."]
+        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. Every edition published so far is below — scroll the covers and click any one to step into the immersive 3D shelf, where the full archive sits on the shelf and opens for reading. This slot keeps growing as new editions run."]
       ],
       blocks: [],
       link: "#"
@@ -197,6 +197,10 @@
   // appear here automatically with no redeploy of this site required. Falls back to the
   // hardcoded gazetteEditions above if the fetch fails or hasn't resolved yet.
   const GAZETTE_API = "https://frontiers-gazette.vercel.app/api/editions";
+  // Every cover in the modal grid opens the 3D shelf viewer rather than that edition's
+  // reader page. The shelf takes no params, so it can't be deep-linked to one edition —
+  // if ai-gazette ever adds that, append the id here and drop the shared constant.
+  const GAZETTE_SHELF = "https://frontiers-gazette.vercel.app/shelf";
   let gazetteState = {
     editions: PROJECTS[0].gazetteEditions,
     latest: PROJECTS[0].gazetteEditions.at(-1)
@@ -533,10 +537,10 @@
       mImgWrap.style.display = "none";
       mGazette.hidden = false;
       mGazette.innerHTML = `
-        <div class="sg-cap"><span class="sg-lbl">The Frontiers Gazette</span><span class="sg-sub">${gazetteState.editions.length} editions and counting · click a cover to read</span></div>
+        <div class="sg-cap"><span class="sg-lbl">The Frontiers Gazette</span><span class="sg-sub">${gazetteState.editions.length} editions and counting · click any cover to browse the 3D shelf</span></div>
         <div class="sg-grid">${gazetteState.editions.map((g) => `
           <figure class="sg-page">
-            <a href="${g.link}" target="_blank" rel="noopener" data-cursor="↗" aria-label="Read edition ${g.edition} — ${g.cap}">
+            <a href="${GAZETTE_SHELF}" target="_blank" rel="noopener" data-cursor="↗" aria-label="Browse all editions in the 3D shelf viewer — showing edition ${g.edition}, ${g.cap}">
               <span class="sg-ed">Edition <b>${g.edition}</b></span>
               <img src="${g.src}" alt="${g.alt}" loading="lazy" />
               <figcaption>${g.cap}${g.pubMonthYear ? ` <span class="sg-date">— ${g.pubMonthYear}</span>` : ""}</figcaption>
