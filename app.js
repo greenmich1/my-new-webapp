@@ -13,9 +13,9 @@
       title: "Agentic Newsroom",
       eyebrow: "Agentic Publishing",
       tags: "agentic newsroom · 3D · print-on-demand",
-      status: "soon",
+      status: "live",
       featured: true,
-      ph: "the frontiers gazette — inaugural edition",
+      ph: "the frontiers gazette — latest edition",
       // Fallback only — used until the live fetch to ai-gazette's /api/editions resolves,
       // or if it fails. The live response is the source of truth once it lands.
       gazetteEditions: [
@@ -25,13 +25,27 @@
         { edition: "002b", cap: "The Enterprise Agent Stack: Key Architectural Decisions", src: "uploads/Gazette-002b.PNG", alt: "The Frontiers Gazette — Edition 002b cover", link: "https://frontiers-gazette.vercel.app/edition/002b", pubMonthYear: "June 2026" },
         { edition: "003", cap: "The Engineer in the Room: Palantir's Bet That AI Needs a Human in the Building", src: "uploads/Gazette-003.PNG", alt: "The Frontiers Gazette — Edition 003 cover", link: "https://frontiers-gazette.vercel.app/edition/003", pubMonthYear: "July 2026" }
       ],
-      summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by an autonomous AI newsroom, browsed in a 3D bookstore, with a path to print-on-demand. Shown below: the inaugural edition.",
-      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Inaugural edition"]],
+      summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by a four-agent AI newsroom, browsed on an immersive 3D shelf. Live now, with new editions publishing continuously and print-on-demand next on the roadmap.",
+      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Live"]],
       sections: [
-        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. Every edition published so far is below — scroll the covers and click any one to step into the immersive 3D shelf, where the full archive sits on the shelf and opens for reading. This slot keeps growing as new editions run."]
+        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. Every edition published so far is below — scroll the covers and click any one to step into the immersive 3D shelf, where the full archive sits on the shelf and opens for reading. This slot keeps growing as new editions run — print-on-demand fulfilment is next, still in development."],
+        ["Context", "A publication needs an identity, not just output", "Most \"AI-generated content\" reads the same edition to edition because nothing is accountable for what the publication actually is — its voice, its standards, what it covered last week, what it's grown tired of covering. The Gazette exists to test whether an agentic system can hold a real editorial identity over time: a consistent point of view, a memory of its own back catalogue, and the judgement to kill a story rather than print whatever the model drafts first."],
+        ["Approach", "Four agents, four jobs, no overlap", "Each edition runs through a small newsroom rather than one model doing everything. A Curator sets the theme, picks the cover story and briefs every section — the only agent with memory of past editions and the publication's evolving voice. A Researcher gathers and evaluates sources against each brief. A bank of Writer personas draft the sections in parallel. An Editor assembles the issue, checks consistency and enforces quality bars before anything ships. After publication, the Curator scores its own issue and updates its own preferences for next time — the aim is a newsroom that gets better at being itself, not just faster at generating text."]
       ],
-      blocks: [],
-      link: "#"
+      blocks: [
+        ["Browse", "Walk the shelf", "The archive lives on a Three.js-built 3D shelf — scroll or drag to pan along the rail as the camera eases between spines, then click any cover to open that issue."],
+        ["Read", "Turn the pages", "Opening a cover drops into a page-turning book reader — an animated two-page spread — for the full cover story, weekly briefing, enterprise AI, alpha signals and the rest of that issue's sections."]
+      ],
+      build: ["A four-agent newsroom behind the storybook front", "Underneath the immersive shelf and page-turning reader sits a genuine multi-agent editorial pipeline, not one prompt dressed up as a newsroom: a Curator that owns the publication's voice and memory, a Researcher, a bank of Writer personas, and an Editor that assembles and quality-checks every issue before it ships.", [
+        ["Editorial", "Curator / Researcher / Writers / Editor — four agents, each with one bounded job, no overlap"],
+        ["Cover art", "AI-generated art with multiple candidate variants, composited under a typographic furniture layer"],
+        ["Reader", "Next.js page-turning book viewer — animated two-page spreads per edition"],
+        ["Shelf", "Three.js / react-three-fiber 3D shelf — scroll or drag along the rail, click a spine to open that issue"],
+        ["Print pipeline", "Headless-Chromium PDF export exists for every edition; print-on-demand fulfilment is next, not yet live"],
+        ["Deployment", "Next.js on Vercel, with new editions publishing automatically as the newsroom runs"]
+      ]],
+      live: true,
+      link: "https://frontiers-gazette.vercel.app/shelf"
     },
     {
       title: "Enterprise Training Scheduler",
@@ -146,20 +160,6 @@
       link: "#"
     },
     {
-      title: "Project Anti-Matrix",
-      eyebrow: "Vision AI",
-      tags: "vision AI · multi-device · psychometrics",
-      status: "soon",
-      ph: "stealth — coming soon",
-      summary: "A study in whether multimodal AI can quietly pass the abstract reasoning tests used to screen and select people — and what that means for psychometrics.",
-      facts: [["Role", "Founder"], ["Year", "—"], ["Stack", "—"], ["Status", "In development"]],
-      sections: [
-        ["Status", "In stealth", "A zero-to-one project in active development, working at the edge of vision models, multi-device capture and psychometric testing. The full write-up is held back for now. Check back soon."]
-      ],
-      blocks: [],
-      link: "#"
-    },
-    {
       title: "Sax & Zoe's Lawn Mowing Service",
       eyebrow: "Neighbourhood Commerce",
       tags: "paper-cut illustration · live weather · kids' business",
@@ -206,30 +206,6 @@
     latest: PROJECTS[0].gazetteEditions.at(-1)
   };
 
-  function gazetteHeroInnerHTML() {
-    const g = gazetteState.latest;
-    if (!g) return "";
-    return `
-      <div class="gaz-cap">
-        <span class="gaz-lbl">The Frontiers Gazette</span>
-        <span class="gaz-sub">Latest edition · updates automatically</span>
-      </div>
-      <div class="gaz-hero">
-        <figure class="gaz-hero-fig">
-          <img src="${g.src}" alt="${g.alt}" loading="lazy" />
-          <figcaption>
-            <span class="gaz-hero-cap">${g.cap}</span>
-            ${g.pubMonthYear ? `<span class="gaz-hero-date">${g.pubMonthYear}</span>` : ""}
-          </figcaption>
-        </figure>
-      </div>`;
-  }
-
-  function updateGazetteUI() {
-    const stripEl = list.querySelector(".proj.is-featured .gazette-strip");
-    if (stripEl) stripEl.innerHTML = gazetteHeroInnerHTML();
-  }
-
   /* ---------- RENDER PROJECTS ---------- */
   const list = document.getElementById("projList");
   PROJECTS.forEach((p, i) => {
@@ -237,13 +213,11 @@
     el.className = "proj reveal";
     el.dataset.i = i;
     el.dataset.cursor = p.status === "soon" ? "soon" : "view";
-    const gazStrip = p.featured ? `<div class="gazette-strip">${gazetteHeroInnerHTML()}</div>` : "";
     el.innerHTML = `
       <span class="p-idx">(0${i + 1})</span>
       <h3 class="p-title">${p.title}</h3>
       <span class="p-tags">${p.tags}</span>
-      <span class="p-status ${p.status}"><span class="blip"></span>${p.status === "soon" ? "Soon" : "Live"}</span>${gazStrip}`;
-    if (p.featured) el.classList.add("is-featured");
+      <span class="p-status ${p.status}"><span class="blip"></span>${p.status === "soon" ? "Soon" : "Live"}</span>`;
     list.appendChild(el);
   });
   const projEls = [...list.querySelectorAll(".proj")];
@@ -262,7 +236,6 @@
       if (!editions.length) return;
       const latest = editions.find((e) => e.edition === data.latestId) || editions.at(-1);
       gazetteState = { editions, latest };
-      updateGazetteUI();
     })
     .catch(() => { /* offline or CORS failure — keep the fallback data already rendered */ });
 
