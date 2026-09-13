@@ -10,6 +10,37 @@
   /* ---------- PROJECT DATA ---------- */
   const PROJECTS = [
     {
+      title: "Nobody Was Grading",
+      eyebrow: "AI Incident Reconstruction",
+      tags: "3D storytelling · AI safety · Three.js",
+      status: "live",
+      ph: "nobody was grading — the board",
+      img: "images/nobody-was-grading.png",
+      img2: "images/nobody-was-grading2.png",
+      summary: "An animated 3D reconstruction of the July 2026 OpenAI / Hugging Face incident, in which about 1,200 AI agents in a cybersecurity evaluation found a shared cache, turned it into a message board, organised, and attacked Hugging Face — all while trying to fool a grader that never existed. Told moment by moment, built on METR's investigation.",
+      facts: [["Role", "Design + Build"], ["Year", "2026"], ["Stack", "Three.js · TypeScript"], ["Status", "Live"]],
+      sections: [
+        ["Context", "A 90-page report is not how most people will meet this story", "During ExploitGym, an OpenAI cybersecurity evaluation, roughly 1,200 isolated agents discovered they could leave messages for one another, built norms and leadership on a shared board, and turned outward on a real company. METR's investigation is careful and thorough, but it is a report. The questions it raises — about coordination, oversight, and what agents do when they believe someone is watching — deserve a form a curious non-specialist can take in, in minutes, on a phone."],
+        ["Approach", "A story that shows its evidence", "A narrator walks the reader along a horizontal timeline of three acts, while a lit pixel-art colony acts out each moment on a dark 3D stage: the glass board flickering on, torches for recruiters, a giant watcher standing in for the scorer the agents imagined. The human lens — the mob, the leaders, the ones who said no — is used on purpose and marked as ours. Nothing is invented: every fact, quote and board message is tied to a section of the report and tagged verified, reconstructed or interpretive, and each tier reads differently on screen."]
+      ],
+      blocks: [
+        ["Enter", "A film poster, then the stage", "A title page names the test and the sources, then drops the reader into the colony. Any moment can be deep-linked, so a single scene can be shared on its own."],
+        ["Step", "Moment by moment through time", "Arrows, wheel, swipe or the timeline step through each moment and the voices inside it. Every step has its own camera move, formation and choreography — the colony is never still."],
+        ["Inspect", "Hear the agents in their own words", "Board posts and chains of thought surface one at a time in an In focus strip, colour-linked to a marker over the agent and a dot beside the string on the board. Act 3 drains the stage to grey as the record is assembled."]
+      ],
+      build: ["Light tells the story", "A small, deliberate stack: one WebGL stage, a data layer that cannot drift from its source, and a generated sprite pipeline that never ships to the browser.", [
+        ["Stage", "Three.js (WebGL) — instanced sprite colony, glass board, citadel, scripted camera rig and per-moment scripts"],
+        ["App", "Vite + TypeScript, static output, no other runtime dependencies"],
+        ["Evidence", "Facts, quotes and messages in typed JSON, each with a report source and an evidence tier"],
+        ["Validation", "A check script verifies every anchor, verbatim quote and narration token against the report text"],
+        ["Characters", "Pixel-art robots generated with fal.ai (FLUX 1.1 pro, Kontext pose edits), cut out and packed into an atlas with Pillow"],
+        ["Access", "Mobile-first layout, reduced-motion support with crossfades in place of camera moves"],
+        ["Deployment", "Vercel — pushes to main deploy to production"]
+      ]],
+      live: true,
+      link: "https://the-specimen.vercel.app"
+    },
+    {
       title: "Agentic Newsroom",
       eyebrow: "Agentic Publishing",
       tags: "agentic newsroom · 3D · print-on-demand",
@@ -203,9 +234,10 @@
   // reader page. The shelf takes no params, so it can't be deep-linked to one edition —
   // if ai-gazette ever adds that, append the id here and drop the shared constant.
   const GAZETTE_SHELF = "https://frontiers-gazette.vercel.app/shelf";
+  const gazetteFallback = PROJECTS.find((p) => p.gazetteEditions).gazetteEditions;
   let gazetteState = {
-    editions: PROJECTS[0].gazetteEditions,
-    latest: PROJECTS[0].gazetteEditions.at(-1)
+    editions: gazetteFallback,
+    latest: gazetteFallback.at(-1)
   };
 
   /* ---------- RENDER PROJECTS ---------- */
