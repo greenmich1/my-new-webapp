@@ -10,7 +10,7 @@
   /* ---------- PROJECT DATA ---------- */
   const PROJECTS = [
     {
-      title: "Nobody Was Grading",
+      title: "Agentic Loss of Control Series",
       eyebrow: "AI Incident Reconstruction",
       tags: "3D storytelling · AI safety · Three.js",
       status: "live",
@@ -39,6 +39,40 @@
       ]],
       live: true,
       link: "https://the-specimen.vercel.app"
+    },
+    {
+      title: "Maritime OS",
+      eyebrow: "Maritime Intelligence",
+      tags: "live AIS · order book · supply chain",
+      status: "live",
+      ph: "maritime map — signal layer",
+      img: "images/maritime-intel-os.png",
+      summary: "Live vessel positions read against your own order book. It matches the ships actually on the water to the commitments you have made, prices the delay when a choke point or a congested berth gets in the way, and names the customer promises about to break while there is still something to do about them.",
+      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Realtime · Geospatial · Rules"], ["Status", "Live"]],
+      sections: [
+        ["Context", "Vessel tracking answers a question nobody asked", "An exporter with money committed does not need to know where 190 ships are. They need to know which of their promises is in trouble, and whether anything can still be done about it. Every ship tracker answers the first question well and stops there — and the distance between \"that vessel is in the Gulf\" and \"the Shanghai order misses its window by 23 days\" is the entire job, because closing it means knowing the book as well as the water."],
+        ["Approach", "Your order book, read against the water", "Each open commitment is matched to the hulls that could be carrying it — named in the order, or riding a lane the order uses — against live AIS. Choke-point status and berth congestion are priced as detour days, added to the passage, and checked against the date you promised. What comes out is not an indicator. It is a short queue of decisions with deadlines attached, and the app is careful about which of them are still winnable."]
+      ],
+      blocks: [
+        ["Match", "Which of these ships are yours", "Live AIS gives roughly 190 hulls in and around New Zealand. The ones your book actually touches are marked — named in a commitment, or riding a lane one of your orders uses — and the rest stay scenery rather than being dressed up as relevant."],
+        ["Price", "Delay in days, not in adjectives", "Choke-point levels are asserted by a person and carry the date they were asserted; the lane engine scores the same routes independently. Where they disagree, both are shown. The output is a detour in days added to a passage, which is a number you can hold a promise against."],
+        ["Say what is not known", "An absence is stated, never filled in", "A position older than five minutes is frozen where it was last reported rather than slid along its last course, counts are split into hulls tracked and hulls actually reporting, and a rule that cannot decide refuses instead of guessing. The product is only worth anything if its refusals are as legible as its answers."]
+      ],
+      build: ["One small server, one live feed, and a refusal to guess", "It runs on a single e2-micro and stays inside a $0–20/month ceiling, which is a feature rather than a limitation: it is why an NZ exporter could use this and a Kpler licence-holder could not justify a second seat. There is no model in the inference path. The interesting engineering is not throughput, it is knowing what the data does not say — a position five minutes old is frozen rather than extrapolated, and every figure on screen carries where it came from and how old it is.", [
+        ["Interface", "React + TypeScript on Vite · CesiumJS globe, NASA GIBS Blue Marble with CARTO place labels"],
+        ["Live positions", "aisstream.io over one WebSocket — ~190 hulls in and around NZ, of which ~60 have reported in the last ten minutes"],
+        ["Backend", "Python (FastAPI) in a single Docker container on a GCP e2-micro, us-central1"],
+        ["Edge", "Cloud Run proxies in front of REST and the WebSocket · per-address token bucket, priced per route"],
+        ["Storage", "SQLite on a host bind mount, seven-day retention · the container holds no state"],
+        ["Cargo inference", "A rule engine over port calls, declared destinations and Stats NZ trade shares — no ML, and it refuses rather than guesses when rules tie"],
+        ["Trade data", "Stats NZ HS10 by country by NZ port, rolling 12-month window, used to break inference ties by measured share"],
+        ["Scenery", "Port webcams and Bluesky posts, mirrored not hotlinked, labelled as scenery and never counted as evidence"],
+        ["Provenance", "Every datum carries a source and an age, graded live / delayed / stale on one shared threshold ladder"],
+        ["Tests", "1,738 frontend (Vitest) · 613 backend (pytest) · a probe that checks production itself, 13 checks"],
+        ["Deployment", "Vercel for the frontend · dated image tags on the VM with a one-deep rollback and a written runbook"]
+      ]],
+      live: true,
+      link: "https://maritime-intel-os.vercel.app/"
     },
     {
       title: "Agentic Newsroom",
@@ -140,40 +174,6 @@
         ["Guardrails", "Celery task queues and rule-based backtesting that overrides the AI on risk breaches"]
       ]],
       link: "https://v0-ai-stock-picker-companion.vercel.app/analysis"
-    },
-    {
-      title: "Maritime OS",
-      eyebrow: "Maritime Intelligence",
-      tags: "geospatial · forecasting · supply chain",
-      status: "live",
-      ph: "maritime map — signal layer",
-      img: "images/maritime-intel-os.png",
-      summary: "A system that reads global shipping telemetry as economic signal. It ingests vessel and port data, detects congestion and choke-point pressure as it builds, and translates movement into forward-looking supply-chain and macro indicators.",
-      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Realtime · Geospatial · Rules"], ["Status", "Live"]],
-      sections: [
-        ["Context", "The signal in shipping arrives too late", "The world's oceans produce a constant stream of vessel telemetry, but raw AIS tracks and port movements are almost impossible to read as a coherent picture. The geopolitical and macroeconomic signals buried in that noise — a tightening choke point, a port backing up, a trade flow rerouting — usually reach decision-makers long after they would have been useful."],
-        ["Approach", "Telemetry turned into structured signal", "Maritime OS pulls chaotic maritime data into a single model and turns it into structured, predictive indicators. Instead of plotting where ships are, it tracks how movement patterns change: choke-point pressure, port congestion, and shifts in trade flow. Those patterns are translated into forward-looking signals a supply-chain or macro analyst can act on while there is still time to respond."]
-      ],
-      blocks: [
-        ["Ingest", "One model for the whole ocean", "Global vessel telemetry, port activity and route data stream into a single live model, replacing scattered feeds with one coherent picture of what is moving and where."],
-        ["Detect", "Catch pressure as it builds", "The system surfaces anomalies, congestion and choke-point strain as they develop rather than after the fact, flagging the early movement that tends to precede a visible disruption."],
-        ["Forecast", "Movement into macro signal", "Detected patterns are translated into predictive geopolitical and macroeconomic indicators, giving supply-chain visibility that looks forward instead of reporting what has already happened."]
-      ],
-      build: ["One small server, one live feed, and a refusal to guess", "It runs on a single e2-micro and stays inside a $0–20/month ceiling, which is a feature rather than a limitation: it is why an NZ exporter could use this and a Kpler licence-holder could not justify a second seat. There is no model in the inference path. The interesting engineering is not throughput, it is knowing what the data does not say — a position five minutes old is frozen rather than extrapolated, and every figure on screen carries where it came from and how old it is.", [
-        ["Interface", "React + TypeScript on Vite · CesiumJS globe, NASA GIBS Blue Marble with CARTO place labels"],
-        ["Live positions", "aisstream.io over one WebSocket — ~190 hulls in and around NZ, of which ~60 have reported in the last ten minutes"],
-        ["Backend", "Python (FastAPI) in a single Docker container on a GCP e2-micro, us-central1"],
-        ["Edge", "Cloud Run proxies in front of REST and the WebSocket · per-address token bucket, priced per route"],
-        ["Storage", "SQLite on a host bind mount, seven-day retention · the container holds no state"],
-        ["Cargo inference", "A rule engine over port calls, declared destinations and Stats NZ trade shares — no ML, and it refuses rather than guesses when rules tie"],
-        ["Trade data", "Stats NZ HS10 by country by NZ port, rolling 12-month window, used to break inference ties by measured share"],
-        ["Scenery", "Port webcams and Bluesky posts, mirrored not hotlinked, labelled as scenery and never counted as evidence"],
-        ["Provenance", "Every datum carries a source and an age, graded live / delayed / stale on one shared threshold ladder"],
-        ["Tests", "1,738 frontend (Vitest) · 613 backend (pytest) · a probe that checks production itself, 13 checks"],
-        ["Deployment", "Vercel for the frontend · dated image tags on the VM with a one-deep rollback and a written runbook"]
-      ]],
-      live: true,
-      link: "https://maritime-intel-os.vercel.app/"
     },
     {
       title: "BioSignal Intelligence",
