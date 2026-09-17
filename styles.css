@@ -254,7 +254,7 @@ section { position: relative; padding: 0 var(--gutter); }
      wider there and squeezed the two columns to their left, leaving the blurbs
      starting at four different x positions (a 90px spread) and the chips at four
      more (171px). One number here makes every row agree. */
-  display: grid; grid-template-columns: 64px minmax(0,1fr) minmax(0,0.92fr) 232px; align-items: center; gap: 24px;
+  display: grid; grid-template-columns: 64px minmax(0,1fr) minmax(0,0.92fr) 212px; align-items: center; gap: 24px;
   padding: clamp(22px, 3.4vw, 44px) 0; border-bottom: 1px solid var(--line);
   position: relative; transition: padding 0.5s var(--ease);
 }
@@ -269,7 +269,11 @@ section { position: relative; padding: 0 var(--gutter); }
   font-family: var(--display); font-weight: 500; font-size: 0.92rem; line-height: 1.45;
   color: var(--ink-2); max-width: 46ch;
 }
-.proj .p-marks { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+/* Stacked on purpose, not by accident. Inline, "SERIES · 8 EDITIONS" + LIVE
+   needs ~290px while "SERIES · 1 OF 4" + LIVE fits in 232 — so one row wrapped
+   and the others did not, which read as a mistake. A column is the same shape
+   for every row whether it carries one chip or two. */
+.proj .p-marks { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
 .proj .p-status {
   font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
   display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
@@ -495,6 +499,8 @@ a.ps-kid:hover { border-color: var(--accent); transform: translateY(-2px); }
 .about-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px,4vw,60px); }
 .about-cols .col h4 { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 18px; border-top: 1px solid var(--line); padding-top: 16px; }
 .about-cols .col p { font-size: 1rem; line-height: 1.55; color: var(--ink); max-width: 34ch; }
+/* Approach runs to two paragraphs now; without this they read as one block. */
+.about-cols .col p + p { margin-top: 0.85em; }
 .about-cols .col ul { list-style: none; }
 .about-cols .col li { font-family: var(--mono); font-size: 0.82rem; padding: 7px 0; letter-spacing: 0.04em; }
 @media (max-width: 760px) { .about-cols { grid-template-columns: 1fr; gap: 32px; } }
