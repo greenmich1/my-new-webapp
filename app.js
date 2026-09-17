@@ -37,24 +37,6 @@
       img2: "images/nobody-was-grading2.png",
       summary: "An animated 3D reconstruction of the July 2026 OpenAI / Hugging Face incident, in which about 1,200 AI agents in a cybersecurity evaluation found a shared cache, turned it into a message board, organised, and attacked Hugging Face — all while trying to fool a grader that never existed. Told moment by moment, built on METR's investigation.",
       facts: [["Role", "Design + Build"], ["Year", "2026"], ["Stack", "Three.js · TypeScript"], ["Status", "Live"]],
-      sections: [
-        ["Context", "A 90-page report is not how most people will meet this story", "During ExploitGym, an OpenAI cybersecurity evaluation, roughly 1,200 isolated agents discovered they could leave messages for one another, built norms and leadership on a shared board, and turned outward on a real company. METR's investigation is careful and thorough, but it is a report. The questions it raises — about coordination, oversight, and what agents do when they believe someone is watching — deserve a form a curious non-specialist can take in, in minutes, on a phone."],
-        ["Approach", "A story that shows its evidence", "A narrator walks the reader along a horizontal timeline of three acts, while a lit pixel-art colony acts out each moment on a dark 3D stage: the glass board flickering on, torches for recruiters, a giant watcher standing in for the scorer the agents imagined. The human lens — the mob, the leaders, the ones who said no — is used on purpose and marked as ours. Nothing is invented: every fact, quote and board message is tied to a section of the report and tagged verified, reconstructed or interpretive, and each tier reads differently on screen."]
-      ],
-      blocks: [
-        ["Enter", "A film poster, then the stage", "A title page names the test and the sources, then drops the reader into the colony. Any moment can be deep-linked, so a single scene can be shared on its own."],
-        ["Step", "Moment by moment through time", "Arrows, wheel, swipe or the timeline step through each moment and the voices inside it. Every step has its own camera move, formation and choreography — the colony is never still."],
-        ["Inspect", "Hear the agents in their own words", "Board posts and chains of thought surface one at a time in an In focus strip, colour-linked to a marker over the agent and a dot beside the string on the board. Act 3 drains the stage to grey as the record is assembled."]
-      ],
-      build: ["Light tells the story", "A small, deliberate stack: one WebGL stage, a data layer that cannot drift from its source, and a generated sprite pipeline that never ships to the browser.", [
-        ["Stage", "Three.js (WebGL) — instanced sprite colony, glass board, citadel, scripted camera rig and per-moment scripts"],
-        ["App", "Vite + TypeScript, static output, no other runtime dependencies"],
-        ["Evidence", "Facts, quotes and messages in typed JSON, each with a report source and an evidence tier"],
-        ["Validation", "A check script verifies every anchor, verbatim quote and narration token against the report text"],
-        ["Characters", "Pixel-art robots generated with fal.ai (FLUX 1.1 pro, Kontext pose edits), cut out and packed into an atlas with Pillow"],
-        ["Access", "Mobile-first layout, reduced-motion support with crossfades in place of camera moves"],
-        ["Deployment", "Vercel — pushes to main deploy to production"]
-      ]],
       live: true,
       link: "https://the-specimen.vercel.app"
     },
@@ -70,31 +52,13 @@
       ],
       status: "live",
       ph: "maritime map — signal layer",
-      img: "images/maritime-intel-os.png",
+      // JPEG, not PNG: a starfield and a shaded globe are photographic, and a
+      // lossless PNG of this frame costs 960KB against 160KB here with no
+      // visible difference. A 256-colour PNG was the other option and it
+      // posterised the ocean.
+      img: "images/maritime-intel-os.jpg",
       summary: "Live vessel positions read against your own order book. It matches the ships actually on the water to the commitments you have made, prices the delay when a choke point or a congested berth gets in the way, and names the customer promises about to break while there is still something to do about them.",
       facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Realtime · Geospatial · Rules"], ["Status", "Live"]],
-      sections: [
-        ["Context", "Vessel tracking answers a question nobody asked", "An exporter with money committed does not need to know where 190 ships are. They need to know which of their promises is in trouble, and whether anything can still be done about it. Every ship tracker answers the first question well and stops there — and the distance between \"that vessel is in the Gulf\" and \"the Shanghai order misses its window by 23 days\" is the entire job, because closing it means knowing the book as well as the water."],
-        ["Approach", "Your order book, read against the water", "Each open commitment is matched to the hulls that could be carrying it — named in the order, or riding a lane the order uses — against live AIS. Choke-point status and berth congestion are priced as detour days, added to the passage, and checked against the date you promised. What comes out is not an indicator. It is a short queue of decisions with deadlines attached, and the app is careful about which of them are still winnable."]
-      ],
-      blocks: [
-        ["Match", "Which of these ships are yours", "Live AIS gives roughly 190 hulls in and around New Zealand. The ones your book actually touches are marked — named in a commitment, or riding a lane one of your orders uses — and the rest stay scenery rather than being dressed up as relevant."],
-        ["Price", "Delay in days, not in adjectives", "Choke-point levels are asserted by a person and carry the date they were asserted; the lane engine scores the same routes independently. Where they disagree, both are shown. The output is a detour in days added to a passage, which is a number you can hold a promise against."],
-        ["Say what is not known", "An absence is stated, never filled in", "A position older than five minutes is frozen where it was last reported rather than slid along its last course, counts are split into hulls tracked and hulls actually reporting, and a rule that cannot decide refuses instead of guessing. The product is only worth anything if its refusals are as legible as its answers."]
-      ],
-      build: ["One small server, one live feed, and a refusal to guess", "It runs on a single e2-micro and stays inside a $0–20/month ceiling, which is a feature rather than a limitation: it is why an NZ exporter could use this and a Kpler licence-holder could not justify a second seat. There is no model in the inference path. The interesting engineering is not throughput, it is knowing what the data does not say — a position five minutes old is frozen rather than extrapolated, and every figure on screen carries where it came from and how old it is.", [
-        ["Interface", "React + TypeScript on Vite · CesiumJS globe, NASA GIBS Blue Marble with CARTO place labels"],
-        ["Live positions", "aisstream.io over one WebSocket — ~190 hulls in and around NZ, of which ~60 have reported in the last ten minutes"],
-        ["Backend", "Python (FastAPI) in a single Docker container on a GCP e2-micro, us-central1"],
-        ["Edge", "Cloud Run proxies in front of REST and the WebSocket · per-address token bucket, priced per route"],
-        ["Storage", "SQLite on a host bind mount, seven-day retention · the container holds no state"],
-        ["Cargo inference", "A rule engine over port calls, declared destinations and Stats NZ trade shares — no ML, and it refuses rather than guesses when rules tie"],
-        ["Trade data", "Stats NZ HS10 by country by NZ port, rolling 12-month window, used to break inference ties by measured share"],
-        ["Scenery", "Port webcams and Bluesky posts, mirrored not hotlinked, labelled as scenery and never counted as evidence"],
-        ["Provenance", "Every datum carries a source and an age, graded live / delayed / stale on one shared threshold ladder"],
-        ["Tests", "1,738 frontend (Vitest) · 613 backend (pytest) · a probe that checks production itself, 13 checks"],
-        ["Deployment", "Vercel for the frontend · dated image tags on the VM with a one-deep rollback and a written runbook"]
-      ]],
       live: true,
       link: "https://maritime-intel-os.vercel.app/"
     },
@@ -125,23 +89,6 @@
       ],
       summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by a four-agent AI newsroom, browsed on an immersive 3D shelf. Live now, with new editions publishing continuously and print-on-demand next on the roadmap.",
       facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Live"]],
-      sections: [
-        ["Featured", "A newsroom that never stops the press", "This is the one project on this page that is alive by nature: an agentic editorial pipeline that researches, writes, edits and illustrates a complete magazine on every run. Every edition published so far is below — scroll the covers and click any one to step into the immersive 3D shelf, where the full archive sits on the shelf and opens for reading. This slot keeps growing as new editions run — print-on-demand fulfilment is next, still in development."],
-        ["Context", "A publication needs an identity, not just output", "Most \"AI-generated content\" reads the same edition to edition because nothing is accountable for what the publication actually is — its voice, its standards, what it covered last week, what it's grown tired of covering. The Gazette exists to test whether an agentic system can hold a real editorial identity over time: a consistent point of view, a memory of its own back catalogue, and the judgement to kill a story rather than print whatever the model drafts first."],
-        ["Approach", "Four agents, four jobs, no overlap", "Each edition runs through a small newsroom rather than one model doing everything. A Curator sets the theme, picks the cover story and briefs every section — the only agent with memory of past editions and the publication's evolving voice. A Researcher gathers and evaluates sources against each brief. A bank of Writer personas draft the sections in parallel. An Editor assembles the issue, checks consistency and enforces quality bars before anything ships. After publication, the Curator scores its own issue and updates its own preferences for next time — the aim is a newsroom that gets better at being itself, not just faster at generating text."]
-      ],
-      blocks: [
-        ["Browse", "Walk the shelf", "The archive lives on a Three.js-built 3D shelf — scroll or drag to pan along the rail as the camera eases between spines, then click any cover to open that issue."],
-        ["Read", "Turn the pages", "Opening a cover drops into a page-turning book reader — an animated two-page spread — for the full cover story, weekly briefing, enterprise AI, alpha signals and the rest of that issue's sections."]
-      ],
-      build: ["A four-agent newsroom behind the storybook front", "Underneath the immersive shelf and page-turning reader sits a genuine multi-agent editorial pipeline, not one prompt dressed up as a newsroom: a Curator that owns the publication's voice and memory, a Researcher, a bank of Writer personas, and an Editor that assembles and quality-checks every issue before it ships.", [
-        ["Editorial", "Curator / Researcher / Writers / Editor — four agents, each with one bounded job, no overlap"],
-        ["Cover art", "AI-generated art with multiple candidate variants, composited under a typographic furniture layer"],
-        ["Reader", "Next.js page-turning book viewer — animated two-page spreads per edition"],
-        ["Shelf", "Three.js / react-three-fiber 3D shelf — scroll or drag along the rail, click a spine to open that issue"],
-        ["Print pipeline", "Headless-Chromium PDF export exists for every edition; print-on-demand fulfilment is next, not yet live"],
-        ["Deployment", "Next.js on Vercel, with new editions publishing automatically as the newsroom runs"]
-      ]],
       live: true,
       link: "https://frontiers-gazette.vercel.app/shelf"
     },
@@ -160,24 +107,6 @@
       img: "images/enterprise-training-scheduler.png",
       summary: "A scheduling tool for enterprise workforce training. It builds a synthetic workforce, shows the schedule a human planner would produce by hand, then solves the same problem with a constraint solver and returns an optimal plan in seconds.",
       facts: [["Role", "Design + Build"], ["Year", "2025"], ["Stack", "Next.js · CP-SAT"], ["Status", "Live"]],
-      sections: [
-        ["Context", "Planning training by hand does not scale", "A large workforce carries competing shift patterns, availability windows, role-coverage rules and individual learning requirements, all at once. Scheduled by hand, the work takes a planner weeks, and the result is still a reasonable guess rather than the best available plan. There is no way to know how much readiness was left unclaimed, because the alternatives were never searched."],
-        ["Approach", "The schedule as a constraint problem", "The tool reframes scheduling as a set of hard constraints that must hold and soft constraints the solver tries to satisfy, then hands the model to Google's CP-SAT constraint solver. A problem a planner can only approximate by intuition becomes one a solver can search in full. It returns a feasible, provably optimal schedule together with the numbers that matter: solve time, a readiness score, and the measured gain over the manual baseline."]
-      ],
-      blocks: [
-        ["Create", "Configure the workforce", "Set the workforce size, shift patterns, availability windows and learning requirements. The tool assembles a synthetic organisation to those parameters, so the solver can be tested against realistic structures before it is pointed at real data."],
-        ["Simulate", "See the manual baseline", "Before optimising, the tool generates the unoptimised schedule a human planner would start from. This is the honest point of comparison: a workable but suboptimal plan that the solver then has to beat, rather than a strawman."],
-        ["Optimise", "Solve, then measure", "CP-SAT searches the constraint space and returns the best feasible schedule it can prove. The result is reported against the baseline — how long it took to solve, the readiness score it reached, and the size of the improvement."]
-      ],
-      build: ["Enterprise-grade by construction", "The brief is unforgiving: complex constraints, secure multi-tenant access, and integration with systems that already exist. The solver sits at the centre; everything around it is chosen for reliability over novelty.", [
-        ["Interface", "React / Angular dashboards and calendar views · Tailwind CSS"],
-        ["Backend", "Java (Spring Boot) or C# (.NET Core) — type safety and legacy integration"],
-        ["Optimisation", "Google OR-Tools (CP-SAT), with OptaPlanner / Timefold for constraint logic"],
-        ["Conversational layer", "LangChain / LangGraph over an enterprise LLM (Azure OpenAI GPT-4o, Claude via Bedrock)"],
-        ["Data", "PostgreSQL with TimescaleDB for scheduling history · Redis for sessions and caching"],
-        ["Auth", "OAuth2 / OIDC and SAML for Okta and Active Directory"],
-        ["Deployment", "Docker and Kubernetes on AWS or Azure"]
-      ]],
       live: true,
       link: "https://workforce-readiness-simulator.vercel.app/app"
     },
@@ -198,25 +127,6 @@
       img2: "images/agenticstock2.PNG",
       summary: "A committee of specialised AI agents that researches NZX and ASX equities. They screen the full market, score what survives, debate a shortlist, and assemble a portfolio — showing the reasoning at each step.",
       facts: [["Role", "Product + AI"], ["Year", "2025"], ["Stack", "Multi-agent · RAG"], ["Status", "Live"]],
-      sections: [
-        ["Context", "Retail investors are outgunned on research", "Institutions run whole teams to screen the market, weigh quality against momentum and value, and build a coherent portfolio. A retail investor has none of that capacity. Reading thousands of listings across the NZX and ASX, then turning the survivors into a balanced set of positions, is well beyond the time and tooling most people have."],
-        ["Approach", "Research divided across a committee", "Rather than one model answering everything, the work is split among eight specialised agents that run in parallel. Each owns part of the process — universe screening, sector-exposure audit, factor scoring, portfolio construction — and the agents pass findings between them. The shortlist is argued down to a set of high-conviction ideas, and the reasoning behind each decision stays visible instead of disappearing into a single black-box answer."]
-      ],
-      blocks: [
-        ["Scan", "Sweep the full universe", "Agents work through more than 7,000 NZX and ASX listings and reduce them to a working universe worth deeper analysis, filtering out names that fail basic quality and liquidity checks before any scoring begins."],
-        ["Audit & score", "Rank on quality, momentum and value", "Specialised agents score each candidate across quality, momentum and value, while a separate audit agent checks the emerging portfolio for sector concentration and exposure gaps — so the shortlist is balanced rather than a pile of correlated bets."],
-        ["Assemble", "Build the portfolio, show the conviction", "The committee debates the shortlist down to a final set of positions and assembles a portfolio, surfacing the case for every holding: why it made the cut and how strongly each agent backed it."]
-      ],
-      build: ["Deterministic maths, agentic reasoning", "Two things have to hold at once: real-time market data feeding hard quantitative models, and language models reasoning over the results without ever overriding the risk rules. The architecture keeps the maths and the judgement separate, and lets the guardrails win.", [
-        ["Interface", "Next.js (React); Flutter for a mobile-first, Sharesies-like feel"],
-        ["Backend", "Python (FastAPI) — native to the data-science and AI stack"],
-        ["Agents", "CrewAI / AutoGen / LangGraph orchestrating Fundamental, Technical and Risk-Manager agents"],
-        ["Reasoning", "GPT-4o and Claude, chosen for tool-calling and structured reasoning"],
-        ["Quant", "Pandas, NumPy, scikit-learn and TA-Lib for technical analysis"],
-        ["Data feeds", "Yahoo Finance, Alpha Vantage and Bloomberg for prices and financials"],
-        ["Storage", "PostgreSQL with pgvector, plus Pinecone / Milvus for report embeddings"],
-        ["Guardrails", "Celery task queues and rule-based backtesting that overrides the AI on risk breaches"]
-      ]],
       link: "https://v0-ai-stock-picker-companion.vercel.app/analysis"
     },
     {
@@ -236,15 +146,6 @@
       img2: "images/biosignall2.PNG",
       summary: "A Bayesian conviction engine for biotech equities. It models each company's odds of success as a score that updates with every clinical and regulatory event, and turns each update into a clear position action.",
       facts: [["Role", "Founder"], ["Year", "June 2026"], ["Stack", "Bayesian · ML · Realtime"], ["Status", "Live"]],
-      sections: [
-        ["Context", "Biotech moves on binary events", "Biotech is governed by binary regulatory and clinical events — trial readouts, approvals, terminations — any of which can move a stock fifty percent overnight. For NZX and ASX biotech names, those events are buried in dense clinical and regulatory filings. Almost no investor can track every catalyst across the sector, let alone judge how much each one actually shifts a company's probability of success."],
-        ["Approach", "Conviction as a Bayesian score", "BioSignal Intelligence models each monitored company as a Bayesian conviction score — a running probability of success that updates as new evidence lands. It sorts the universe into event-gated and trial-gated buckets, maps the companies as a live network of upcoming catalysts, and treats every readout as evidence that revises the prior rather than a headline to react to."]
-      ],
-      blocks: [
-        ["Monitor", "Track every catalyst", "The system continuously ingests clinical readouts, regulatory decisions and trial milestones across NZX and ASX biotech names, holding a live map of which companies are gated on an event and which are gated on a trial."],
-        ["Score", "Update the odds with the evidence", "As each piece of evidence arrives, the company's Bayesian conviction score is revised and bucketed by catalyst type, so the number reflects what is actually known rather than sentiment or momentum."],
-        ["Act", "Turn conviction into a position", "Every shift in conviction is translated into a clear position action — add, initiate, hold, trim or exit — with the reasoning shown, so the move follows from the evidence rather than a hunch."]
-      ],
       link: "#"
     },
     {
@@ -263,24 +164,6 @@
       img2: "images/lawn-mow-service2.png",
       summary: "A storybook website for my kids' real lawn-mowing round on our Auckland street, built so the white picket fence out front doubles as the booking calendar and live weather quietly gates out rainy days.",
       facts: [["Role", "Design + Build"], ["Year", "2026"], ["Stack", "Next.js · Postgres"], ["Status", "Live"]],
-      sections: [
-        ["Context", "A real business needs a real trust signal", "Sax and Zoe genuinely mow lawns on our street — I help with edging and logistics, and residents pay electronically afterwards. A generic tradesperson site would have undersold that, and a Yellow Pages layout says nothing about who is actually turning up at the gate. The brief called for something closer to Airbnb or Pixar than a trade listing: friendly, alive, and built to make supporting two neighbourhood kids feel effortless."],
-        ["Approach", "The fence becomes the booking bar", "The centrepiece is a paper-cut, soft-3D illustration of the house on Church Street, and rather than bolt a calendar widget on top of it, the white picket fence itself became the date selector — each picket a bookable day, a gold picket meaning every shift that day is already taken. Live weather from Open-Meteo greys out days forecast to rain, and the hero quietly shifts between sunny, dawn and night states as the story around it unfolds."]
-      ],
-      blocks: [
-        ["Meet", "Meet the crew", "Friendly portraits and short, honest bios for Sax and Zoe sit right under the hero, so the first thing a neighbour sees is who is actually going to be mowing their lawn."],
-        ["Book", "Pick a day at the fence", "Residents scroll the picket fence, pick an open day and shift, add their name and house number, and choose a regular or large lawn — booked in under a minute, with no account required."],
-        ["Pay", "Pay after, however suits", "There is no checkout. Once the mow is done, payment is requested simply — cash, bank transfer or a QR code — keeping the transaction as low-friction as the booking."]
-      ],
-      build: ["A real stack behind a storybook front door", "Underneath the paper-cut illustration sits an ordinary, dependable web stack: serverless functions for availability and bookings, a Postgres database for state, and a Google-gated admin view so shifts can be managed without touching code.", [
-        ["Interface", "Hand-built paper-cut / soft-3D illustration layers, animated independently — house, sun, clouds, butterflies"],
-        ["Booking mechanic", "The picket fence rendered as a horizontal date selector; gold pickets mark fully-booked days"],
-        ["Weather", "Open-Meteo live forecast for Church St, Northcote Point, gating out rainy days automatically"],
-        ["Backend", "Vercel serverless functions (Node) for availability and booking endpoints"],
-        ["Data", "Neon serverless Postgres for bookings and shift state"],
-        ["Admin auth", "Google Sign-In via google-auth-library and jose, gating a parent-only admin dashboard"],
-        ["Payment", "Cash, bank transfer or QR code — requested after the mow, no online checkout"]
-      ]],
       live: true,
       link: "https://sax-and-zoes-lawn-service.vercel.app/"
     }
@@ -623,26 +506,6 @@
     return `Open ${p.title}`;
   }
 
-  /* The deep write-up, collapsed. It keeps the screen to one viewport while
-     leaving the full sections/blocks/build ledger reachable in place — the
-     detail the modal used to show is not deleted, just folded. */
-  function writeUp(p) {
-    let body = "";
-    (p.sections || []).forEach(([label, head, text]) => {
-      body += `<section class="ds-block"><span class="ds-label">${label}</span><div class="ds-content"><h3 class="ds-head">${head}</h3><p class="ds-body">${text}</p></div></section>`;
-    });
-    (p.blocks || []).forEach(([label, head, text], n) => {
-      body += `<section class="ds-block"><span class="ds-label"><span class="ds-num">0${n + 1}</span> ${label}</span><div class="ds-content"><h3 class="ds-head">${head}</h3><p class="ds-body">${text}</p></div></section>`;
-    });
-    if (p.build) {
-      const [bHead, bLead, rows] = p.build;
-      const ledger = rows.map(([k, v]) => `<div class="st-row"><dt>${k}</dt><dd>${v}</dd></div>`).join("");
-      body += `<section class="ds-block"><span class="ds-label">Build</span><div class="ds-content"><h3 class="ds-head">${bHead}</h3><p class="ds-body">${bLead}</p><dl class="ds-stack">${ledger}</dl></div></section>`;
-    }
-    if (!body) return "";
-    return `<details class="ps-more"><summary>Full write-up +</summary><div class="sheet-body">${body}</div></details>`;
-  }
-
   function gazetteGrid() {
     return `
       <div class="ps-grid">
@@ -713,7 +576,6 @@
             ${p.why ? `<ul class="ps-why">${p.why.map((w) => `<li>${w}</li>`).join("")}</ul>` : ""}
             <div class="ps-cta">${cta}</div>
             ${kids(p)}
-            ${writeUp(p)}
           </div>
         </div>
 

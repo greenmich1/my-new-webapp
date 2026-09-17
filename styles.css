@@ -249,7 +249,12 @@ section { position: relative; padding: 0 var(--gutter); }
 .work { padding-top: clamp(60px, 9vh, 130px); padding-bottom: clamp(40px,6vh,90px); }
 .proj-list { position: relative; }
 .proj {
-  display: grid; grid-template-columns: 64px minmax(0,1fr) minmax(0,0.9fr) auto; align-items: center; gap: 24px;
+  /* The last track is a FIXED width, not `auto`. Each row is its own grid, so an
+     auto track sized to that row's own chips: rows carrying a SERIES badge were
+     wider there and squeezed the two columns to their left, leaving the blurbs
+     starting at four different x positions (a 90px spread) and the chips at four
+     more (171px). One number here makes every row agree. */
+  display: grid; grid-template-columns: 64px minmax(0,1fr) minmax(0,0.92fr) 232px; align-items: center; gap: 24px;
   padding: clamp(22px, 3.4vw, 44px) 0; border-bottom: 1px solid var(--line);
   position: relative; transition: padding 0.5s var(--ease);
 }
@@ -264,7 +269,7 @@ section { position: relative; padding: 0 var(--gutter); }
   font-family: var(--display); font-weight: 500; font-size: 0.92rem; line-height: 1.45;
   color: var(--ink-2); max-width: 46ch;
 }
-.proj .p-marks { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.proj .p-marks { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .proj .p-status {
   font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
   display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
@@ -426,17 +431,6 @@ a.ps-kid:hover { border-color: var(--accent); transform: translateY(-2px); }
 .ps-kid.empty { border-style: dashed; }
 .ps-kid.empty .k-t { color: var(--ink-2); }
 
-/* ---- full write-up, collapsed so the screen still fits one viewport ---- */
-.ps-more { border-top: 1px solid var(--line); padding-top: 10px; }
-.ps-more > summary {
-  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2);
-}
-.ps-more > summary::-webkit-details-marker { display: none; }
-.ps-more > summary:hover { color: var(--accent); }
-.ps-more[open] > summary { color: var(--accent); margin-bottom: 8px; }
-.ps-more .sheet-body { border-top: 1px solid var(--line); }
-
 /* ---- foot: next / back ---- */
 .ps-foot {
   display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;
@@ -490,20 +484,6 @@ a.ps-kid:hover { border-color: var(--accent); transform: translateY(-2px); }
 .sg-date { opacity: 0.7; }
 .sg-ed { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
 .sg-ed b { color: var(--accent); font-weight: 700; }
-
-/* keep the deep write-up's typography — it is reused verbatim inside .ps-more */
-.sheet-body { display: grid; gap: 0; }
-.ds-block { display: grid; grid-template-columns: 200px 1fr; gap: clamp(20px,4vw,48px); padding: clamp(22px,3vw,38px) 0; border-bottom: 1px solid var(--line); }
-.ds-label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); font-weight: 400; display: flex; gap: 10px; align-items: baseline; }
-.ds-num { color: var(--accent); }
-.ds-content { max-width: 64ch; }
-.ds-head { font-family: var(--display); font-weight: 700; font-size: clamp(1.2rem, 2vw, 1.9rem); line-height: 1.12; letter-spacing: -0.025em; margin-bottom: 14px; }
-.ds-body { font-size: clamp(0.95rem, 1.1vw, 1.1rem); line-height: 1.6; color: var(--ink); }
-.ds-stack { margin-top: clamp(18px,2.4vw,28px); border-top: 1px solid var(--line); }
-.ds-stack .st-row { display: grid; grid-template-columns: 160px 1fr; gap: clamp(14px,2.5vw,40px); padding: 12px 0; border-bottom: 1px solid var(--line); }
-.ds-stack dt { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); padding-top: 2px; }
-.ds-stack dd { font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; letter-spacing: 0.01em; color: var(--ink); }
-@media (max-width: 760px) { .ds-block { grid-template-columns: 1fr; gap: 12px; } .ds-stack .st-row { grid-template-columns: 1fr; gap: 4px; } }
 
 /* =========================================================================
    ABOUT
