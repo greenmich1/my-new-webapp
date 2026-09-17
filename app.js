@@ -142,7 +142,7 @@
       link: "https://v0-ai-stock-picker-companion.vercel.app/analysis"
     },
     {
-      title: "Supply Chain Maritime Intelligence O/S",
+      title: "Maritime OS",
       eyebrow: "Maritime Intelligence",
       tags: "geospatial · forecasting · supply chain",
       status: "live",
@@ -152,7 +152,7 @@
       facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Realtime · ML · Geospatial"], ["Status", "Live"]],
       sections: [
         ["Context", "The signal in shipping arrives too late", "The world's oceans produce a constant stream of vessel telemetry, but raw AIS tracks and port movements are almost impossible to read as a coherent picture. The geopolitical and macroeconomic signals buried in that noise — a tightening choke point, a port backing up, a trade flow rerouting — usually reach decision-makers long after they would have been useful."],
-        ["Approach", "Telemetry turned into structured signal", "Maritime Intelligence OS pulls chaotic maritime data into a single model and turns it into structured, predictive indicators. Instead of plotting where ships are, it tracks how movement patterns change: choke-point pressure, port congestion, and shifts in trade flow. Those patterns are translated into forward-looking signals a supply-chain or macro analyst can act on while there is still time to respond."]
+        ["Approach", "Telemetry turned into structured signal", "Maritime OS pulls chaotic maritime data into a single model and turns it into structured, predictive indicators. Instead of plotting where ships are, it tracks how movement patterns change: choke-point pressure, port congestion, and shifts in trade flow. Those patterns are translated into forward-looking signals a supply-chain or macro analyst can act on while there is still time to respond."]
       ],
       blocks: [
         ["Ingest", "One model for the whole ocean", "Global vessel telemetry, port activity and route data stream into a single live model, replacing scattered feeds with one coherent picture of what is moving and where."],
@@ -169,6 +169,7 @@
         ["Storage", "PostgreSQL + PostGIS · InfluxDB / TimescaleDB for historical tracks"],
         ["Deployment", "AWS Greengrass at the edge on vessels · Kubernetes shore-side"]
       ]],
+      live: true,
       link: "https://maritime-intel-os.vercel.app/"
     },
     {
