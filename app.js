@@ -149,7 +149,7 @@
       ph: "maritime map — signal layer",
       img: "images/maritime-intel-os.png",
       summary: "A system that reads global shipping telemetry as economic signal. It ingests vessel and port data, detects congestion and choke-point pressure as it builds, and translates movement into forward-looking supply-chain and macro indicators.",
-      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Realtime · ML · Geospatial"], ["Status", "Live"]],
+      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Realtime · Geospatial · Rules"], ["Status", "Live"]],
       sections: [
         ["Context", "The signal in shipping arrives too late", "The world's oceans produce a constant stream of vessel telemetry, but raw AIS tracks and port movements are almost impossible to read as a coherent picture. The geopolitical and macroeconomic signals buried in that noise — a tightening choke point, a port backing up, a trade flow rerouting — usually reach decision-makers long after they would have been useful."],
         ["Approach", "Telemetry turned into structured signal", "Maritime OS pulls chaotic maritime data into a single model and turns it into structured, predictive indicators. Instead of plotting where ships are, it tracks how movement patterns change: choke-point pressure, port congestion, and shifts in trade flow. Those patterns are translated into forward-looking signals a supply-chain or macro analyst can act on while there is still time to respond."]
@@ -159,15 +159,18 @@
         ["Detect", "Catch pressure as it builds", "The system surfaces anomalies, congestion and choke-point strain as they develop rather than after the fact, flagging the early movement that tends to precede a visible disruption."],
         ["Forecast", "Movement into macro signal", "Detected patterns are translated into predictive geopolitical and macroeconomic indicators, giving supply-chain visibility that looks forward instead of reporting what has already happened."]
       ],
-      build: ["High-throughput, geospatial, real-time", "The system swallows a continuous flood of vessel telemetry, reads it spatially, and watches it with computer vision — all while it is still streaming. Ingestion runs in fast compiled languages; the AI work runs in Python; the two meet over a message broker.", [
-        ["Interface", "React with Mapbox GL and CesiumJS for 2D / 3D vessel tracking"],
-        ["Backend", "Python (FastAPI) for AI workflows · Go and Rust for ingestion pipelines"],
-        ["Streaming", "Apache Kafka / AWS Kinesis for live AIS signal streams"],
-        ["Geospatial", "PostGIS, GeoPandas and Fiona"],
-        ["Computer vision", "PyTorch and YOLOv10 / v11 for vessel, port and dark-vessel detection"],
-        ["Anomaly detection", "scikit-learn / TensorFlow for trajectory and route-deviation models"],
-        ["Storage", "PostgreSQL + PostGIS · InfluxDB / TimescaleDB for historical tracks"],
-        ["Deployment", "AWS Greengrass at the edge on vessels · Kubernetes shore-side"]
+      build: ["One small server, one live feed, and a refusal to guess", "It runs on a single e2-micro and stays inside a $0–20/month ceiling, which is a feature rather than a limitation: it is why an NZ exporter could use this and a Kpler licence-holder could not justify a second seat. There is no model in the inference path. The interesting engineering is not throughput, it is knowing what the data does not say — a position five minutes old is frozen rather than extrapolated, and every figure on screen carries where it came from and how old it is.", [
+        ["Interface", "React + TypeScript on Vite · CesiumJS globe, NASA GIBS Blue Marble with CARTO place labels"],
+        ["Live positions", "aisstream.io over one WebSocket — ~190 hulls in and around NZ, of which ~60 have reported in the last ten minutes"],
+        ["Backend", "Python (FastAPI) in a single Docker container on a GCP e2-micro, us-central1"],
+        ["Edge", "Cloud Run proxies in front of REST and the WebSocket · per-address token bucket, priced per route"],
+        ["Storage", "SQLite on a host bind mount, seven-day retention · the container holds no state"],
+        ["Cargo inference", "A rule engine over port calls, declared destinations and Stats NZ trade shares — no ML, and it refuses rather than guesses when rules tie"],
+        ["Trade data", "Stats NZ HS10 by country by NZ port, rolling 12-month window, used to break inference ties by measured share"],
+        ["Scenery", "Port webcams and Bluesky posts, mirrored not hotlinked, labelled as scenery and never counted as evidence"],
+        ["Provenance", "Every datum carries a source and an age, graded live / delayed / stale on one shared threshold ladder"],
+        ["Tests", "1,738 frontend (Vitest) · 613 backend (pytest) · a probe that checks production itself, 13 checks"],
+        ["Deployment", "Vercel for the frontend · dated image tags on the VM with a one-deep rollback and a written runbook"]
       ]],
       live: true,
       link: "https://maritime-intel-os.vercel.app/"
