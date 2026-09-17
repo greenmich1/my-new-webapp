@@ -129,6 +129,21 @@ a { color: inherit; text-decoration: none; }
   transition: transform 0.9s var(--ease) 0.15s;
 }
 #loader.done { transform: translateY(-101%); }
+/* The waking robot. One 144x48 sheet of three 48px frames, stepped by
+   `--f` (0, 1, 2) which the loader counter sets. `pixelated` because the art
+   is a 48px grid and smoothing it would defeat the point. */
+.l-bot {
+  --f: 0;
+  width: 96px; height: 96px; margin-bottom: 18px;
+  background-image: url("images/loader-bot.png");
+  background-size: 300% 100%;
+  background-position: calc(var(--f) * 50%) 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  transition: background-position 0.18s steps(1);
+}
+@media (max-width: 640px) { .l-bot { width: 72px; height: 72px; } }
+
 #loader .l-name {
   font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.18em;
   text-transform: uppercase; max-width: 40ch;

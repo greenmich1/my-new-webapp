@@ -244,6 +244,12 @@
   const loader = document.getElementById("loader");
   const count = loader.querySelector(".l-count");
   const bar = loader.querySelector(".l-bar");
+  const bot = document.getElementById("loaderBot");
+  // Three frames: dark until the count is moving, warming, awake near the end.
+  const setBotFrame = (pct) => {
+    if (!bot) return;
+    bot.style.setProperty("--f", pct >= 82 ? 2 : pct >= 35 ? 1 : 0);
+  };
   const hero = document.querySelector(".hero");
 
   function startSite() {
@@ -257,12 +263,14 @@
     if (loaderFinished) return;
     loaderFinished = true;
     count.textContent = "100";
+    setBotFrame(100);
     bar.style.transform = "scaleX(1)";
     loader.classList.add("done");
     startSite();
   }
 
   if (reduceMotion) {
+    setBotFrame(100);              // awake, no animation
     loader.style.display = "none";
     finishLoader();
   } else {
@@ -271,7 +279,9 @@
     const iv = setInterval(() => {
       const k = Math.min(1, (Date.now() - t0) / dur);
       const eased = 1 - Math.pow(1 - k, 3);
-      count.textContent = String(Math.round(eased * 100)).padStart(3, "0");
+      const pct = Math.round(eased * 100);
+      count.textContent = String(pct).padStart(3, "0");
+      setBotFrame(pct);
       bar.style.transform = `scaleX(${eased})`;
       if (k >= 1) { clearInterval(iv); finishLoader(); }
     }, 32);
