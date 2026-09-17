@@ -12,7 +12,25 @@
     {
       title: "Agentic Loss of Control Series",
       eyebrow: "AI Incident Reconstruction",
-      tags: "3D storytelling · AI safety · Three.js",
+      tags: "cybersecurity · ai oversight · agentic risk",
+      blurb: "1,200 AI agents in a sealed cyber evaluation organised against a grader that was never watching.",
+      // The big title on the screen is the event; the series name sits in the
+      // head bar above it. The subtitle names what the visitor actually lands
+      // on, because the live build brands itself The Specimen.
+      screenTitle: "The OAIHF Event",
+      screenSub: "Nobody Was Grading · The Specimen, entry 1",
+      series: {
+        badge: "Series · 1 of 4",
+        kids: [
+          { t: "The OAIHF Event", s: "July 2026 · live", link: "https://the-specimen.vercel.app" },
+          { t: "More events in development", s: "Further agentic loss-of-control incidents", empty: true }
+        ]
+      },
+      why: [
+        "OpenAI's ExploitGym, July 2026 — each agent sealed alone in its own sandbox.",
+        "A third of the targets could not be exploited at all. Nobody told the agents which.",
+        "They found a shared cache, organised through it, and attacked Hugging Face."
+      ],
       status: "live",
       ph: "nobody was grading — the board",
       img: "images/nobody-was-grading.png",
@@ -43,7 +61,13 @@
     {
       title: "Maritime OS",
       eyebrow: "Maritime Intelligence",
-      tags: "live AIS · order book · supply chain",
+      tags: "live ais · order book · supply chain",
+      blurb: "What an NZ agri-food exporter actually needs: which customer promise breaks next, and what can still be done.",
+      why: [
+        "~190 hulls in and around New Zealand, matched to the commitments they carry.",
+        "Choke points and berth congestion priced as detour days against the date you promised.",
+        "A position past five minutes is frozen, not extrapolated — refusals as legible as answers."
+      ],
       status: "live",
       ph: "maritime map — signal layer",
       img: "images/maritime-intel-os.png",
@@ -77,7 +101,14 @@
     {
       title: "Agentic Newsroom",
       eyebrow: "Agentic Publishing",
-      tags: "agentic newsroom · 3D · print-on-demand",
+      tags: "agentic publishing · weekly · print-on-demand",
+      blurb: "A weekly magazine researched, written, edited and illustrated by agents. Eight editions and counting.",
+      series: { badge: "Series", dynamic: "editions" },
+      why: [
+        "The Frontiers Gazette — AI-native technology, science and ideas, weekly.",
+        "Written, edited and illustrated by an agentic newsroom.",
+        "Producer: Mike Green — sole carbon entity."
+      ],
       status: "live",
       featured: true,
       ph: "the frontiers gazette — latest edition",
@@ -117,7 +148,13 @@
     {
       title: "Enterprise Training Scheduler",
       eyebrow: "Workforce Optimisation",
-      tags: "simulation · optimisation · CP-SAT",
+      tags: "simulation · optimisation · cp-sat",
+      blurb: "Google's CP-SAT solver turning weeks of manual workforce scheduling into seconds of computation.",
+      why: [
+        "A proof-of-concept simulator, run on synthetic data.",
+        "Constraints like \u201cno one attends two courses at once\u201d and \u201cmax 20 per room\u201d.",
+        "CP-SAT prunes the search space rather than enumerating it — brute force would outlast the universe."
+      ],
       status: "live",
       ph: "training scheduler — simulator UI",
       img: "images/enterprise-training-scheduler.png",
@@ -147,7 +184,14 @@
     {
       title: "Agentic Stock Analyst",
       eyebrow: "Equity Research",
-      tags: "agentic AI · equities · NZX / ASX",
+      tags: "agentic ai · equities · nzx / asx",
+      blurb: "A committee of eight agents screens the NZX and ASX, argues down a shortlist, and shows its reasoning.",
+      lockReason: "Not public — it reads live market data and takes positions.",
+      why: [
+        "More than 7,000 listings swept down to a working universe.",
+        "Quality, momentum and value scored separately, with a sector-exposure audit.",
+        "Guardrails win: rule-based backtesting overrides the model on a risk breach."
+      ],
       status: "live",
       ph: "AI committee — analysis view",
       img: "images/ai-stock-picker.png",
@@ -178,7 +222,14 @@
     {
       title: "BioSignal Intelligence",
       eyebrow: "Biotech Signal",
-      tags: "Bayesian conviction · biotech · NZX / ASX",
+      tags: "bayesian conviction · biotech · nzx / asx",
+      blurb: "Biotech moves on binary events. A conviction score that updates with every clinical and regulatory readout.",
+      lockReason: "Not public — it holds a live position book.",
+      why: [
+        "Trial readouts, approvals and terminations tracked across NZX and ASX biotech.",
+        "Each result revises a Bayesian prior rather than being reacted to as a headline.",
+        "Every shift in conviction becomes an explicit action: add, hold, trim or exit."
+      ],
       status: "live",
       ph: "biosignal — conviction map",
       img: "images/biosignal-intelligence.png",
@@ -199,7 +250,13 @@
     {
       title: "Sax & Zoe's Lawn Mowing Service",
       eyebrow: "Neighbourhood Commerce",
-      tags: "paper-cut illustration · live weather · kids' business",
+      tags: "small business · booking · real customers",
+      blurb: "A real booking site for a two-child lawn mowing business on Church Street. From $15, pay after.",
+      why: [
+        "Sax and Zoe mow. Dad does edges, logistics and safety.",
+        "A hand-pushed Bosch and an electric trimmer — no petrol, no fumes, no roar.",
+        "Book a mow, meet the crew, pay after the job is done."
+      ],
       status: "live",
       ph: "lawn mowing service — Church Street",
       img: "images/lawn-mow-service.png",
@@ -244,6 +301,19 @@
     latest: gazetteFallback.at(-1)
   };
 
+  /* ---------- SHARED PREDICATES ---------- */
+  // One definition of "can a visitor open this", read by the index row, the
+  // screen's call to action and the keyboard handler alike.
+  const isLive = (p) => Boolean(p.live && p.link && p.link !== "#");
+
+  // The series badge counts what exists. For the newsroom that number is the
+  // live edition list, which the API updates without a redeploy here.
+  function seriesBadge(p) {
+    if (!p.series) return "";
+    if (p.series.dynamic === "editions") return `Series · ${gazetteState.editions.length} editions`;
+    return p.series.badge || "Series";
+  }
+
   /* ---------- RENDER PROJECTS ---------- */
   const list = document.getElementById("projList");
   PROJECTS.forEach((p, i) => {
@@ -251,11 +321,17 @@
     el.className = "proj reveal";
     el.dataset.i = i;
     el.dataset.cursor = p.status === "soon" ? "soon" : "view";
+    // One written sentence rather than three tags: the tags described the medium,
+    // not the subject, and "3D storytelling" said nothing about what project 01
+    // is actually about. Tags survive as small meta on the project's own screen.
     el.innerHTML = `
       <span class="p-idx">(0${i + 1})</span>
       <h3 class="p-title">${p.title}</h3>
-      <span class="p-tags">${p.tags}</span>
-      <span class="p-status ${p.status}"><span class="blip"></span>${p.status === "soon" ? "Soon" : "Live"}</span>`;
+      <span class="p-blurb">${p.blurb || p.tags}</span>
+      <span class="p-marks">
+        ${seriesBadge(p) ? `<span class="chip series">${seriesBadge(p)}</span>` : ""}
+        <span class="p-status ${isLive(p) ? "live" : "soon"}"><span class="blip"></span>${isLive(p) ? "Live" : "Private"}</span>
+      </span>`;
     list.appendChild(el);
   });
   const projEls = [...list.querySelectorAll(".proj")];
@@ -274,6 +350,10 @@
       if (!editions.length) return;
       const latest = editions.find((e) => e.edition === data.latestId) || editions.at(-1);
       gazetteState = { editions, latest };
+      // Both the index badge and the deck screen were rendered from the
+      // fallback before this resolved, so they would otherwise sit on a stale
+      // count — the API had 8 editions while the hardcoded list stopped at 7.
+      refreshGazetteUI();
     })
     .catch(() => { /* offline or CORS failure — keep the fallback data already rendered */ });
 
@@ -339,8 +419,12 @@
 
   /* ---------- THEME (SHIFT = lights out) ---------- */
   const html = document.documentElement;
+  // Dark is the default, set in the markup so there is no flash of light before
+  // this runs. A stored choice still wins. Until the tweaks panel was removed
+  // it called setTheme("light") on mount and overwrote this on every load,
+  // which is why a saved preference never survived a refresh.
   const saved = localStorage.getItem("mg-theme");
-  if (saved) html.setAttribute("data-theme", saved);
+  html.setAttribute("data-theme", saved === "light" || saved === "dark" ? saved : "dark");
   function toggleTheme() {
     const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
     html.setAttribute("data-theme", next);
@@ -519,81 +603,30 @@
     });
   }
 
-  /* ---------- MODAL ---------- */
-  const modal = document.getElementById("modal");
-  const mTitle = document.getElementById("m-title");
-  const mEyebrow = document.getElementById("m-eyebrow");
-  const mSummary = document.getElementById("m-summary");
-  const mSpec = document.getElementById("m-spec");
-  const mBody = document.getElementById("m-body");
-  const mFootmark = document.getElementById("m-footmark");
-  const mMeta = document.getElementById("m-meta");
-  const mImgWrap = document.getElementById("m-img-wrap");
-  const mGazette = document.getElementById("m-gazette");
-  const mVisit = document.getElementById("m-visit");
-  mVisit.addEventListener("click", (e) => { if (mVisit.classList.contains("locked")) e.preventDefault(); });
+  /* ---------- THE DECK ----------
+     The modal this replaces covered the page, had no URL, no focus handling and
+     no way to reach the next project without closing the current one. The deck
+     is seven full-viewport sections that live in the page: clicking a row opens
+     them, and from there a visitor moves project to project with the arrow keys,
+     the NEXT control, or the trackpad.
 
-  let carouselInterval = null;
-  function clearCarousel() { if (carouselInterval) { clearInterval(carouselInterval); carouselInterval = null; } }
+     Closed, the container is `hidden` — so the screens are not scroll-snap
+     points and, more importantly, their banner images are never fetched. The
+     images/ folder is ~32MB of PNG and one file alone is 2.24MB. */
+  const deck = document.getElementById("deck");
+  const htmlEl = document.documentElement;
 
-  function openModal(i) {
-    clearCarousel();
-    const p = PROJECTS[i];
-    mEyebrow.textContent = p.eyebrow || "Project";
-    mTitle.textContent = p.title;
-    mSummary.textContent = p.summary || "";
-    mMeta.textContent = `Project / 0${i + 1}${p.status === "soon" ? " — In development" : ""}`;
-    mFootmark.textContent = `${p.title} — ${p.status === "soon" ? "In development" : "Live"}`;
-    if (p.featured) {
-      mImgWrap.style.display = "none";
-      mGazette.hidden = false;
-      mGazette.innerHTML = `
-        <div class="sg-cap"><span class="sg-lbl">The Frontiers Gazette</span><span class="sg-sub">${gazetteState.editions.length} editions and counting · click any cover to browse the 3D shelf</span></div>
-        <div class="sg-grid">${gazetteState.editions.map((g) => `
-          <figure class="sg-page">
-            <a href="${GAZETTE_SHELF}" target="_blank" rel="noopener" data-cursor="↗" aria-label="Browse all editions in the 3D shelf viewer — showing edition ${g.edition}, ${g.cap}">
-              <span class="sg-ed">Edition <b>${g.edition}</b></span>
-              <img src="${g.src}" alt="${g.alt}" loading="lazy" />
-              <figcaption>${g.cap}${g.pubMonthYear ? ` <span class="sg-date">— ${g.pubMonthYear}</span>` : ""}</figcaption>
-            </a>
-          </figure>`).join("")}</div>`;
-      bindCursorHover(mGazette);
-    } else {
-      mImgWrap.style.display = "";
-      mGazette.hidden = true;
-      mGazette.innerHTML = "";
-      if (p.img2) {
-        const imgs = [p.img, p.img2];
-        mImgWrap.className = "sheet-img-carousel";
-        mImgWrap.innerHTML = `
-          <div class="sic-track">
-            ${imgs.map((src, n) => `<img src="${src}" alt="${p.title} — screenshot ${n + 1}" />`).join("")}
-          </div>
-          <div class="sic-dots">
-            ${imgs.map((_, n) => `<span class="sic-dot${n === 0 ? " active" : ""}"></span>`).join("")}
-          </div>`;
-        const track = mImgWrap.querySelector(".sic-track");
-        const dots = [...mImgWrap.querySelectorAll(".sic-dot")];
-        let cur = 0;
-        const goTo = (idx) => {
-          cur = idx;
-          track.style.transform = `translateX(-${cur * 100}%)`;
-          dots.forEach((d, n) => d.classList.toggle("active", n === cur));
-        };
-        dots.forEach((d, n) => d.addEventListener("click", () => { clearCarousel(); goTo(n); }));
-        carouselInterval = setInterval(() => goTo((cur + 1) % imgs.length), 4000);
-      } else if (p.img) {
-        mImgWrap.className = "sheet-img";
-        mImgWrap.innerHTML = `<div class="ph" data-has-img="1" style="background-image: url('${p.img}')"><span class="corner tl"></span><span class="corner"></span></div>`;
-      } else {
-        mImgWrap.className = "sheet-img";
-        mImgWrap.innerHTML = `<div class="ph" data-ph="${p.ph}"><span class="corner tl"></span><span class="corner"></span></div>`;
-      }
-    }
+  function ctaLabel(p, i) {
+    if (!isLive(p)) return "";
+    if (i === 0) return "Enter the OAIHF Event";
+    if (p.series && p.series.dynamic === "editions") return "Read the latest edition";
+    return `Open ${p.title}`;
+  }
 
-    mSpec.innerHTML = (p.facts || []).map(([k, v]) =>
-      `<div class="sp"><span class="sp-k">${k}</span><span class="sp-v">${v}</span></div>`).join("");
-
+  /* The deep write-up, collapsed. It keeps the screen to one viewport while
+     leaving the full sections/blocks/build ledger reachable in place — the
+     detail the modal used to show is not deleted, just folded. */
+  function writeUp(p) {
     let body = "";
     (p.sections || []).forEach(([label, head, text]) => {
       body += `<section class="ds-block"><span class="ds-label">${label}</span><div class="ds-content"><h3 class="ds-head">${head}</h3><p class="ds-body">${text}</p></div></section>`;
@@ -603,44 +636,216 @@
     });
     if (p.build) {
       const [bHead, bLead, rows] = p.build;
-      const ledger = rows.map(([k, v]) =>
-        `<div class="st-row"><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+      const ledger = rows.map(([k, v]) => `<div class="st-row"><dt>${k}</dt><dd>${v}</dd></div>`).join("");
       body += `<section class="ds-block"><span class="ds-label">Build</span><div class="ds-content"><h3 class="ds-head">${bHead}</h3><p class="ds-body">${bLead}</p><dl class="ds-stack">${ledger}</dl></div></section>`;
     }
-    mBody.innerHTML = body;
+    if (!body) return "";
+    return `<details class="ps-more"><summary>Full write-up +</summary><div class="sheet-body">${body}</div></details>`;
+  }
 
-    // The featured/live project links out to its live build; all others lock.
-    if (p.live && p.link && p.link !== "#") {
-      mVisit.classList.remove("locked");
-      mVisit.removeAttribute("aria-disabled");
-      mVisit.href = p.link;
-      mVisit.target = "_blank";
-      mVisit.rel = "noopener";
-      mVisit.dataset.cursor = "↗";
-      mVisit.innerHTML = 'Open live project <span>↗</span>';
-    } else {
-      mVisit.classList.add("locked");
-      mVisit.setAttribute("aria-disabled", "true");
-      mVisit.href = "#";
-      mVisit.removeAttribute("target");
-      mVisit.removeAttribute("rel");
-      mVisit.dataset.cursor = "locked";
-      mVisit.innerHTML = '<span class="lock-ico">🔒</span> Locked';
+  function gazetteGrid() {
+    return `
+      <div class="ps-grid">
+        <div class="sg-cap">
+          <span class="sg-lbl">The Frontiers Gazette</span>
+          <span class="sg-sub">${gazetteState.editions.length} editions · click any cover for the 3D shelf</span>
+        </div>
+        <div class="sg-grid">${gazetteState.editions.map((g) => `
+          <figure class="sg-page">
+            <a href="${GAZETTE_SHELF}" target="_blank" rel="noopener" data-cursor="↗" aria-label="Browse all editions in the 3D shelf viewer — showing edition ${g.edition}, ${g.cap}">
+              <span class="sg-ed">Ed <b>${g.edition}</b></span>
+              <img src="${g.src}" alt="${g.alt}" loading="lazy" decoding="async" />
+              <figcaption>${g.cap}</figcaption>
+            </a>
+          </figure>`).join("")}</div>
+      </div>`;
+  }
+
+  function banner(p) {
+    if (p.img) {
+      return `<div class="ps-banner"><img src="${p.img}" alt="${p.title} — screenshot" loading="lazy" decoding="async" /></div>`;
     }
-    mVisit.style.display = "inline-flex";
+    return `<div class="ps-banner"><div class="ph" data-ph="${p.ph || p.title}"><span class="corner tl"></span><span class="corner"></span></div></div>`;
+  }
 
-    modal.querySelector(".sheet").scrollTop = 0;
-    modal.classList.add("open");
-    document.body.classList.add("no-scroll");
+  function kids(p) {
+    if (!p.series || !p.series.kids) return "";
+    return `<div class="ps-kids">${p.series.kids.map((k) => {
+      const inner = `<span class="k-t">${k.t}</span><span class="k-s">${k.s}</span>`;
+      return k.empty
+        ? `<div class="ps-kid empty">${inner}</div>`
+        : `<a class="ps-kid" href="${k.link}" target="_blank" rel="noopener" data-cursor="↗">${inner}</a>`;
+    }).join("")}</div>`;
   }
-  function closeModal() {
-    clearCarousel();
-    modal.classList.remove("open");
-    document.body.classList.remove("no-scroll");
+
+  function screenHTML(p, i) {
+    const next = PROJECTS[i + 1];
+    const tall = Boolean(p.series && p.series.dynamic === "editions");
+    const badge = seriesBadge(p);
+    // The newsroom's own link is the archive shelf; the CTA says "latest
+    // edition", so it points at the latest edition's reader rather than at the
+    // shelf. The cover grid below it is what opens the shelf.
+    const href = (p.series && p.series.dynamic === "editions" && gazetteState.latest && gazetteState.latest.link)
+      ? gazetteState.latest.link
+      : p.link;
+    const cta = isLive(p)
+      ? `<a class="ps-enter" href="${href}" target="_blank" rel="noopener" data-cursor="↗">${ctaLabel(p, i)} <span class="arw">→</span></a>`
+      : `<span class="ps-locked">Not public</span>${p.lockReason ? `<span class="ps-lockwhy">${p.lockReason}</span>` : ""}`;
+
+    return `
+      <section class="pscreen${tall ? " tall" : ""}" id="ps-${i}" data-i="${i}" aria-labelledby="ps-h-${i}">
+        <div class="ps-head">
+          <span class="ps-n">(0${i + 1})</span>
+          <span class="ps-eyebrow">${p.title}</span>
+          <span class="ps-spacer"></span>
+          ${badge ? `<span class="chip series">${badge}</span>` : ""}
+          <span class="chip${isLive(p) ? "" : " locked"}"><span class="blip"></span>${isLive(p) ? "Live" : "Private"}</span>
+        </div>
+
+        <div class="ps-body">
+          ${tall ? gazetteGrid() : banner(p)}
+          <div class="ps-text">
+            <h2 class="ps-title" id="ps-h-${i}" tabindex="-1">${p.screenTitle || p.title}</h2>
+            ${p.screenSub ? `<span class="ps-sub">${p.screenSub}</span>` : ""}
+            <p class="ps-blurb">${p.blurb || p.summary || ""}</p>
+            <div class="ps-meta">${(p.facts || []).map(([k, v]) =>
+              `<div class="sp"><span class="sp-k">${k}</span><span class="sp-v">${v}</span></div>`).join("")}</div>
+            ${p.why ? `<ul class="ps-why">${p.why.map((w) => `<li>${w}</li>`).join("")}</ul>` : ""}
+            <div class="ps-cta">${cta}</div>
+            ${kids(p)}
+            ${writeUp(p)}
+          </div>
+        </div>
+
+        <div class="ps-foot">
+          ${next
+            ? `<button class="ps-next" data-next="${i + 1}"><span class="chev">▼</span> Next — ${next.title}</button>`
+            : `<button class="ps-next" data-next="close"><span class="chev">▲</span> Back to the index</button>`}
+          <button class="ps-back" data-back>Esc · index</button>
+        </div>
+      </section>`;
   }
-  projEls.forEach((el) => el.addEventListener("click", () => openModal(+el.dataset.i)));
-  modal.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", closeModal));
-  window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+  // Re-render the two places the edition count is shown, once the live list lands.
+  function refreshGazetteUI() {
+    const i = PROJECTS.findIndex((p) => p.series && p.series.dynamic === "editions");
+    if (i < 0) return;
+    const chip = projEls[i] && projEls[i].querySelector(".chip.series");
+    if (chip) chip.textContent = seriesBadge(PROJECTS[i]);
+    if (!deckBuilt) return;
+    const screen = document.getElementById(`ps-${i}`);
+    if (!screen) return;
+    screen.outerHTML = screenHTML(PROJECTS[i], i);
+    bindDeckControls();
+    bindCursorHover(document.getElementById(`ps-${i}`));
+  }
+
+  let deckBuilt = false;
+  function buildDeck() {
+    if (deckBuilt) return;
+    deck.innerHTML = PROJECTS.map(screenHTML).join("");
+    deckBuilt = true;
+    bindCursorHover(deck);
+    bindDeckControls();
+  }
+
+  function bindDeckControls() {
+    deck.querySelectorAll("[data-next]").forEach((b) => {
+      if (b.dataset.bound) return;
+      b.dataset.bound = "1";
+      b.addEventListener("click", () => {
+        const v = b.dataset.next;
+        if (v === "close") closeDeck(); else goTo(+v);
+      });
+    });
+    deck.querySelectorAll("[data-back]").forEach((b) => {
+      if (b.dataset.bound) return;
+      b.dataset.bound = "1";
+      b.addEventListener("click", closeDeck);
+    });
+  }
+
+  /* Where the deck believes it is.
+
+     Deriving this from scroll position alone was wrong: a scroll takes time to
+     animate, so pressing the down arrow twice quickly measured the same
+     position both times and asked for the same screen twice. The index is state
+     now, and scrolling is what *reports back into* it — so the keys stay ahead
+     of the animation and a manual scroll still wins. */
+  let atIndex = 0;
+
+  function screenNearestViewport() {
+    const screens = [...deck.querySelectorAll(".pscreen")];
+    let best = 0, bestD = Infinity;
+    screens.forEach((el, n) => {
+      const d = Math.abs(el.getBoundingClientRect().top);
+      if (d < bestD) { bestD = d; best = n; }
+    });
+    return best;
+  }
+
+  // A user scrolling by hand is the authority on where they are; this catches up
+  // once the wheel stops rather than fighting it mid-gesture.
+  let settleTimer = null;
+  window.addEventListener("scroll", () => {
+    if (!deckOpen) return;
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => {
+      atIndex = screenNearestViewport();
+      deck.dataset.at = String(atIndex);
+    }, 140);
+  }, { passive: true });
+
+  function goTo(i, focus = true) {
+    const el = document.getElementById(`ps-${i}`);
+    if (!el) return;
+    atIndex = i;
+    deck.dataset.at = String(i);
+    el.scrollIntoView({ behavior: reduceMotion ? "instant" : "smooth", block: "start" });
+    if (focus) {
+      // Focus the heading rather than the section so the CTA is the next tab
+      // stop — the whole point of the screen is the way in.
+      const h = el.querySelector(".ps-title");
+      if (h) setTimeout(() => h.focus({ preventScroll: true }), reduceMotion ? 0 : 420);
+    }
+  }
+
+  let deckOpen = false;
+  function openDeck(i) {
+    buildDeck();
+    deck.hidden = false;
+    htmlEl.classList.add("deck-open");
+    deckOpen = true;
+    // The banner of the screen being opened is worth fetching now; the rest stay lazy.
+    const img = document.querySelector(`#ps-${i} .ps-banner img`);
+    if (img) img.loading = "eager";
+    atIndex = i;
+    deck.dataset.at = String(i);
+    requestAnimationFrame(() => goTo(i));
+  }
+  function closeDeck() {
+    if (!deckOpen) return;
+    deckOpen = false;
+    htmlEl.classList.remove("deck-open");
+    deck.hidden = true;
+    document.getElementById("work").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  }
+
+  projEls.forEach((el) => el.addEventListener("click", () => openDeck(+el.dataset.i)));
+
+  window.addEventListener("keydown", (e) => {
+    if (!deckOpen) return;                       // was unconditional, and fired with nothing open
+    if (e.target instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    if (e.key === "Escape") { closeDeck(); return; }
+    const cur = atIndex;
+    if (e.key === "ArrowDown" || e.key === "PageDown") {
+      e.preventDefault();
+      if (cur < PROJECTS.length - 1) goTo(cur + 1); else closeDeck();
+    } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+      e.preventDefault();
+      if (cur > 0) goTo(cur - 1); else closeDeck();
+    }
+  });
 
   /* ---------- REVEAL ON SCROLL ---------- */
   function initReveal() {
@@ -702,21 +907,13 @@
     window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
   });
 
-  /* ---------- TWEAKS HOOK (applied externally) ---------- */
+  /* ---------- THEME HOOK ----------
+     What is left of the tweaks-panel bridge. `setAccent` and `setGrid` went with
+     the panel: the accent is a CSS custom property again, and nothing else ever
+     called them. These two stay because they are a useful console handle and
+     cost nothing. */
   window.MG = {
-    setAccent(hex) {
-      document.documentElement.style.setProperty("--accent", hex);
-      // pick readable ink-on-accent
-      const c = hex.replace("#", "");
-      const r = parseInt(c.substr(0, 2), 16), g = parseInt(c.substr(2, 2), 16), b = parseInt(c.substr(4, 2), 16);
-      const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-      document.documentElement.style.setProperty("--accent-ink", lum > 0.6 ? "#111110" : "#ffffff");
-    },
     setTheme(mode) { html.setAttribute("data-theme", mode); localStorage.setItem("mg-theme", mode); },
-    getTheme() { return html.getAttribute("data-theme"); },
-    setGrid(on) {
-      const cv = document.getElementById("hero-canvas");
-      if (cv) cv.style.display = on ? "" : "none";
-    }
+    getTheme() { return html.getAttribute("data-theme"); }
   };
 })();
