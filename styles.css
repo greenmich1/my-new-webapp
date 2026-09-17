@@ -79,6 +79,28 @@ body.no-scroll { overflow: hidden; height: 100vh; }
 
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
+/* ---- Focus ----------------------------------------------------------------
+   Nothing here styled focus, so every control drew Chrome's default blue ring.
+   Two different problems, two different answers.
+
+   1. Real controls keep a visible ring — removing it would strand keyboard
+      users — but in the site's own accent rather than browser blue.
+
+   2. `.ps-title` is NOT a control. It carries `tabindex="-1"` and `goTo()`
+      focuses it so a screen reader's reading cursor lands on the new screen's
+      heading instead of staying where it was. No one can reach it by tabbing,
+      so a ring there communicates nothing — and it showed up as an unexplained
+      box around whichever project you had just opened, which is what it was
+      reported as. The screen scrolling into view is the feedback; the focus
+      move is for assistive tech only. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.ps-title:focus,
+.ps-title:focus-visible { outline: none; }
+
 a { color: inherit; text-decoration: none; }
 
 /* hide native cursor on fine-pointer devices (custom cursor takes over) */
