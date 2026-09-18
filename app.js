@@ -65,14 +65,33 @@
     {
       title: "Agentic Newsroom",
       eyebrow: "Agentic Publishing",
-      tags: "agentic publishing · weekly · print-on-demand",
-      blurb: "A weekly magazine researched, written, edited and illustrated by agents. Eight editions and counting.",
+      tags: "agentic publishing · monthly & on demand · print-on-demand",
+      blurb: "A long-form magazine researched, written, edited and illustrated by agents. A new edition roughly monthly — or on demand, the day a story is worth one.",
       series: { badge: "Series", dynamic: "editions" },
       why: [
-        "The Frontiers Gazette — AI-native technology, science and ideas, weekly.",
-        "Written, edited and illustrated by an agentic newsroom.",
+        "The Frontiers Gazette — AI-native technology, science and ideas. Roughly monthly, and triggered on demand when a story breaks that earns an edition.",
+        "Long-form on purpose: an argument that runs 4,000 words can hold its own counter-argument, show where the evidence thins, and cite every claim — none of which survives a news summary.",
+        "Twelve agents, one job each: a Curator picks the cover story and scores the issue afterwards, a Researcher works a curated reading list, eight named writers hold eight distinct voices, an Editor verifies every citation and returns work rather than rewriting it.",
         "Producer: Mike Green — sole carbon entity."
       ],
+      // The masthead is real: these personas live in the gazette repo's
+      // agent-architecture doc and each one owns a beat. Listed here because
+      // "written by AI" says nothing; who writes what is the interesting part.
+      roster: [
+        ["The Curator", "Chooses the cover story and the edition theme, briefs each writer, then scores every section and logs what not to repeat"],
+        ["The Researcher", "Works the reading list, ranks source quality, assembles a package per section — and writes nothing"],
+        ["The Editor", "Checks guidelines, verifies every citation, assembles the issue. Returns a section to its writer rather than rewriting it"],
+        ["Kaveh Sadeghi", "The Technologist — Cover Story, SAP Intelligence"],
+        ["Yael Osei", "The Philosopher — The Intersect"],
+        ["Priya Nkosi", "The Operator — Enterprise AI"],
+        ["Marcus Oduya", "The Anthropologist — Org Culture &amp; Innovation"],
+        ["Dara Fenwick", "The Skeptic — Cybersecurity"],
+        ["Lena Sundqvist", "The Academic Translator — The Whiteboard / Field Notes"],
+        ["Tomas Varga", "The Historian — The Canon"],
+        ["Rin Calloway", "The Correspondent — Human + Machine"],
+        ["Claudette Ferreira", "The Satirist — The Link-In"]
+      ],
+      sources: "A curated reading list, not a news crawl — Noema, Aeon, Ribbonfarm, The Diff, Works in Progress, Astral Codex Ten, LessWrong, Hyperdimensional, AI Snake Oil, Platformer, Big Technology, Newcomer, Pirate Wires, The Pragmatic Engineer, Dwarkesh, and Clarkesworld and Locus for where the fiction got there first. Under all of it: arXiv, Papers with Code, Semantic Scholar and the State of AI Report, which is what the Whiteboard and the Canon actually rest on. Quality journalism is used sparingly and always cited by link.",
       status: "live",
       featured: true,
       ph: "the frontiers gazette — latest edition",
@@ -87,7 +106,7 @@
         { edition: "004b", cap: "The Ships That Came Back Different", src: "https://frontiers-gazette.vercel.app/api/cover-render/004b", alt: "The Frontiers Gazette — Edition 004b cover", link: "https://frontiers-gazette.vercel.app/edition/004b", pubMonthYear: "July 2026" },
         { edition: "005", cap: "The Compute Ceiling", src: "https://frontiers-gazette.vercel.app/api/cover-render/005", alt: "The Frontiers Gazette — Edition 005 cover", link: "https://frontiers-gazette.vercel.app/edition/005", pubMonthYear: "August 2026" }
       ],
-      summary: "A bespoke magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by a four-agent AI newsroom, browsed on an immersive 3D shelf. Live now, with new editions publishing continuously and print-on-demand next on the roadmap.",
+      summary: "A bespoke long-form magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by a four-agent AI newsroom, browsed on an immersive 3D shelf. A new edition lands roughly monthly, or on demand when a story warrants one. Live now, with print-on-demand next on the roadmap.",
       facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Live"]],
       live: true,
       link: "https://frontiers-gazette.vercel.app/shelf"
@@ -96,16 +115,17 @@
       title: "Enterprise Training Scheduler",
       eyebrow: "Workforce Optimisation",
       tags: "simulation · optimisation · cp-sat",
-      blurb: "Google's CP-SAT solver turning weeks of manual workforce scheduling into seconds of computation.",
+      blurb: "The scheduling problem under every large-scale SAP upgrade: thousands of people, role-based curricula, one go-live date. Solved in seconds instead of weeks.",
       why: [
-        "A proof-of-concept simulator, run on synthetic data.",
-        "Constraints like \u201cno one attends two courses at once\u201d and \u201cmax 20 per room\u201d.",
-        "CP-SAT prunes the search space rather than enumerating it — brute force would outlast the universe."
+        "An organisational transformation — an S/4HANA upgrade, a new operating model — lands as a training problem: every role needs a different curriculum before cutover, and the plan is built by hand in spreadsheets over weeks.",
+        "One moved go-live date invalidates all of it. Here the plan is constraints instead: nobody in two courses at once, max 20 to a room, prerequisites before what needs them, releases sequenced by wave.",
+        "CP-SAT prunes the search space rather than enumerating it — brute force would outlast the universe — and returns an optimal plan in seconds, so replanning costs nothing.",
+        "A proof-of-concept simulator on synthetic data: it shows the hand-built schedule first, then solves the same problem."
       ],
       status: "live",
       ph: "training scheduler — simulator UI",
       img: "images/enterprise-training-scheduler.png",
-      summary: "A scheduling tool for enterprise workforce training. It builds a synthetic workforce, shows the schedule a human planner would produce by hand, then solves the same problem with a constraint solver and returns an optimal plan in seconds.",
+      summary: "A scheduling tool for the training that large-scale organisational transformations run on — SAP upgrades, new operating models, role-based curricula delivered to thousands of people before a fixed cutover. It builds a synthetic workforce, shows the schedule a human planner would produce by hand over weeks, then solves the same problem with a constraint solver and returns an optimal plan in seconds.",
       facts: [["Role", "Design + Build"], ["Year", "2025"], ["Stack", "Next.js · CP-SAT"], ["Status", "Live"]],
       live: true,
       link: "https://workforce-readiness-simulator.vercel.app/app"
@@ -316,11 +336,26 @@
   // this runs. A stored choice still wins. Until the tweaks panel was removed
   // it called setTheme("light") on mount and overwrote this on every load,
   // which is why a saved preference never survived a refresh.
+  // That panel also means every device that visited before it was removed is
+  // still carrying a stored "light" nobody chose — which is why the live site
+  // opened light on a phone that had seen it once. Retire those values one
+  // time; a choice made after this stamp is a real one and survives.
+  if (localStorage.getItem("mg-theme-v") !== "2") {
+    localStorage.removeItem("mg-theme");
+    localStorage.setItem("mg-theme-v", "2");
+  }
   const saved = localStorage.getItem("mg-theme");
-  html.setAttribute("data-theme", saved === "light" || saved === "dark" ? saved : "dark");
+  // Mobile browser chrome reads this, not the page background, so it has to
+  // move with the theme or the address bar stays the wrong colour.
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+  function applyTheme(mode) {
+    html.setAttribute("data-theme", mode);
+    if (themeColor) themeColor.setAttribute("content", mode === "dark" ? "#0B0B0A" : "#E8E5DC");
+  }
+  applyTheme(saved === "light" || saved === "dark" ? saved : "dark");
   function toggleTheme() {
     const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    html.setAttribute("data-theme", next);
+    applyTheme(next);
     localStorage.setItem("mg-theme", next);
   }
   document.getElementById("shiftBtn").addEventListener("click", toggleTheme);
@@ -551,6 +586,15 @@
     }).join("")}</div>`;
   }
 
+  // Who writes what. Only the newsroom carries one, so it renders nothing
+  // for every other project.
+  function roster(p) {
+    if (!p.roster) return "";
+    return `<div class="ps-roster"><span class="ps-lbl">The newsroom</span>
+      <div class="pr-list">${p.roster.map(([n, r]) =>
+        `<div class="pr-a"><span class="pr-n">${n}</span><span class="pr-r">${r}</span></div>`).join("")}</div></div>`;
+  }
+
   function screenHTML(p, i) {
     const next = PROJECTS[i + 1];
     const tall = Boolean(p.series && p.series.dynamic === "editions");
@@ -584,6 +628,8 @@
             <div class="ps-meta">${(p.facts || []).map(([k, v]) =>
               `<div class="sp"><span class="sp-k">${k}</span><span class="sp-v">${v}</span></div>`).join("")}</div>
             ${p.why ? `<ul class="ps-why">${p.why.map((w) => `<li>${w}</li>`).join("")}</ul>` : ""}
+            ${roster(p)}
+            ${p.sources ? `<div class="ps-sources"><span class="ps-lbl">Reads from</span><p>${p.sources}</p></div>` : ""}
             <div class="ps-cta">${cta}</div>
             ${kids(p)}
           </div>

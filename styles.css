@@ -440,6 +440,22 @@ section { position: relative; padding: 0 var(--gutter); }
 }
 .ps-why li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
 
+/* ---- masthead + sources: the newsroom screen only ----
+   A twelve-agent roster does not fit the `why` list, and flattening it into
+   prose loses the one fact worth having — which agent owns which beat. It
+   auto-fits, so it is three columns on a desktop and one on a phone. */
+.ps-lbl {
+  font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink-2);
+}
+.ps-roster { display: flex; flex-direction: column; gap: 8px; padding-top: clamp(8px,1.2vh,14px); border-top: 1px solid var(--line); }
+.pr-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 22px; }
+.pr-a { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pr-n { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+.pr-r { font-size: 0.78rem; line-height: 1.45; color: var(--ink-2); }
+.ps-sources { display: flex; flex-direction: column; gap: 6px; }
+.ps-sources p { font-size: 0.78rem; line-height: 1.55; color: var(--ink-2); max-width: 78ch; }
+
 /* ---- the call to action, which is the point of the screen ---- */
 .ps-cta { margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .ps-enter {
