@@ -10,6 +10,28 @@
   /* ---------- PROJECT DATA ---------- */
   const PROJECTS = [
     {
+      title: "Maritime OS",
+      eyebrow: "Maritime Intelligence",
+      tags: "live ais · order book · supply chain",
+      blurb: "What an NZ agri-food exporter actually needs: which customer promise breaks next, and what can still be done.",
+      why: [
+        "~190 hulls in and around New Zealand, matched to the commitments they carry.",
+        "Choke points and berth congestion priced as detour days against the date you promised.",
+        "A position past five minutes is frozen, not extrapolated — refusals as legible as answers."
+      ],
+      status: "live",
+      ph: "maritime map — signal layer",
+      // JPEG, not PNG: a starfield and a shaded globe are photographic, and a
+      // lossless PNG of this frame costs 960KB against 160KB here with no
+      // visible difference. A 256-colour PNG was the other option and it
+      // posterised the ocean.
+      img: "images/maritime-intel-os.jpg",
+      summary: "Live vessel positions read against your own order book. It matches the ships actually on the water to the commitments you have made, prices the delay when a choke point or a congested berth gets in the way, and names the customer promises about to break while there is still something to do about them.",
+      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Realtime · Geospatial · Rules"], ["Status", "Live"]],
+      live: true,
+      link: "https://maritime-intel-os.vercel.app/"
+    },
+    {
       title: "Agentic Loss of Control Series",
       eyebrow: "AI Incident Reconstruction",
       tags: "cybersecurity · ai oversight · agentic risk",
@@ -39,28 +61,6 @@
       facts: [["Role", "Design + Build"], ["Year", "2026"], ["Stack", "Three.js · TypeScript"], ["Status", "Live"]],
       live: true,
       link: "https://the-specimen.vercel.app"
-    },
-    {
-      title: "Maritime OS",
-      eyebrow: "Maritime Intelligence",
-      tags: "live ais · order book · supply chain",
-      blurb: "What an NZ agri-food exporter actually needs: which customer promise breaks next, and what can still be done.",
-      why: [
-        "~190 hulls in and around New Zealand, matched to the commitments they carry.",
-        "Choke points and berth congestion priced as detour days against the date you promised.",
-        "A position past five minutes is frozen, not extrapolated — refusals as legible as answers."
-      ],
-      status: "live",
-      ph: "maritime map — signal layer",
-      // JPEG, not PNG: a starfield and a shaded globe are photographic, and a
-      // lossless PNG of this frame costs 960KB against 160KB here with no
-      // visible difference. A 256-colour PNG was the other option and it
-      // posterised the ocean.
-      img: "images/maritime-intel-os.jpg",
-      summary: "Live vessel positions read against your own order book. It matches the ships actually on the water to the commitments you have made, prices the delay when a choke point or a congested berth gets in the way, and names the customer promises about to break while there is still something to do about them.",
-      facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Realtime · Geospatial · Rules"], ["Status", "Live"]],
-      live: true,
-      link: "https://maritime-intel-os.vercel.app/"
     },
     {
       title: "Agentic Newsroom",
@@ -546,7 +546,7 @@
 
   function ctaLabel(p, i) {
     if (!isLive(p)) return "";
-    if (i === 0) return "Enter the OAIHF Event";
+    if (p.screenTitle === "The OAIHF Event") return "Enter the OAIHF Event";
     if (p.series && p.series.dynamic === "editions") return "Read the latest edition";
     return `Open ${p.title}`;
   }
