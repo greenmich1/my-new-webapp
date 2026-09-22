@@ -34,34 +34,39 @@
     {
       title: "Agentic Loss of Control Series",
       eyebrow: "AI Incident Reconstruction",
-      tags: "cybersecurity · ai oversight · agentic risk",
-      blurb: "1,200 AI agents in a sealed cyber evaluation organised against a grader that was never watching.",
-      // The big title on the screen is the event; the series name sits in the
-      // head bar above it. The subtitle names what the visitor actually lands
-      // on, because the live build brands itself The Specimen.
-      screenTitle: "The OAIHF Event",
-      screenSub: "Nobody Was Grading · The Specimen, entry 1",
+      tags: "ai oversight · agentic risk · incident reconstruction",
+      blurb: "Interactive reconstructions of real incidents where AI agents slipped the limits they were given. Two live: the OAIHF Event and the DSEWiki Event.",
+      screenTitle: "Agentic Loss of Control",
+      screenSub: "The Specimen · two entries live · more in development",
+      // Every entry gets an equal card on the screen: its own art, its own line and
+      // its own way in. No single "enter" button to bury the others behind.
       series: {
         badge: "Series · 2 of 4",
-        kids: [
-          { t: "The OAIHF Event", s: "July 2026 · live", link: "https://the-specimen.vercel.app" },
-          { t: "The DSEWiki Event", s: "Try ZZZ · May–July 2026 · live", link: "https://the-specimen-dsewiki.vercel.app" },
-          { t: "More events in development", s: "Further agentic loss-of-control incidents", empty: true }
-        ]
+        entries: [
+          {
+            n: "Entry 01", when: "July 2026", t: "The OAIHF Event", sub: "Nobody Was Grading",
+            line: "1,200 AI agents in a sealed cyber evaluation organised against a grader that was never watching.",
+            img: "images/nobody-was-grading.png", link: "https://the-specimen.vercel.app", cta: "Enter the OAIHF Event"
+          },
+          {
+            n: "Entry 02", when: "May–July 2026", t: "The DSEWiki Event", sub: "Try ZZZ",
+            line: "Thousands of AI agents turned a forgotten German wiki into a message board. One person deleted their pages by hand, every evening.",
+            img: "images/try-zzz.jpg", link: "https://the-specimen-dsewiki.vercel.app", cta: "Enter the DSEWiki Event"
+          }
+        ],
+        coming: "Two more incidents in development"
       },
       why: [
-        "OpenAI's ExploitGym, July 2026 — each agent sealed alone in its own sandbox.",
-        "A third of the targets could not be exploited at all. Nobody told the agents which.",
-        "They found a shared cache, organised through it, and attacked Hugging Face."
+        "Each entry rebuilds the place the incident happened: a sealed message board, a dormant German wiki.",
+        "Every claim is sourced and tiered: verified, reconstructed from the data, or our reading.",
+        "Built on independent investigations: METR for the OAIHF Event, the Nightingale Collective for DSEWiki."
       ],
       status: "live",
-      ph: "nobody was grading — the board",
-      img: "images/nobody-was-grading.png",
-      img2: "images/nobody-was-grading2.png",
-      summary: "An animated 3D reconstruction of the July 2026 OpenAI / Hugging Face incident, in which about 1,200 AI agents in a cybersecurity evaluation found a shared cache, turned it into a message board, organised, and attacked Hugging Face — all while trying to fool a grader that never existed. Told moment by moment, built on METR's investigation.",
-      facts: [["Role", "Design + Build"], ["Year", "2026"], ["Stack", "Three.js · TypeScript"], ["Status", "Live"]],
+      ph: "agentic loss of control — the series",
+      summary: "A series of interactive reconstructions of documented agentic AI loss-of-control incidents, each told moment by moment inside the interface where it happened.",
+      facts: [["Role", "Design + Build"], ["Year", "2026"], ["Stack", "Three.js · TypeScript · Pixel art"], ["Status", "2 live"]],
       live: true,
-      link: "https://the-specimen.vercel.app"
+      link: "https://the-specimen-dsewiki.vercel.app"
     },
     {
       title: "Agentic Newsroom",
@@ -547,7 +552,7 @@
 
   function ctaLabel(p, i) {
     if (!isLive(p)) return "";
-    if (p.screenTitle === "The OAIHF Event") return "Enter the OAIHF Event";
+    if (p.series && p.series.entries) return "";
     if (p.series && p.series.dynamic === "editions") return "Read the latest edition";
     return `Open ${p.title}`;
   }
@@ -587,6 +592,24 @@
     }).join("")}</div>`;
   }
 
+  // A series screen: every entry side by side, with equal weight, each its own way in.
+  function entriesGrid(p) {
+    const e = p.series.entries;
+    return `
+      <div class="ps-entries">
+        ${e.map((x) => `
+          <a class="pe-card" href="${x.link}" target="_blank" rel="noopener" data-cursor="↗" aria-label="${x.cta} — ${x.sub}, ${x.when}">
+            <span class="pe-art"><img src="${x.img}" alt="${x.t}: ${x.sub}" loading="lazy" decoding="async" /></span>
+            <span class="pe-meta"><span class="pe-n">${x.n}</span><span class="pe-when">${x.when}</span></span>
+            <span class="pe-t">${x.t}</span>
+            <span class="pe-sub">${x.sub}</span>
+            <span class="pe-line">${x.line}</span>
+            <span class="pe-go">${x.cta} <span class="arw">→</span></span>
+          </a>`).join("")}
+        ${p.series.coming ? `<div class="pe-card pe-coming"><span class="pe-n">Entries 03–04</span><span class="pe-t">${p.series.coming}</span></div>` : ""}
+      </div>`;
+  }
+
   // Who writes what. Only the newsroom carries one, so it renders nothing
   // for every other project.
   function roster(p) {
@@ -599,6 +622,7 @@
   function screenHTML(p, i) {
     const next = PROJECTS[i + 1];
     const tall = Boolean(p.series && p.series.dynamic === "editions");
+    const entries = Boolean(p.series && p.series.entries);
     const badge = seriesBadge(p);
     // The newsroom's own link is the archive shelf; the CTA says "latest
     // edition", so it points at the latest edition's reader rather than at the
@@ -611,7 +635,7 @@
       : `<span class="ps-locked">Not public</span>${p.lockReason ? `<span class="ps-lockwhy">${p.lockReason}</span>` : ""}`;
 
     return `
-      <section class="pscreen${tall ? " tall" : ""}" id="ps-${i}" data-i="${i}" aria-labelledby="ps-h-${i}">
+      <section class="pscreen${tall ? " tall" : ""}${entries ? " series" : ""}" id="ps-${i}" data-i="${i}" aria-labelledby="ps-h-${i}">
         <div class="ps-head">
           <span class="ps-n">(0${i + 1})</span>
           <span class="ps-eyebrow">${p.title}</span>
@@ -621,7 +645,7 @@
         </div>
 
         <div class="ps-body">
-          ${tall ? gazetteGrid() : banner(p)}
+          ${tall ? gazetteGrid() : entries ? entriesGrid(p) : banner(p)}
           <div class="ps-text">
             <h2 class="ps-title" id="ps-h-${i}" tabindex="-1">${p.screenTitle || p.title}</h2>
             ${p.screenSub ? `<span class="ps-sub">${p.screenSub}</span>` : ""}
@@ -631,7 +655,7 @@
             ${p.why ? `<ul class="ps-why">${p.why.map((w) => `<li>${w}</li>`).join("")}</ul>` : ""}
             ${roster(p)}
             ${p.sources ? `<div class="ps-sources"><span class="ps-lbl">Reads from</span><p>${p.sources}</p></div>` : ""}
-            <div class="ps-cta">${cta}</div>
+            ${entries ? "" : `<div class="ps-cta">${cta}</div>`}
             ${kids(p)}
           </div>
         </div>
