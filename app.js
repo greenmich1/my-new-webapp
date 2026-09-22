@@ -42,9 +42,10 @@
       screenTitle: "The OAIHF Event",
       screenSub: "Nobody Was Grading · The Specimen, entry 1",
       series: {
-        badge: "Series · 1 of 4",
+        badge: "Series · 2 of 4",
         kids: [
           { t: "The OAIHF Event", s: "July 2026 · live", link: "https://the-specimen.vercel.app" },
+          { t: "The DSEWiki Event", s: "Try ZZZ · May–July 2026 · live", link: "https://the-specimen-dsewiki.vercel.app" },
           { t: "More events in development", s: "Further agentic loss-of-control incidents", empty: true }
         ]
       },
