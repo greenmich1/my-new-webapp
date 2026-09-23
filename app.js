@@ -112,7 +112,9 @@
         { edition: "002b", cap: "The Enterprise Agent Stack: Key Architectural Decisions", src: "uploads/Gazette-002b.PNG", alt: "The Frontiers Gazette — Edition 002b cover", link: "https://frontiers-gazette.vercel.app/edition/002b", pubMonthYear: "June 2026" },
         { edition: "003", cap: "The Engineer in the Room: Palantir's Bet That AI Needs a Human in the Building", src: "uploads/Gazette-003.PNG", alt: "The Frontiers Gazette — Edition 003 cover", link: "https://frontiers-gazette.vercel.app/edition/003", pubMonthYear: "July 2026" },
         { edition: "004b", cap: "The Ships That Came Back Different", src: "https://frontiers-gazette.vercel.app/api/cover-render/004b", alt: "The Frontiers Gazette — Edition 004b cover", link: "https://frontiers-gazette.vercel.app/edition/004b", pubMonthYear: "July 2026" },
-        { edition: "005", cap: "The Compute Ceiling", src: "https://frontiers-gazette.vercel.app/api/cover-render/005", alt: "The Frontiers Gazette — Edition 005 cover", link: "https://frontiers-gazette.vercel.app/edition/005", pubMonthYear: "August 2026" }
+        { edition: "005", cap: "The Compute Ceiling", src: "https://frontiers-gazette.vercel.app/api/cover-render/005", alt: "The Frontiers Gazette — Edition 005 cover", link: "https://frontiers-gazette.vercel.app/edition/005", pubMonthYear: "August 2026" },
+        { edition: "006", cap: "The Managed Breakout", src: "https://frontiers-gazette.vercel.app/api/cover-render/006", alt: "The Frontiers Gazette — Edition 006 cover", link: "https://frontiers-gazette.vercel.app/edition/006", pubMonthYear: "September 2026" },
+        { edition: "winter-26", special: "Winter '26 Special", cap: "The best of June to August 2026", src: "https://frontiers-gazette.vercel.app/api/cover-render/winter-26", alt: "The Frontiers Gazette — Winter '26 Special cover", link: "https://frontiers-gazette.vercel.app/edition/winter-26", pubMonthYear: "June – August 2026" }
       ],
       summary: "A bespoke long-form magazine — The Frontiers Gazette — written, edited and illustrated end-to-end by a four-agent AI newsroom, browsed on an immersive 3D shelf. A new edition lands roughly monthly, or on demand when a story warrants one. Live now, with print-on-demand next on the roadmap.",
       facts: [["Role", "Founder"], ["Year", "2026"], ["Stack", "Agentic · 3D · Print"], ["Status", "Live"]],
@@ -207,9 +209,20 @@
   // if ai-gazette ever adds that, append the id here and drop the shared constant.
   const GAZETTE_SHELF = "https://frontiers-gazette.vercel.app/shelf";
   const gazetteFallback = PROJECTS.find((p) => p.gazetteEditions).gazetteEditions;
+
+  // The modal shows the newest weekly edition plus the seasonal "best of" specials,
+  // newest first — not every edition, which cluttered it past eight covers. The
+  // full run lives on the shelf, linked from the grid caption.
+  function showcaseOf(editions, latestId) {
+    const weekly = editions.filter((e) => !e.special);
+    const latest = weekly.find((e) => e.edition === latestId) || weekly.at(-1);
+    const specials = editions.filter((e) => e.special).reverse();
+    return { latest, showcase: latest ? [latest, ...specials] : specials };
+  }
+
   let gazetteState = {
     editions: gazetteFallback,
-    latest: gazetteFallback.at(-1)
+    ...showcaseOf(gazetteFallback)
   };
 
   /* ---------- SHARED PREDICATES ---------- */
@@ -256,11 +269,12 @@
         src: e.coverUrl,
         alt: `The Frontiers Gazette — Edition ${e.id} cover`,
         link: e.readerUrl,
-        pubMonthYear: e.pubMonthYear
+        pubMonthYear: e.pubMonthYear,
+        special: e.special ? e.special.label : null
       }));
       if (!editions.length) return;
-      const latest = editions.find((e) => e.edition === data.latestId) || editions.at(-1);
-      gazetteState = { editions, latest };
+      // latestId is the newest *weekly* edition; specials never displace it.
+      gazetteState = { editions, ...showcaseOf(editions, data.latestId) };
       // Both the index badge and the deck screen were rendered from the
       // fallback before this resolved, so they would otherwise sit on a stale
       // count — the API had 8 editions while the hardcoded list stopped at 7.
@@ -564,12 +578,12 @@
       <div class="ps-grid">
         <div class="sg-cap">
           <span class="sg-lbl">The Frontiers Gazette</span>
-          <span class="sg-sub">${gazetteState.editions.length} editions · click any cover for the 3D shelf</span>
+          <span class="sg-sub">Latest edition + seasonal specials · <a href="${GAZETTE_SHELF}" target="_blank" rel="noopener" data-cursor="↗">All ${gazetteState.editions.length} editions on the 3D shelf →</a></span>
         </div>
-        <div class="sg-grid">${gazetteState.editions.map((g) => `
+        <div class="sg-grid">${gazetteState.showcase.map((g) => `
           <figure class="sg-page">
-            <a href="${GAZETTE_SHELF}" target="_blank" rel="noopener" data-cursor="↗" aria-label="Browse all editions in the 3D shelf viewer — showing edition ${g.edition}, ${g.cap}">
-              <span class="sg-ed">Ed <b>${g.edition}</b></span>
+            <a href="${g.link}" target="_blank" rel="noopener" data-cursor="↗" aria-label="Read ${g.special || `edition ${g.edition}`} — ${g.cap}">
+              <span class="sg-ed">${g.special ? `<b>${g.special}</b>` : `Latest · Ed <b>${g.edition}</b>`}</span>
               <img src="${g.src}" alt="${g.alt}" loading="lazy" decoding="async" />
               <figcaption>${g.cap}</figcaption>
             </a>
