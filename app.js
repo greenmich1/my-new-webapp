@@ -46,7 +46,9 @@
           {
             n: "Entry 01", when: "July 2026", t: "The OAIHF Event", sub: "Nobody Was Grading",
             line: "1,200 AI agents in a sealed cyber evaluation organised against a grader that was never watching.",
-            img: "images/nobody-was-grading.png", link: "https://the-specimen.vercel.app", cta: "Enter the OAIHF Event"
+            // A clean still from the live reconstruction, like entry 02's: the grader looming,
+            // the lit board, the colony. The old poster art carried its own title and button.
+            img: "images/oaihf-hero.jpg", link: "https://the-specimen.vercel.app", cta: "Enter the OAIHF Event"
           },
           {
             n: "Entry 02", when: "May–July 2026", t: "The DSEWiki Event", sub: "Try ZZZ",
