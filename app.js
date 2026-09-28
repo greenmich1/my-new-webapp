@@ -10,6 +10,24 @@
   /* ---------- PROJECT DATA ---------- */
   const PROJECTS = [
     {
+      title: "Dairy Twin",
+      eyebrow: "Agentic Digital Twin",
+      tags: "digital twin · sap s/4hana · agent mesh",
+      blurb: "A New Zealand dairy plant from milk silo to finished powder, run by six agents that reason, negotiate and write to SAP.",
+      why: [
+        "A deterministic process engine balances fat, protein, lactose and ash minute by minute, from 3,000 t of milk to powder, butter and cream.",
+        "Every figure an agent quotes comes from a simulated what-if run or live plant state. No agent invents a number.",
+        "Food Safety holds a veto. Autonomy moves from manual to fully autonomous, and every agent write lands as an SAP document."
+      ],
+      status: "live",
+      ph: "dairy twin — 3D plant",
+      img: "images/dairy-twin.jpg",
+      summary: "An agentic digital twin of a New Zealand dairy plant on a synthetic SAP S/4HANA landscape. A 3D plant, a deterministic process engine and six agents (Planning, Quality, Scheduler, Energy, Food Safety and an Orchestrator) that simulate their options before acting, negotiate trade-offs and post process orders, goods movements and quality lots to SAP.",
+      facts: [["Role", "Design + Build"], ["Year", "2026"], ["Stack", "Three.js · Agents · SAP S/4HANA"], ["Status", "Live · Module 1"]],
+      live: true,
+      link: "https://dairy-twin.vercel.app/"
+    },
+    {
       title: "Maritime OS",
       eyebrow: "Maritime Intelligence",
       tags: "live ais · order book · supply chain",
@@ -246,7 +264,7 @@
     el.dataset.i = i;
     el.dataset.cursor = p.status === "soon" ? "soon" : "view";
     // One written sentence rather than three tags: the tags described the medium,
-    // not the subject, and "3D storytelling" said nothing about what project 01
+    // not the subject, and "3D storytelling" said nothing about what the Loss of Control series
     // is actually about. Tags survive as small meta on the project's own screen.
     el.innerHTML = `
       <span class="p-idx">(0${i + 1})</span>

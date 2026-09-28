@@ -40,7 +40,7 @@ There is **no modal.** It was removed on 17 Sep: it covered the page, had no
 URL, no focus handling, and no way to reach the next project without closing
 the current one.
 
-Clicking a row in the work index opens **the deck**: seven full-viewport
+Clicking a row in the work index opens **the deck**: eight full-viewport
 sections built into `#deck`, moved through with `↓ ↑ PageUp PageDown`, the NEXT
 control, or the trackpad. `Esc` returns to the index.
 
@@ -64,7 +64,7 @@ control, or the trackpad. `Esc` returns to the index.
 | `why` | 2–3 short lines, the `→` list on the screen |
 | `facts` | the Role / Year / Stack / Status meta row |
 | `series` | `{ badge, kids }`, or `{ dynamic: "editions" }` to count from the live API |
-| `screenTitle` / `screenSub` | when the screen's title differs from the index row (project 01) |
+| `screenTitle` / `screenSub` | when the screen's title differs from the index row (the Loss of Control series) |
 | `live: true` **and** `link` | both required, or the screen shows `Not public` + `lockReason` |
 | `img` | banner. `.ps-banner` takes the artwork's 16:10 proportions, so landscape art is not cropped into a portrait column. |
 
