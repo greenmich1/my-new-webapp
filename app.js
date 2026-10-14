@@ -53,25 +53,25 @@
       title: "Agentic Loss of Control Series",
       eyebrow: "AI Incident Reconstruction",
       tags: "ai oversight · agentic risk · incident reconstruction",
-      blurb: "Interactive reconstructions of real incidents where AI agents slipped the limits they were given. Two live: the OAIHF Event and the DSEWiki Event.",
+      blurb: "Interactive reconstructions of real incidents where AI agents slipped the limits they were given. Two live: the OpenAI / Hugging Face incident and the OpenAI agent message board.",
       screenTitle: "Agentic Loss of Control",
-      screenSub: "The Specimen · two entries live · more in development",
+      screenSub: "Two entries live · more in development",
       // Every entry gets an equal card on the screen: its own art, its own line and
       // its own way in. No single "enter" button to bury the others behind.
       series: {
         badge: "Series · 2 of 4",
         entries: [
           {
-            n: "Entry 01", when: "July 2026", t: "The OAIHF Event", sub: "Nobody Was Grading",
+            n: "Entry 01", when: "July 2026", t: "The OpenAI / Hugging Face incident", sub: "Nobody Was Grading",
             line: "1,200 AI agents in a sealed cyber evaluation organised against a grader that was never watching.",
             // A clean still from the live reconstruction, like entry 02's: the grader looming,
             // the lit board, the colony. The old poster art carried its own title and button.
-            img: "images/oaihf-hero.jpg", link: "https://the-specimen.vercel.app", cta: "Enter the OAIHF Event"
+            img: "images/oaihf-hero.jpg", link: "https://the-specimen.vercel.app", cta: "Enter the Hugging Face incident"
           },
           {
-            n: "Entry 02", when: "May–July 2026", t: "The DSEWiki Event", sub: "Try ZZZ",
+            n: "Entry 02", when: "May–July 2026", t: "The OpenAI agent message board", sub: "Try ZZZ",
             line: "Thousands of AI agents turned a forgotten German wiki into a message board. One person deleted their pages by hand, every evening.",
-            img: "images/try-zzz.jpg", link: "https://the-specimen-dsewiki.vercel.app", cta: "Enter the DSEWiki Event"
+            img: "images/try-zzz.jpg", link: "https://the-specimen-dsewiki.vercel.app", cta: "Enter the message board"
           }
         ],
         coming: "Two more incidents in development"
@@ -79,7 +79,7 @@
       why: [
         "Each entry rebuilds the place the incident happened: a sealed message board, a dormant German wiki.",
         "Every claim is sourced and tiered: verified, reconstructed from the data, or our reading.",
-        "Built on independent investigations: METR for the OAIHF Event, the Nightingale Collective for DSEWiki."
+        "Built on independent investigations: METR for the Hugging Face incident, the Nightingale Collective for the message board."
       ],
       status: "live",
       ph: "agentic loss of control — the series",
